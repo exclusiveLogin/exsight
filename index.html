@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <meta name="theme-color" content="#444">
+
+
+    <title>EXSIGHT - WEB SCADA CLIENT</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+
+    <link rel="icon" sizes="192x192" href="/style/logo.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style/dark.css">
+    <link rel="stylesheet" href="style/lightbox.css">
+    <link rel="stylesheet" href="fancybox/jquery.fancybox.css">
+    <link href='https://fonts.googleapis.com/css?family=Cinzel' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Quicksand:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:400,100,600,700,300' rel='stylesheet' type='text/css'>
+    <!-- Latest compiled and minified JavaScript -->
+
+
+    <script src="/js/global.js"></script>
+    <script src="/js/jquery-1.11.3.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script src="/js/auth.js"></script>
+
+    <script src="/js/start.js"></script>
+
+    <script src="/js/lightbox.js"></script>
+
+    <script src="/js/detect.js"></script>
+    
+    <script src="/js/trend.js"></script>
+    
+
+    <!--Google Maps-->
+
+    <script src="/fancybox/jquery.fancybox.pack.js"></script>
+    <script src="/fancybox/jquery.fancybox.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="/js/io.js"></script>
+    
+
+
+
+</head>
+<body>
+    <div id="tooltip"></div>
+    <div id="header" class="container-fluid headerdark">
+        <div id="sysmsg" class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-center myhide">Системное сообщение: <span id="sysmsg_val"></span></div>
+        <div id="emer_code" class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-center myhide">ВНИМАНИЕ!!! <span id="emer_code_msg"></span></div>
+
+        <div class="logo col-lg-7 col-md-7 col-sm-7 hidden-xs"><p>EXSIGHT - WEB SCADA CLIENT</p><p>Сызранская нефтебаза</p></div>
+
+        <div class="logo col-xs-12 col-sm-6 visible-xs  text-center">EXSIGHT - WEB SCADA CLIENT</div>
+
+        <div id="menu" class="col-lg-5 col-md-5 col-sm-5 text-right hidden-xs">
+            <button class="btn btn-success btnlogin">Войти в систему</button>
+            <button class="btn btn-danger btnlogout">Выйти из системы</button>
+        </div>
+        <div id="menupda" class="col-xs-12 visible-xs text-center"></div>
+
+        <div id="loginform" class="col-xs-12 text-center form-inline">
+            <header>Авторизация</header>
+            <div class="form-group">
+                <label>Логин</label>
+                <input id="loginName" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input id="passwordName" type="password" class="form-control">
+            </div>
+            <div class="col-xs-12 text-center">
+                <button id="btnloginenter" class="btn btn-success btn-group-sm" autofocus>Войти</button>
+                <button class="btnlogincl btn btn-danger btn-group-sm">Закрыть</button>
+            </div>
+        </div>
+    </div>
+    <div class="danger_field"></div>
+    <div id="fancytemp" class="container"></div>
+    <div id="wrapper" class="transparent">
+        <div class="tank_panel">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div>
+                                <span class="tank_num">Резервуар № 1</span>
+                            </div>
+                            <div class="tank_pic"></div>
+                        </div>
+                        <div class="col-md-8">
+                            <span class="tank_num">Показатели резервуара</span>
+                            <div class="mydevider"></div>
+                            <div class="tank_num">
+                                <span class="tank_val_name">Масса нефтепродукта: </span><span class="tank_val label label-success">0000</span><small> тонн.</small>
+                            </div>
+                            <div class="tank_num">
+                                <span class="tank_val_name">Объем нефтепродукта: </span><span class="tank_val label label-success">0000</span><small> куб.</small>
+                            </div>
+                            <div class="tank_num">
+                                <span class="tank_val_name">Температура нефтепродукта: </span><span class="tank_val label label-success">0000</span><small> град.</small>
+                            </div>
+                            <div class="tank_num">
+                                <span class="tank_val_name">Уровень нефтепродукта: </span><span class="tank_val label label-success">0000</span><small> мм.</small>
+                            </div>
+                            <div class="tank_num">
+                                <span class="tank_val_name">Плотность нефтепродукта: </span><span class="tank_val label label-success">0000</span><small> кг/м3.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="panel" class="cont_panel transparent" style="display: none;">
+            <h2 class="label label-lg label-default">Связь отключена</h2>
+        </div>
+        <div id="container" class="container-fluid">
+            <div class="col-md-12 park_name">Парк резервуаров <span class="rn_color">///</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">1</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">2</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">3</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">4</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">5</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">6</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">7</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">8</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">9</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">10</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">11</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">12</span></div>
+            <div class="col-md-12 park_name">Еще один парк <span class="rn_color">///</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">1</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">2</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">3</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">4</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">5</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">6</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">7</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">8</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">9</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">10</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">11</span></div>
+            <div class="col-md-2 tank"><span class="tank_num">12</span></div>
+        </div>
+    </div>
+    <div id="footer">
+        Все права защищены ООО ИК Сибинтек 2016<br>
+        Поддержка осуществляется по внутреннему номеру 112
+    </div>
+</body>
+</html>
