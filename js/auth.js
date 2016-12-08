@@ -114,14 +114,103 @@ function refreshTank(tank) {
             $(".tank_parm_upd").text(data.datetime);
         }
         if(data.level && data.max_level){
-            var tmpperc = lvl2perc(data.level,data.max_level);
+            var tmpperc = lvl2perc(data.level,data.max_level).toFixed(1);
             $('.prog_val').text(tmpperc+"%");
-            Global.parmTank.animate(tmpperc/100);
+            
+            pr_opt = {};
+            if(tmpperc<10){
+                $('.prog_val').css("color","#009");
+                pr_opt={
+                    from:{color:"#fff"},
+                    to:{color:"#009"}
+                };
+            }else if(tmpperc>70 && tmpperc<90){
+                $('.prog_val').css("color","#ff8f00");
+                pr_opt={
+                    from:{color:"#fff"},
+                    to:{color:"#ff8f00"}
+                };
+            }else if(tmpperc>90){
+                $('.prog_val').css("color","#f00");
+                pr_opt={
+                    from:{color:"#fff"},
+                    to:{color:"#f00"}
+                };
+            }else{
+                $('.prog_val').css("color","#090");
+                pr_opt={
+                    from:{color:"#fff"},
+                    to:{color:"#090"}
+                };
+            }
+            
+            Global.parmTank.animate(tmpperc/100,pr_opt);
         }
     }
 }
 function refreshPark() {
-    
+    $.ajax({
+        url:"opcdata/gettank.php",
+        dataType:"json",
+        method:'GET',
+        data:{park:true},
+        success:function(data){
+            renderPark(data);
+        },
+        error:function(){
+            console.log("error to load refresh park ajax data");
+        }
+    });
+    function renderPark(data) {
+        if(data){
+            for(var elem in data){
+                elem = Number(elem);
+                //console.log(elem);
+                if(data[elem].level && data[elem].max_level){
+                    var tmpperc = lvl2perc(data[elem].level,data[elem].max_level).toFixed(0);
+                    var tmpReal = $(".tank[data-num="+(elem+1)+"]").find(".progress_tank_val_real");
+                    var tmpPerc = $(".tank[data-num="+(elem+1)+"]").find(".progress_tank_val");
+                    
+                    tmpPerc.text(tmpperc+"%");
+                    tmpReal.text(data[elem].level);
+                    
+                    pr_opt = {};
+                    if(tmpperc<10){
+                        tmpPerc.css("color","#009");
+                        tmpReal.css("color","#009");
+                        pr_opt={
+                            from:{color:"#fff"},
+                            to:{color:"#009"}
+                        };
+                    }else if(tmpperc>70 && tmpperc<90){
+                        tmpPerc.css("color","#ff8f00");
+                        tmpReal.css("color","#ff8f00");
+                        pr_opt={
+                            from:{color:"#fff"},
+                            to:{color:"#ff8f00"}
+                        };
+                    }else if(tmpperc>90){
+                        tmpPerc.css("color","#f00");
+                        tmpReal.css("color","#f00");
+                        pr_opt={
+                            from:{color:"#fff"},
+                            to:{color:"#f00"}
+                        };
+                    }else{
+                        tmpPerc.css("color","#090");
+                        tmpReal.css("color","#090");
+                        pr_opt={
+                            from:{color:"#fff"},
+                            to:{color:"#090"}
+                        };
+                    }
+                    
+                    Global.pr_tank[elem+1].animate(tmpperc/100,pr_opt);
+                }
+            }
+            
+        }
+    }
 }
 function lvl2perc(val,max){
     var desc = max/100;

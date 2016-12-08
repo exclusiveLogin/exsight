@@ -1,4 +1,5 @@
 Global = {
+    pr_tank:[],
     jqready:false,
     swready:false,
     notifyallow:false,
