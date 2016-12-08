@@ -59,3 +59,73 @@ function refreshLog() {
         }
     }
 }
+function tankparmToggle(state,tank){
+    if(state){
+        $('#tankparm_panel').show(0,function () {
+            $(this).removeClass("transparent");
+        });
+        if(tank){
+            $(".tank_num_val").text(tank);
+            Global.tankselect = tank;
+            refreshTank(tank);
+        }
+    }
+    else{
+        $('#tankparm_panel').hide(0,function () {
+            $(this).addClass("transparent");
+            Global.tankselect = "";
+        });
+    }
+}
+function refreshTank(tank) {
+    $.ajax({
+        url:"opcdata/gettank.php",
+        dataType:"json",
+        method:'GET',
+        data:{tank:tank},
+        success:function(data){
+            renderTank(data);
+
+        },
+        error:function(){
+            console.log("error to load refresh tank ajax data");
+        }
+    });
+    function renderTank(data) {
+        if(data.mass){
+            $(".tank_parm_mass").text(data.mass);
+        }
+        if(data.volume){
+            $(".tank_parm_volume").text(data.volume);
+        }
+        if(data.plot){
+            $(".tank_parm_plot").text(data.plot);
+        }
+        if(data.temp){
+            $(".tank_parm_temp").text(data.temp);
+        }
+        if(data.level){
+            $(".tank_parm_level").text(data.level);
+        }
+        if(data.max_level){
+            $(".tank_parm_maxlvl").text(data.max_level);
+        }
+        if(data.datetime){
+            $(".tank_parm_upd").text(data.datetime);
+        }
+        if(data.level && data.max_level){
+            var tmpperc = lvl2perc(data.level,data.max_level);
+            $('.prog_val').text(tmpperc+"%");
+            Global.parmTank.animate(tmpperc/100);
+        }
+    }
+}
+function refreshPark() {
+    
+}
+function lvl2perc(val,max){
+    var desc = max/100;
+    var cur = val/desc;
+    //console.log(cur);
+    return cur;
+}

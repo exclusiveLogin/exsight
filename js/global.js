@@ -21,5 +21,6 @@ Global = {
         users:[],
         user_msg:[]
     },
-    loggedAs:""
+    loggedAs:"",
+    tankselect:"",
 };

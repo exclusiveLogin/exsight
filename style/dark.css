@@ -57,6 +57,11 @@ small{
     background-size: 70px;
     height: 64px;
 }
+.logo_title{
+    text-align: left;
+    font-weight: bold;
+    font-size: 200%;
+}
 #loginform{
     padding: 10px;
     border-top: 1px solid red;

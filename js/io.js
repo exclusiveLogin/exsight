@@ -1,5 +1,7 @@
-Global.socketToLH = undefined;
+//Global.socketToLH = undefined;
 $(document).ready(function(){
+    console.log("test)io");
+    /*
     $('#panel').html('<h2 class="label label-lg label-warning">Попытка установить связь</h2>');
     Global.socketToLH = io('http://10.210.30.44:3000');
 
@@ -116,7 +118,7 @@ $(document).ready(function(){
         $('#tube2_pr_val').css("width","0%");
         $('#tube3_pr_val').css("width","0%");
         $('#tube4_pr_val').css("width","0%");
-    });
+    });*/
 });
 function press2perc(val){
     var min = 0.0;

@@ -18,6 +18,7 @@
     <link rel="icon" sizes="192x192" href="/style/logo.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet" href="style/dark.css">
+    <link rel="stylesheet" href="style/progress.css">
     <link rel="stylesheet" href="style/lightbox.css">
     <link rel="stylesheet" href="fancybox/jquery.fancybox.css">
     <link href='https://fonts.googleapis.com/css?family=Cinzel' rel='stylesheet' type='text/css'>
@@ -26,31 +27,35 @@
     <!-- Latest compiled and minified JavaScript -->
 
 
-    <script src="/js/global.js"></script>
-    <script src="/js/jquery-1.11.3.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/jquery-1.11.3.js"></script>
+    <!--script src="https://code.highcharts.com/highcharts.js"></script-->
 
-    <script src="/js/auth.js"></script>
+    <script src="js/auth.js"></script>
 
-    <script src="/js/start.js"></script>
+    <script src="js/start.js"></script>
 
-    <script src="/js/lightbox.js"></script>
+    <!--script src="js/lightbox.js"></script-->
 
-    <script src="/js/detect.js"></script>
+    <!--script src="js/detect.js"></script-->
     
-    <script src="/js/trend.js"></script>
+    <!--script src="js/trend.js"></script-->
     
 
     <!--Google Maps-->
 
-    <script src="/fancybox/jquery.fancybox.pack.js"></script>
-    <script src="/fancybox/jquery.fancybox.js"></script>
+    <!--script src="fancybox/jquery.fancybox.pack.js"></script-->
+    <!--script src="fancybox/jquery.fancybox.js"></script-->
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
-    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-    <script src="/js/io.js"></script>
-    
+    <!--script src="https://cdn.socket.io/socket.io-1.4.5.js"></script-->
+    <script src="js/io.js"></script>
+
+    <!--ProgressbarJS-->
+
+    <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.5.6/dist/progressbar.js"></script>
+    <script src="js/progresslogic.js"></script>
 
 
 
@@ -61,7 +66,7 @@
         <div id="sysmsg" class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-center myhide">Системное сообщение: <span id="sysmsg_val"></span></div>
         <div id="emer_code" class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-center myhide">ВНИМАНИЕ!!! <span id="emer_code_msg"></span></div>
 
-        <div class="logo col-lg-7 col-md-7 col-sm-7 hidden-xs"><p>EXSIGHT - WEB SCADA CLIENT</p><p>Сызранская нефтебаза</p></div>
+        <div class="logo col-lg-7 col-md-7 col-sm-7 hidden-xs"><p class="logo_title">EXSIGHT</p><span> WEB SCADA CLIENT</span><span> - Сызранская нефтебаза</span></div>
 
         <div class="logo col-xs-12 col-sm-6 visible-xs  text-center">EXSIGHT - WEB SCADA CLIENT</div>
 
@@ -90,33 +95,39 @@
     <div class="danger_field"></div>
     <div id="fancytemp" class="container"></div>
     <div id="wrapper" class="transparent">
-        <div class="tank_panel">
+        <div class="tank_panel transparent" id="tankparm_panel">
             <div class="row">
+                <button class="btn_close btn btn-danger" id="btn_close_parm"><i class="fa fa-close"></i></button>
                 <div class="col-md-8 col-md-offset-2">
                     <div class="row">
                         <div class="col-md-4">
                             <div>
-                                <span class="tank_num">Резервуар № 1</span>
+                                <span class="tank_num">Резервуар № <span class="tank_num_val"></span></span>
                             </div>
-                            <div class="tank_pic"></div>
+                            <div class="tank_pic">
+                                <div class="prog_cont" id="progress"><p class="prog_val" style="color: red">10%</p></div>
+                            </div>
                         </div>
                         <div class="col-md-8">
-                            <span class="tank_num">Показатели резервуара</span>
+                            <span class="tank_num">Показатели резервуара:</span>
+                            <p class="label label-success tank_parm_upd">дата время</p>
                             <div class="mydevider"></div>
                             <div class="tank_num">
-                                <span class="tank_val_name">Масса нефтепродукта: </span><span class="tank_val label label-success">0000</span><small> тонн.</small>
+                                <span class="tank_val_name">Масса нефтепродукта: </span><span class="tank_parm_mass tank_val label label-success">0000</span><small> тонн.</small>
                             </div>
                             <div class="tank_num">
-                                <span class="tank_val_name">Объем нефтепродукта: </span><span class="tank_val label label-success">0000</span><small> куб.</small>
+                                <span class="tank_val_name">Объем нефтепродукта: </span><span class="tank_parm_volume tank_val label label-success">0000</span><small> куб.</small>
                             </div>
                             <div class="tank_num">
-                                <span class="tank_val_name">Температура нефтепродукта: </span><span class="tank_val label label-success">0000</span><small> град.</small>
+                                <span class="tank_val_name">Температура нефтепродукта: </span><span class=" tank_parm_temp tank_val label label-success">0000</span><small> град.</small>
                             </div>
                             <div class="tank_num">
-                                <span class="tank_val_name">Уровень нефтепродукта: </span><span class="tank_val label label-success">0000</span><small> мм.</small>
+                                <span class="tank_val_name">Уровень нефтепродукта: </span>
+                                <span class="tank_parm_level tank_val label label-success">0000</span><small> мм.</small>
+                                <small> (макс: <span class="tank_parm_maxlvl label label-danger">13000</span>)</small>
                             </div>
                             <div class="tank_num">
-                                <span class="tank_val_name">Плотность нефтепродукта: </span><span class="tank_val label label-success">0000</span><small> кг/м3.</small>
+                                <span class="tank_val_name">Плотность нефтепродукта: </span><span class="tank_parm_plot tank_val label label-success">0000</span><small> кг/м3.</small>
                             </div>
                         </div>
                     </div>
@@ -128,31 +139,91 @@
         </div>
         <div id="container" class="container-fluid">
             <div class="col-md-12 park_name">Парк резервуаров <span class="rn_color">///</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">1</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">2</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">3</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">4</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">5</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">6</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">7</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">8</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">9</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">10</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">11</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">12</span></div>
+            <div class="col-md-2 tank" data-num="1">
+                <span class="tank_num">1</span>
+                <div class="progress_tank" id="progress_tank1">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
+            <div class="col-md-2 tank" data-num="2">
+                <span class="tank_num">2</span>
+                <div class="progress_tank" id="progress_tank2">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
+            <div class="col-md-2 tank" data-num="3">
+                <span class="tank_num">3</span>
+                <div class="progress_tank" id="progress_tank3">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
+            <div class="col-md-2 tank" data-num="4">
+                <span class="tank_num">4</span>
+                <div class="progress_tank" id="progress_tank4">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
+            <div class="col-md-2 tank" data-num="5">
+                <span class="tank_num">5</span>
+                <div class="progress_tank" id="progress_tank5">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
+            <div class="col-md-2 tank" data-num="6">
+                <span class="tank_num">6</span>
+                <div class="progress_tank" id="progress_tank6">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
+            <div class="col-md-2 tank" data-num="7">
+                <span class="tank_num">7</span>
+                <div class="progress_tank" id="progress_tank7">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
+            <div class="col-md-2 tank" data-num="8">
+                <span class="tank_num">8</span>
+                <div class="progress_tank" id="progress_tank8">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
+            <div class="col-md-2 tank" data-num="9">
+                <span class="tank_num">9</span>
+                <div class="progress_tank" id="progress_tank9">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
+            <div class="col-md-2 tank" data-num="10">
+                <span class="tank_num">10</span>
+                <div class="progress_tank" id="progress_tank10">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
+            <div class="col-md-2 tank" data-num="11">
+                <span class="tank_num">11</span>
+                <div class="progress_tank" id="progress_tank11">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
+            <div class="col-md-2 tank" data-num="12">
+                <span class="tank_num">12</span>
+                <div class="progress_tank" id="progress_tank12">
+                    <p class="progress_tank_val_real" style="color: darkgreen">7888</p>
+                    <p class="progress_tank_val" style="color: darkgreen">40%</p>
+                </div>
+            </div>
             <div class="col-md-12 park_name">Еще один парк <span class="rn_color">///</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">1</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">2</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">3</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">4</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">5</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">6</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">7</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">8</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">9</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">10</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">11</span></div>
-            <div class="col-md-2 tank"><span class="tank_num">12</span></div>
         </div>
     </div>
     <div id="footer">
