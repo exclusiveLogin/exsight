@@ -121,25 +121,25 @@ function refreshTank(tank) {
             if(tmpperc<10){
                 $('.prog_val').css("color","#009");
                 pr_opt={
-                    from:{color:"#fff"},
+                    from:{color:Global.parmTank.path.getAttribute("stroke")},
                     to:{color:"#009"}
                 };
             }else if(tmpperc>70 && tmpperc<90){
                 $('.prog_val').css("color","#ff8f00");
                 pr_opt={
-                    from:{color:"#fff"},
+                    from:{color:Global.parmTank.path.getAttribute("stroke")},
                     to:{color:"#ff8f00"}
                 };
             }else if(tmpperc>90){
                 $('.prog_val').css("color","#f00");
                 pr_opt={
-                    from:{color:"#fff"},
+                    from:{color:Global.parmTank.path.getAttribute("stroke")},
                     to:{color:"#f00"}
                 };
             }else{
                 $('.prog_val').css("color","#090");
                 pr_opt={
-                    from:{color:"#fff"},
+                    from:{color:Global.parmTank.path.getAttribute("stroke")},
                     to:{color:"#090"}
                 };
             }
