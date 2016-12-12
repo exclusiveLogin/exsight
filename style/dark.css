@@ -399,6 +399,7 @@ a:hover{
     font-size: 150%;
     font-weight: bold;
     margin-top: 10px;
+    text-shadow: 0 0 10px orange;
 }
 .park_name{
     font-size: 150%;
@@ -421,5 +422,33 @@ a:hover{
     overflow: auto;
     transition: all 1s ease;
     text-align: center;
-    font-size: 110% !important;
+}
+.tank_panel_parm{
+    font-size: 9px !important;
+    font-weight: normal;
+    text-align: right;
+}
+.tank_val{
+    font-size: 120%;
+    font-weight: bold;
+}
+.prod_cont{
+    bottom: -15px;
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    text-align: center;
+}
+.tank_cont{
+    width: 90%;
+    display: block;
+}
+.fancycontainer{
+    margin:20px;
+    padding: 10px;
+    width: 1300px;
+
+}
+.fb{
+    width:1200px;
 }

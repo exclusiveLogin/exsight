@@ -1,17 +1,17 @@
 <?php
-require_once "../db.php";
+require_once "db.php";
 
 
 if($_GET['tank']){
     //в запросе есть номер резервуара
-    $q = "SELECT `num`, `mass`, `volume`, `plot`, `temp`, `level`, `max_level`, `datetime` FROM `rt_tanks` WHERE num = ".$_GET['tank'].";";
+    $q = "SELECT * FROM `rt_tanks` WHERE num = ".$_GET['tank'].";";
     $result = $mysql->query($q);
 	//var_dump($result);
     echo json_encode($result->fetch_assoc());
 }
 if($_GET['park']){
     //запрос уровней парка
-    $q = "SELECT `num`, `level`, `max_level`, `datetime` FROM `rt_tanks`;";
+    $q = "SELECT `num`, `level`, `max_level`, `product`, `datetime` FROM `rt_tanks`;";
     $result = $mysql->query($q);
 	//var_dump($result);
     

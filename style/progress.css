@@ -1,9 +1,11 @@
 .prog_cont {
     height: 100px;
     /* margin-bottom: 40px; */
-    position: absolute;
-    left: 27%;
-    top: 70px;
+    position: relative;
+    left: -5%;
+    top: 38px;
+    text-align: center;
+    /* width: 100%; */
 }
 .progress_line {
     width:100px
@@ -12,6 +14,7 @@
 .prog_cont > svg {
     height: 100%;
     display: block;
+    width: 100%;
 }
 .prog_val{
     position: relative;
@@ -19,6 +22,7 @@
     /* left: 13px; */
     font-size: 150%;
     font-weight: bold;
+    width: 100%;
 }
 
 .progress_tank{
@@ -46,7 +50,8 @@
     margin-top: -28px;
 }
 .progress_tank > svg {
-    height: 100%;
+    height: 110%;
+    top: -5px;
     display: block;
     position: relative;
     /*left: 29%;*/

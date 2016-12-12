@@ -29,6 +29,7 @@ function tooltipHandler() {
 }
 $(document).ready(function(){
     refreshPark();
+    Global.refreshParkTimer=setInterval(refreshPark,30000);
     Global.jqready = true;
 
     Global.authkey = true;
@@ -81,11 +82,22 @@ $(document).ready(function(){
         var num = $(this).data("num");
         console.log("btn_tank num = "+num);
         if(num){
-            tankparmToggle(true,num);
+            openTank(num);
         }
     });
     $('#btn_close_parm').on('click',function(){
         tankparmToggle(0);
+    });
+    $('.btn-fb').on('click',function(){
+        toggleFancy();
+    });
+    $('.fancyemiter').fancybox({
+        'scrolling':'no',
+        'padding':10,
+        'margin':20,
+        'hideOnOverlayClick':true,
+        'hideOnContentClick':true,
+        'type':'inline'
     });
 });
 function userEnter(user) {
