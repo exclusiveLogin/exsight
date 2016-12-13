@@ -11,7 +11,7 @@ if($_GET['tank']){
 }
 if($_GET['park']){
     //запрос уровней парка
-    $q = "SELECT `num`, `level`, `max_level`, `product`, `datetime` FROM `rt_tanks`;";
+    $q = "SELECT * FROM `rt_tanks`;";
     $result = $mysql->query($q);
 	//var_dump($result);
     

@@ -1,15 +1,29 @@
 console.log("progresslogic loaded");
 $(document).ready(function () {
-    Global.parmTank = new ProgressBar.Circle('#progress', {
+    Global.parmTank = new ProgressBar.Line('#progress', {
         color: '#FCB03C',
         duration: 1000,
         easing: 'easeInOut',
         strokeWidth:10,
-        trailColor: '#ddd',
+        trailColor: '#333',
         from:{color:"#fff"},
         to:{color:'#f00'},
         step:function(state){
             Global.parmTank.path.setAttribute("stroke",state.color);
+        }
+    });
+
+
+    Global.parmTankFancy = new ProgressBar.Line('#progress_fancy', {
+        color: '#FCB03C',
+        duration: 1000,
+        easing: 'easeInOut',
+        strokeWidth:10,
+        trailColor: '#333',
+        from:{color:"#fff"},
+        to:{color:'#f00'},
+        step:function(state){
+            Global.parmTankFancy.path.setAttribute("stroke",state.color);
         }
     });
 
@@ -385,7 +399,4 @@ $(document).ready(function () {
             Global.pr_tank[73].path.setAttribute("stroke",state.color);
         }
     });
-
-
-    console.log("test");
 });

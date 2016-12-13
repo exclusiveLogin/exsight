@@ -28,6 +28,9 @@ function tooltipHandler() {
     });
 }
 $(document).ready(function(){
+    $(".tank_pereliv").addClass("transparent");
+    $(".tank_error").addClass("transparent");
+
     refreshPark();
     Global.refreshParkTimer=setInterval(refreshPark,30000);
     Global.jqready = true;
@@ -97,7 +100,10 @@ $(document).ready(function(){
         'margin':20,
         'hideOnOverlayClick':true,
         'hideOnContentClick':true,
-        'type':'inline'
+        'type':'inline',
+        afterClose:function () {
+            Global.tankselect = false;
+        }
     });
 });
 function userEnter(user) {
@@ -123,3 +129,27 @@ function showSysMsg(msg,state) {
     }
     
 }
+function blink(selector,time) {
+    this.selector = selector;
+    this.init = function () {
+        $(selector).addClass("blink");
+    };
+    this.timeObj = false;
+    this.toggleState = function () {
+        $(selector).toggleClass("transparentStatic");
+    };
+    this.start = function () {
+        if(time){
+            this.timeObj = setInterval(this.toggleState,time);
+        }
+    };
+    this.stop = function () {
+        if(this.timeObj){
+            clearInterval(this.timeObj);
+            this.timeObj = false;
+        }
+    }
+}
+Global.blink1 = new blink(".pereliv, .errortank",500);
+Global.blink1.init();
+Global.blink1.start();

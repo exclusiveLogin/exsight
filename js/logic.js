@@ -59,21 +59,16 @@ function refreshLog() {
         }
     }
 }
-function tankparmToggle(state,tank){
+function tankparmToggle(state){
     if(state){
         $('#tankparm_panel').show(0,function () {
             $(this).removeClass("transparent");
         });
-        if(tank){
-            $(".tank_num_val").text(tank);
-            Global.tankselect = tank;
-            refreshTank(tank);
-        }
     }
     else{
         $('#tankparm_panel').hide(0,function () {
             $(this).addClass("transparent");
-            Global.tankselect = "";
+            Global.tankselect = false;
         });
     }
 }
@@ -149,37 +144,67 @@ function refreshTank(tank) {
             $(".tank_parm_product").removeClass("label-success").addClass("label-danger");
         }
         if(data.level && data.max_level){
-            var tmpperc = lvl2perc(data.level,data.max_level).toFixed(1);
-            $('.prog_val').text(tmpperc+"%");
-            
-            pr_opt = {};
-            if(tmpperc<10){
-                $('.prog_val').css("color","#009");
-                pr_opt={
-                    from:{color:Global.parmTank.path.getAttribute("stroke")},
-                    to:{color:"#009"}
-                };
-            }else if(tmpperc>70 && tmpperc<90){
-                $('.prog_val').css("color","#ff8f00");
-                pr_opt={
-                    from:{color:Global.parmTank.path.getAttribute("stroke")},
-                    to:{color:"#ff8f00"}
-                };
-            }else if(tmpperc>90){
-                $('.prog_val').css("color","#f00");
-                pr_opt={
-                    from:{color:Global.parmTank.path.getAttribute("stroke")},
-                    to:{color:"#f00"}
-                };
-            }else{
-                $('.prog_val').css("color","#090");
-                pr_opt={
-                    from:{color:Global.parmTank.path.getAttribute("stroke")},
-                    to:{color:"#090"}
-                };
+            if(data.level=="-1000"){
+                $(".tank_parm_level").text("Ошибка!!!");
+                $('.prog_val').text("Ошибка!!!");
+                Global.parmTank.animate(0);
+                Global.parmTankFancy.animate(0);
+            }else {
+                var tmpperc = lvl2perc(data.level,data.max_level).toFixed(1);
+                $('.prog_val').text(tmpperc+"%");
+
+                pr_opt = {};
+                if(tmpperc<10){
+                    $('.prog_val').css("color","#009");
+                    pr_opt={
+                        from:{color:Global.parmTank.path.getAttribute("stroke")},
+                        to:{color:"#009"}
+                    };
+                    pr_optfancy={
+                        from:{color:Global.parmTankFancy.path.getAttribute("stroke")},
+                        to:{color:"#009"}
+                    };
+                }else if(tmpperc>70 && tmpperc<90){
+                    $('.prog_val').css("color","#ff8f00");
+                    pr_opt={
+                        from:{color:Global.parmTank.path.getAttribute("stroke")},
+                        to:{color:"#ff8f00"}
+                    };
+                    pr_optfancy={
+                        from:{color:Global.parmTankFancy.path.getAttribute("stroke")},
+                        to:{color:"#ff8f00"}
+                    };
+                }else if(tmpperc>90){
+                    $('.prog_val').css("color","#f00");
+                    pr_opt={
+                        from:{color:Global.parmTank.path.getAttribute("stroke")},
+                        to:{color:"#f00"}
+                    };
+                    pr_optfancy={
+                        from:{color:Global.parmTankFancy.path.getAttribute("stroke")},
+                        to:{color:"#f00"}
+                    };
+                }else{
+                    $('.prog_val').css("color","#090");
+                    pr_opt={
+                        from:{color:Global.parmTank.path.getAttribute("stroke")},
+                        to:{color:"#090"}
+                    };
+                    pr_optfancy={
+                        from:{color:Global.parmTankFancy.path.getAttribute("stroke")},
+                        to:{color:"#090"}
+                    };
+                }
+
+                Global.parmTank.animate(tmpperc/100,pr_opt);
+                Global.parmTankFancy.animate(tmpperc/100,pr_optfancy);
             }
-            
-            Global.parmTank.animate(tmpperc/100,pr_opt);
+
+        }else {
+            Global.parmTank.animate(0);
+            Global.parmTankFancy.animate(0);
+            $('.prog_val').css("color","#000");
+            $('.prog_val').text("---");
         }
     }
 }
@@ -202,54 +227,73 @@ function refreshPark() {
                 elem = Number(elem);
                 //console.log(elem);
                 if(data[elem].level && data[elem].max_level){
-                    var tmpperc = lvl2perc(Number(data[elem].level),Number(data[elem].max_level)).toFixed(0);
-                    var tmpReal = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val_real");
-                    var tmpPerc = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val");
-                    var tmpProd = $(".tank[data-num="+(data[elem].num)+"]").find(".tank_prod");
-                    
-                    tmpPerc.text(tmpperc+"%");
-                    tmpReal.text(data[elem].level);
-                    if(Number(data[elem].product)){
-                        tmpProd.text(getProduct(Number(data[elem].product)));
-                        tmpProd.removeClass("label-danger label-warning").addClass("label-success");
+                    if(data[elem].level == "-1000"){
+                        $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
                     }else {
-                        tmpProd.text(getProduct(Number(data[elem].product)));
-                        tmpProd.removeClass("label-success label-warning").addClass("label-danger");
+                        $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
+                        var tmpperc = lvl2perc(Number(data[elem].level),Number(data[elem].max_level)).toFixed(0);
+                        var tmpReal = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val_real");
+                        var tmpPerc = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val");
+                        var tmpProd = $(".tank[data-num="+(data[elem].num)+"]").find(".tank_prod");
+
+                        tmpPerc.text(tmpperc+"%");
+                        tmpReal.text(data[elem].level);
+                        if(Number(data[elem].product)){
+                            tmpProd.text(getProduct(Number(data[elem].product)));
+                            tmpProd.removeClass("label-danger label-warning").addClass("label-success");
+                        }else {
+                            tmpProd.text(getProduct(Number(data[elem].product)));
+                            tmpProd.removeClass("label-success label-warning").addClass("label-danger");
+                        }
+
+                        //console.log("pereliv:"+Number(data[elem].pereliv));
+                        if(Number(data[elem].pereliv)){
+                            $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").removeClass("transparent");
+                        }else {
+                            $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").addClass("transparent");
+                        }
+
+
+                        pr_opt = {};
+                        if(tmpperc<10){
+                            tmpPerc.css("color","#009");
+                            tmpReal.css("color","#009");
+                            pr_opt={
+                                from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                to:{color:"#009"}
+                            };
+                        }else if(tmpperc>70 && tmpperc<90){
+                            tmpPerc.css("color","#ff8f00");
+                            tmpReal.css("color","#ff8f00");
+                            pr_opt={
+                                from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                to:{color:"#ff8f00"}
+                            };
+                        }else if(tmpperc>90){
+                            tmpPerc.css("color","#f00");
+                            tmpReal.css("color","#f00");
+                            pr_opt={
+                                from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                to:{color:"#f00"}
+                            };
+                        }else{
+                            tmpPerc.css("color","#090");
+                            tmpReal.css("color","#090");
+                            pr_opt={
+                                from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                to:{color:"#090"}
+                            };
+                        }
+
+                        Global.pr_tank[data[elem].num].animate(tmpperc/100,pr_opt);
+
+
+
+
                     }
 
-                    
-                    pr_opt = {};
-                    if(tmpperc<10){
-                        tmpPerc.css("color","#009");
-                        tmpReal.css("color","#009");
-                        pr_opt={
-                            from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                            to:{color:"#009"}
-                        };
-                    }else if(tmpperc>70 && tmpperc<90){
-                        tmpPerc.css("color","#ff8f00");
-                        tmpReal.css("color","#ff8f00");
-                        pr_opt={
-                            from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                            to:{color:"#ff8f00"}
-                        };
-                    }else if(tmpperc>90){
-                        tmpPerc.css("color","#f00");
-                        tmpReal.css("color","#f00");
-                        pr_opt={
-                            from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                            to:{color:"#f00"}
-                        };
-                    }else{
-                        tmpPerc.css("color","#090");
-                        tmpReal.css("color","#090");
-                        pr_opt={
-                            from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                            to:{color:"#090"}
-                        };
-                    }
-                    
-                    Global.pr_tank[data[elem].num].animate(tmpperc/100,pr_opt);
+                }else {
+                    Global.pr_tank[data[elem].num].animate(0,pr_opt);
                 }
             }
             
@@ -320,22 +364,29 @@ function renderFancy() {
         }
     });
 }
-function toggleFancy() {
+function toggleFancy(num) {
     Global.fancy = !Global.fancy;
     if(Global.fancy){
-        $('.tank').addClass("fancyemiter");
-        tankparmToggle(false);
-        //renderFancy();
+        $('.tank').addClass("fancyemiter");//переводим на fancy
+        tankparmToggle(false);//закрываем окно
+        $.fancybox.open("#fancycontainer");
     }else {
-        $('.tank').removeClass("fancyemiter");
-        //$('#fancycontainer').hide();
-        tankparmToggle(true);
+        $('.tank').removeClass("fancyemiter");//delete fancy
+        $.fancybox.close();
+        tankparmToggle(true,Global.tankselect);
     }
 }
 function openTank(num) {
+    if(num){
+        Global.tankselect = num;
+        $(".tank_num_val").text(num);
+        Global.tankselect = num;
+        refreshTank(num);
+    }
     if(Global.fancy){
         //renderFancy(num);
+        refreshTank(num);
     }else {
-        tankparmToggle(true,num);
+        tankparmToggle(true);
     }
 }

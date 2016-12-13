@@ -224,9 +224,18 @@ h3.card_status_off{
     display: none;
     transition:opacity 0.5s ease;
 }
+.pereliv{
+    transition:opacity 0.5s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-style: normal !important;
+}
 .transparent{
     opacity:0;
     transform: translateX(-100%);
+}
+.transparentStatic{
+    opacity:0;
 }
 .code_msg{
     text-align: center;
@@ -451,4 +460,10 @@ a:hover{
 }
 .fb{
     width:1200px;
+}
+.pereliv{
+    margin-top: -75px;
+}
+.fancybox-wrap{
+    background-color: #222;
 }
