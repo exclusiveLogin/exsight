@@ -150,6 +150,6 @@ function blink(selector,time) {
         }
     }
 }
-Global.blink1 = new blink(".pereliv, .errortank",500);
+Global.blink1 = new blink(".pereliv, .errortank,.blink",500);
 Global.blink1.init();
 Global.blink1.start();

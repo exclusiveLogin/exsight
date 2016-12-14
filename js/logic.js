@@ -87,6 +87,8 @@ function refreshTank(tank) {
         }
     });
     function renderTank(data) {
+        $('.prog_val').removeClass("transparentStatic").removeClass("blink");
+
         if(data.mass){
             $(".tank_parm_mass").text(data.mass);
             if(data.num == "2"){
@@ -115,7 +117,7 @@ function refreshTank(tank) {
             $(".tank_parm_signallvl").text(data.signallevel);
         }
         if(data.avlevel){
-            //$(".tank_parm_maxlvl").text(data.avlevel);
+            $(".tank_parm_avlevel").text(data.avlevel);
         }
         if(data.tempvapor){
             $(".tank_parm_vaportemp").text(data.tempvapor);
@@ -152,7 +154,9 @@ function refreshTank(tank) {
             }else {
                 var tmpperc = lvl2perc(data.level,data.max_level).toFixed(1);
                 $('.prog_val').text(tmpperc+"%");
-
+                if(tmpperc>95){
+                    $('.prog_val').addClass("blink");
+                }
                 pr_opt = {};
                 if(tmpperc<10){
                     $('.prog_val').css("color","#009");
@@ -235,6 +239,14 @@ function refreshPark() {
                         var tmpReal = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val_real");
                         var tmpPerc = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val");
                         var tmpProd = $(".tank[data-num="+(data[elem].num)+"]").find(".tank_prod");
+
+                        if(tmpperc>95){
+                            tmpPerc.addClass("blink");
+                            tmpReal.addClass("blink");
+                        }else {
+                            tmpPerc.removeClass("blink");
+                            tmpReal.removeClass("blink");
+                        }
 
                         tmpPerc.text(tmpperc+"%");
                         tmpReal.text(data[elem].level);
