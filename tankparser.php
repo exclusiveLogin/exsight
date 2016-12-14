@@ -30,7 +30,14 @@ for($i=1;$i<80;$i++) {
         //var_dump($ini_arr);
 
         if (isset($ini_arr['tank_mass'])) {
-            $tank_mass = round((float)str_replace(",", ".", $ini_arr['tank_mass']), 1);
+            if($i==2){
+                $tank_mass = round(((float)str_replace(",", ".", $ini_arr['tank_mass'])/1000), 1);
+                //echo "i:".$i."-2 tank_mass=".$tank_mass."<br>";
+            }else{
+                $tank_mass = round((float)str_replace(",", ".", $ini_arr['tank_mass']), 1);
+                //echo "i:".$i."-not 2 tank_mass=".$tank_mass."<br>";
+            }
+
             $q = "INSERT INTO `rt_tanks` (`num`,`mass`) VALUES (" . $i . "," . $tank_mass . ") ON DUPLICATE KEY UPDATE `mass` = " . $tank_mass . ";";
             $mysql->query($q);
             //echo "q:".$q."<br>";
@@ -44,7 +51,12 @@ for($i=1;$i<80;$i++) {
         }
 
         if (isset($ini_arr['tank_volume'])) {
-            $tank_volume = round((float)str_replace(",", ".", $ini_arr['tank_volume']), 1);
+            if($i==2){
+                $tank_volume = round(((float)str_replace(",", ".", $ini_arr['tank_volume'])/1000), 1);
+            }else{
+                $tank_volume = round((float)str_replace(",", ".", $ini_arr['tank_volume']), 1);
+            }
+
             $q = "INSERT INTO `rt_tanks` (`num`,`volume`) VALUES (" . $i . "," . $tank_volume . ") ON DUPLICATE KEY UPDATE `volume` = " . $tank_volume . ";";
             $mysql->query($q);
             //echo "q:".$q."<br>";

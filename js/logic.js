@@ -91,15 +91,9 @@ function refreshTank(tank) {
 
         if(data.mass){
             $(".tank_parm_mass").text(data.mass);
-            if(data.num == "2"){
-                $(".tank_parm_mass").text(Number(data.mass/1000));
-            }
         }
         if(data.volume){
             $(".tank_parm_volume").text(data.volume);
-            if(data.num == "2"){
-                $(".tank_parm_volume").text(Number(data.volume/1000));
-            }
         }
         if(data.plot){
             $(".tank_parm_plot").text(data.plot);
@@ -148,7 +142,8 @@ function refreshTank(tank) {
         if(data.level && data.max_level){
             if(data.level=="-1000"){
                 $(".tank_parm_level").text("Ошибка!!!");
-                $('.prog_val').text("Ошибка!!!");
+                $('.prog_val').text("---");
+                $('.prog_val').css("color","#fff");
                 Global.parmTank.animate(0);
                 Global.parmTankFancy.animate(0);
             }else {
@@ -159,14 +154,14 @@ function refreshTank(tank) {
                 }
                 pr_opt = {};
                 if(tmpperc<10){
-                    $('.prog_val').css("color","#009");
+                    $('.prog_val').css("color","#08f");
                     pr_opt={
                         from:{color:Global.parmTank.path.getAttribute("stroke")},
-                        to:{color:"#009"}
+                        to:{color:"#08f"}
                     };
                     pr_optfancy={
                         from:{color:Global.parmTankFancy.path.getAttribute("stroke")},
-                        to:{color:"#009"}
+                        to:{color:"#08f"}
                     };
                 }else if(tmpperc>70 && tmpperc<90){
                     $('.prog_val').css("color","#ff8f00");
@@ -268,15 +263,15 @@ function refreshPark() {
 
                         pr_opt = {};
                         if(tmpperc<10){
-                            tmpPerc.css("color","#009");
-                            tmpReal.css("color","#009");
+                            tmpPerc.css("color","#08f");
+                            tmpReal.css("color","#08f");
                             pr_opt={
                                 from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                                to:{color:"#009"}
+                                to:{color:"#08f"}
                             };
                         }else if(tmpperc>70 && tmpperc<90){
-                            tmpPerc.css("color","#ff8f00");
-                            tmpReal.css("color","#ff8f00");
+                            tmpPerc.css("color","rgb(200, 100, 0)");
+                            tmpReal.css("color","rgb(200, 100, 0)");
                             pr_opt={
                                 from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
                                 to:{color:"#ff8f00"}
@@ -309,6 +304,9 @@ function refreshPark() {
                 }
             }
             
+        }
+        if(Global.tankselect){
+            refreshTank(Global.tankselect);
         }
     }
 }
@@ -380,7 +378,9 @@ function toggleFancy(num) {
     Global.fancy = !Global.fancy;
     if(Global.fancy){
         $('.tank').addClass("fancyemiter");//переводим на fancy
+        var tmpnum = Global.tankselect;
         tankparmToggle(false);//закрываем окно
+        Global.tankselect = tmpnum;
         $.fancybox.open("#fancycontainer");
     }else {
         $('.tank').removeClass("fancyemiter");//delete fancy

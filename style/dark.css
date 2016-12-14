@@ -317,6 +317,7 @@ a:hover{
     height: 50px;
 }
 #wrapper{
+    min-width: 1500px;
     z-index: 0;
     position: relative;
     transition: all 0.5s ease;
@@ -466,4 +467,10 @@ a:hover{
 }
 .fancybox-wrap{
     background-color: #222;
+}
+.label-default{
+    background-color: #111;
+    color: #d22;
+    border: 1px solid #930101;
+    border-radius: 5px;
 }

@@ -29,7 +29,12 @@ function tooltipHandler() {
 }
 $(document).ready(function(){
     $(".tank_pereliv").addClass("transparent");
-    $(".tank_error").addClass("transparent");
+    $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
+    $('.tank').each(function (index,element) {
+        var tmp = $(this).data("num");
+        $(this).find(".tank_num").text(tmp);
+    });
+
 
     refreshPark();
     Global.refreshParkTimer=setInterval(refreshPark,30000);

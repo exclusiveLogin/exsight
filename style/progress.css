@@ -9,11 +9,13 @@
 }
 
 .prog_cont > svg {
-    height: 15px;
+    height: 60px;
+    width: 150px;
     display: inline;
     position: relative;
-    top: 78px;
-    transform: rotate(-90deg);
+    top: 105px;
+    transform-style: preserve-3d;
+    transform: perspective(900px) rotateX(-13deg) rotateY(37deg) rotateZ(-90deg);
     left: 16%;
     border-radius: 10px;
     box-shadow: 0 0 20px 2px gray;
@@ -21,11 +23,13 @@
 }
 .prog_val{
     position: relative;
-    top: 120px;
-    left: -22px;
+    top: 80px;
+    left: 0px;
     font-size: 150%;
     font-weight: bold;
-    width: 100%;
+    width: 90px;
+    display: inline-block;
+    margin-right: -85px;
 }
 
 .progress_tank{
@@ -52,11 +56,17 @@
     margin-top: -28px;
 }
 .progress_tank > svg {
-    height: 110%;
-    top: -5px;
-    display: block;
+    height: 25px;
+    display: inline;
     position: relative;
-    width: 100%;
+    top: 15px;
+    transform-style: preserve-3d;
+    transform: perspective(220px) rotateX(-20deg) rotateY(40deg) rotateZ(-90deg);
+    left: 40%;
+    border-radius: 7px;
+    box-shadow: 0 0 20px 2px gray;
+    border: 2px inset #B4B5B5;
+    width: 67px;
 }
 #tankparm_panel{
     display: none;
