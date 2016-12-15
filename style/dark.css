@@ -29,8 +29,11 @@
 }
 body{
     margin: 0;
-    background-color: #777;
+    /*background-color: #777;*/
     margin-bottom: 30px;
+    background: #4c4c4c; /* Old browsers */
+    background: linear-gradient(to bottom, #777 0%,#444 50%,#777 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#6d6d6d',GradientType=0 ); /* IE6-9 */
 }
 #container{
     padding-top: 10px;
@@ -409,11 +412,20 @@ a:hover{
     font-size: 150%;
     font-weight: bold;
     margin-top: 10px;
-    text-shadow: 0 0 10px orange;
+    text-shadow: 0 0 10px grey;
+}
+.tank_title{
+    font-size: 150%;
+    font-weight: bold;
+    top: 30px;
+    left: -8px;
+    position: relative;
+    text-shadow: 2px 2px 5px grey;
 }
 .park_name{
     font-size: 150%;
     font-weight: bold;
+    color: #FFD100;
     border-bottom: 3px #FFD100 solid;
 }
 .rn_color{
@@ -473,4 +485,82 @@ a:hover{
     color: #d22;
     border: 1px solid #930101;
     border-radius: 5px;
+}
+.scheme{
+    width: 90%;
+    margin: 5%;
+    border: 1px red solid;
+    height: 122px;
+}
+.scheme span{
+    font-size: 200%;
+    transform: rotateZ(25deg);
+    transform-style: flat;
+    display: block;
+    position: relative;
+    top: 66px;
+    left: 63px;
+}
+
+/* products*/
+.a76{
+    background-color: #1b630c;
+}
+.a80{
+    background-color: #70360a;
+}
+.a92{
+    background-color: #3c9cca;
+}
+.a95{
+    background-color: #9e0b08;
+}
+.a98{
+    background-color: #8b0f9b;
+}
+.disel{
+    background-color: darkorange;
+    color: black;
+}
+.diseleuro{
+    background-color: #464646;
+    color: darkorange;
+ }
+.smt{
+    background-color: #f4c039;
+    color: #464646;
+}
+
+.glyphicon.glyphicon-triangle-top.tank_arrow_top {
+    position: relative;
+    height: 0;
+    /* width: 0; */
+    top: 40px;
+    margin-right: 0px;
+    /* margin-top: -18px; */
+    /* left: 44px; */
+    display: block;
+}
+
+.glyphicon.glyphicon-triangle-bottom.tank_arrow_bottom {
+    position: relative;
+    height: 0;
+    /* width: 0; */
+    top: 45px;
+    margin-right: 0px;
+    /* margin-top: -18px; */
+    /* left: 44px; */
+    display: block;
+}
+._up{
+    color: greenyellow;
+    text-shadow: 0 0 5px rgba(50,255,50,0.5);
+}
+._down{
+    color: red;
+    text-shadow: 0 0 5px rgba(255,50,50,0.5);
+}
+._neutral{
+    color: grey;
+    text-shadow: 0 0 5px rgba(50,50,50,0.5);
 }

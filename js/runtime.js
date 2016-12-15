@@ -32,7 +32,7 @@ $(document).ready(function(){
     $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
     $('.tank').each(function (index,element) {
         var tmp = $(this).data("num");
-        $(this).find(".tank_num").text(tmp);
+        $(this).find(".tank_title").text(tmp);
     });
 
 
@@ -88,7 +88,7 @@ $(document).ready(function(){
     });
     $('.tank').on('click',function(){
         var num = $(this).data("num");
-        console.log("btn_tank num = "+num);
+        //console.log("btn_tank num = "+num);
         if(num){
             openTank(num);
         }
@@ -115,7 +115,7 @@ function userEnter(user) {
     Global.authkey=true;
     Global.loggedAs = user;
 }
-function showSysMsg(msg,state) {
+function showSysMsg(msg,state,static) {
     if(state){
         $("#sysmsg").removeClass("sys_err");
         $("#sysmsg").addClass("sys_ok");
@@ -127,7 +127,7 @@ function showSysMsg(msg,state) {
     //$("#sysmsg").show();
     $("#sysmsg").removeClass("myhide");
     $("#sysmsg_val").html(msg);
-    setTimeout(hideSysMsg,5000);
+    if(!static)setTimeout(hideSysMsg,5000);
     function hideSysMsg() {
         $("#sysmsg").addClass("myhide");
         

@@ -133,11 +133,13 @@ function refreshTank(tank) {
             $(".tank_parm_pereliv").removeClass("label-danger").addClass("label-success");
         }
         if(Number(data.product)>0){
-            $(".tank_parm_product").text(getProduct(Number(data.product)));
+            var product = getProduct(Number(data.product));
+            $(".tank_parm_product").text(product.text);
             $(".tank_parm_product").removeClass("label-danger").addClass("label-success");
+            $(".tank_parm_product").removeClass("disel diseleuro a76 a80 a92 a95 a98 smt").addClass(product.class);
         }else {
             $(".tank_parm_product").text("Нет продукта");
-            $(".tank_parm_product").removeClass("label-success").addClass("label-danger");
+            $(".tank_parm_product").removeClass("disel diseleuro a76 a80 a92 a95 a98 smt label-success").addClass("label-danger");//подготовка
         }
         if(data.level && data.max_level){
             if(data.level=="-1000"){
@@ -246,10 +248,13 @@ function refreshPark() {
                         tmpPerc.text(tmpperc+"%");
                         tmpReal.text(data[elem].level);
                         if(Number(data[elem].product)){
-                            tmpProd.text(getProduct(Number(data[elem].product)));
+                            var product = getProduct(Number(data[elem].product));
+                            tmpProd.text(product.text);
+                            tmpProd.removeClass("disel diseleuro a76 a80 a92 a95 a98 smt");//подготовка
                             tmpProd.removeClass("label-danger label-warning").addClass("label-success");
+                            tmpProd.addClass(product.class);
                         }else {
-                            tmpProd.text(getProduct(Number(data[elem].product)));
+                            tmpProd.text(getProduct(Number(data[elem].product)).text);
                             tmpProd.removeClass("label-success label-warning").addClass("label-danger");
                         }
 
@@ -318,45 +323,57 @@ function lvl2perc(val,max){
 }
 function getProduct(code) {
     var textProd = "";
+    var className = "";
     switch (code) {
         case 1:
             textProd = "А-76 н/эт";
+            className = "a76";
             break;
         case 2:
             textProd = "Нормал 80 н/эт";
+            className = "a80";
             break;
         case 3:
             textProd = "Регуляр 92 н/эт";
+            className = "a92";
             break;
         case 4:
             textProd = "Премиум 95 н/эт";
+            className = "a95";
             break;
         case 5:
             textProd = "Диз. топливо 0.2-62 в.с";
+            className = "disel";
             break;
         case 6:
             textProd = "Диз. топливо 0.2-62";
+            className = "disel";
             break;
         case 7:
             textProd = "Диз. топливо 0.05-62";
+            className = "disel";
             break;
         case 8:
             textProd = "Диз. топливо 0.05-35";
+            className = "disel";
             break;
         case 9:
             textProd = "СМТ";
+            className = "smt";
             break;
         case 10:
             textProd = "Диз. топливо Евро";
+            className = "diseleuro";
             break;
         case 11:
             textProd = "Супер 98";
+            className = "a98";
             break;
         default:
             textProd = "Нет продукта";
             break;
     }
-    return textProd;
+    return {text:textProd,class:className};
 }
 function renderFancy() {
     $('#fancycontainer').fancybox({

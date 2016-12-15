@@ -30,6 +30,7 @@
 .fancybox-skin {
 	position: relative;
 	background: #444;
+	background-image: url("../style/bg2.png");
 	color: #ffe;
 	text-shadow: none;
 	-webkit-border-radius: 20px;
