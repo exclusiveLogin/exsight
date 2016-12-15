@@ -230,8 +230,10 @@ function refreshPark() {
                 if(data[elem].level && data[elem].max_level){
                     if(data[elem].level == "-1000"){
                         $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
+                        $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.6);
                     }else {
                         $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
+                        $(".tank[data-num="+(data[elem].num)+"]").css("opacity",1);
                         var tmpperc = lvl2perc(Number(data[elem].level),Number(data[elem].max_level)).toFixed(0);
                         var tmpReal = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val_real");
                         var tmpPerc = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val");
@@ -326,35 +328,35 @@ function getProduct(code) {
     var className = "";
     switch (code) {
         case 1:
-            textProd = "А-76 н/эт";
+            textProd = "А-76";
             className = "a76";
             break;
         case 2:
-            textProd = "Нормал 80 н/эт";
+            textProd = "Нормал 80";
             className = "a80";
             break;
         case 3:
-            textProd = "Регуляр 92 н/эт";
+            textProd = "Регуляр 92";
             className = "a92";
             break;
         case 4:
-            textProd = "Премиум 95 н/эт";
+            textProd = "Премиум 95";
             className = "a95";
             break;
         case 5:
-            textProd = "Диз. топливо 0.2-62 в.с";
+            textProd = "ДТ 0.2-62 в.с";
             className = "disel";
             break;
         case 6:
-            textProd = "Диз. топливо 0.2-62";
+            textProd = "ДТ 0.2-62";
             className = "disel";
             break;
         case 7:
-            textProd = "Диз. топливо 0.05-62";
+            textProd = "ДТ 0.05-62";
             className = "disel";
             break;
         case 8:
-            textProd = "Диз. топливо 0.05-35";
+            textProd = "ДТ 0.05-35";
             className = "disel";
             break;
         case 9:
@@ -362,7 +364,7 @@ function getProduct(code) {
             className = "smt";
             break;
         case 10:
-            textProd = "Диз. топливо Евро";
+            textProd = "ДТ Евро";
             className = "diseleuro";
             break;
         case 11:

@@ -27,13 +27,14 @@
     <!-- Latest compiled and minified JavaScript -->
 
 
-    <script src="js/global.js"></script>
-    <script src="js/jquery-1.11.3.js"></script>
+    <script src="js/global.js" type="application/javascript"></script>
+    <script src="js/jquery-1.11.3.js" type="application/javascript"></script>
     <!--script src="https://code.highcharts.com/highcharts.js"></script-->
 
-    <script src="js/logic.js"></script>
+    <script src="js/logic.js" type="application/javascript"></script>
 
-    <script src="js/runtime.js"></script>
+    <script src="js/runtime.js" type="application/javascript"></script>
+
 
     <!--script src="js/lightbox.js"></script-->
 
@@ -44,19 +45,19 @@
 
     <!--Google Maps-->
 
-    <script src="fancybox/jquery.fancybox.pack.js"></script>
-    <script src="fancybox/jquery.fancybox.js"></script>
+    <script src="fancybox/jquery.fancybox.pack.js" type="application/javascript"></script>
+    <script src="fancybox/jquery.fancybox.js" type="application/javascript"></script>
 
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous" type="application/javascript"></script>
 
     <!--script src="https://cdn.socket.io/socket.io-1.4.5.js"></script-->
-    <script src="js/io.js"></script>
+    <script src="js/io.js" type="application/javascript"></script>
 
     <!--ProgressbarJS-->
 
-    <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.5.6/dist/progressbar.js"></script>
-    <script src="js/progresslogic.js"></script>
+    <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.5.6/dist/progressbar.js" type="application/javascript"></script>
+    <script src="js/progresslogic.js" type="application/javascript"></script>
 
 
 
@@ -67,11 +68,11 @@
         <div id="sysmsg" class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-center myhide">Системное сообщение: <span id="sysmsg_val"></span></div>
         <div id="emer_code" class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-center myhide">ВНИМАНИЕ!!! <span id="emer_code_msg"></span></div>
 
-        <div class="logo col-lg-7 col-md-7 col-sm-7 hidden-xs"><p class="logo_title">EXSIGHT</p><span> WEB SCADA CLIENT</span><span> - Сызранская нефтебаза</span></div>
+        <div class="logo col-lg-4 col-md-4 col-sm-4 hidden-xs"><p class="logo_title">EXSIGHT</p><span> WEB SCADA CLIENT</span><span> - Сызранская нефтебаза</span></div>
 
-        <div class="logo col-xs-12 col-sm-6 visible-xs  text-center">EXSIGHT - WEB SCADA CLIENT</div>
-
-        <div id="menu" class="col-lg-5 col-md-5 col-sm-5 text-right hidden-xs">
+        <div class="logo col-xs-12 visible-xs  text-center">EXSIGHT - WEB SCADA CLIENT</div>
+        <div class="col-lg-4 col-md-4 col-sm-4 hidden-xs demo">Ограниченная версия</div>
+        <div id="menu" class="col-lg-3 col-md-3 col-sm-3 text-right hidden-xs">
             <button class="btn btn-success btnlogin">Войти в систему</button>
             <button class="btn btn-danger btnlogout">Выйти из системы</button>
         </div>
@@ -175,10 +176,12 @@
         <div id="container" class="container-fluid">
             <div id="minview">
                 <div class="row">
-                    <div class="col-md-2 park_name">Парк АСН <span class="rn_color">///</span></div>
-                    <div class="col-md-2 col-md-offset-1 park_name">Парк 1 <span class="rn_color">///</span></div>
-                    <div class="col-md-3 col-md-offset-1 park_name">Парк 3 <span class="rn_color">///</span></div>
-                    <div class="col-md-2 col-md-offset-1 park_name">Узел учета <span class="rn_color">///</span></div>
+                    <div class="col-md-3 park_name">Парк АСН <span class="rn_color"></span></div>
+                    <div class="col-md-2 col-md-offset-1 park_name myoffset">Парк 1 <span class="rn_color"></span></div>
+                    <div class="col-md-3 col-md-offset-1 park_name myoffset">Парк 3 <span class="rn_color"></span></div>
+                    <div class="col-md-2 col-md-offset-1 park_name myoffset">Узел учета <span class="rn_color"></span></div>
+                </div>
+                <div class="row">
                     <div href="#fancycontainer" class="col-md-1 tank" data-num="53">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank53">
@@ -251,7 +254,7 @@
                             </div>
                         </div>
                     </div>
-                    <div href="#fancycontainer" class="col-md-1 tank" data-num="1">
+                    <div href="#fancycontainer" class="col-md-1 tank myoffset" data-num="1">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank1">
                             <div class="glyphicon glyphicon-triangle-top tank_arrow_top _neutral"></div>
@@ -299,7 +302,7 @@
                             </div>
                         </div>
                     </div>
-                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank" data-num="9">
+                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank myoffset" data-num="9">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank9">
                             <div class="glyphicon glyphicon-triangle-top tank_arrow_top _neutral"></div>
@@ -371,15 +374,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 ">
                         <div class="scheme"><span>В РАЗРАБОТКЕ</span></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3"></div>
-                    <div class="col-md-3"></div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-2 park_name">Парк 6 <span class="rn_color">///</span></div>
+                    <div class="col-md-2 myoffset"></div>
+                    <div class="col-md-3  myoffset"></div>
+                    <div class="col-md-2 park_name myoffset">Парк 5 <span class="rn_color"></span></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div>
                     <div href="#fancycontainer" class="col-md-1 tank" data-num="54">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank54">
@@ -452,7 +458,7 @@
                             </div>
                         </div>
                     </div>
-                    <div href="#fancycontainer" class="col-md-1 tank" data-num="3">
+                    <div href="#fancycontainer" class="col-md-1 tank myoffset" data-num="3">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank3">
                             <div class="glyphicon glyphicon-triangle-top tank_arrow_top _neutral"></div>
@@ -500,7 +506,7 @@
                             </div>
                         </div>
                     </div>
-                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank" data-num="12">
+                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank myoffset" data-num="12">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank12">
                             <div class="glyphicon glyphicon-triangle-top tank_arrow_top _neutral"></div>
@@ -572,7 +578,7 @@
                             </div>
                         </div>
                     </div>
-                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank" data-num="70">
+                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank myoffset" data-num="70">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank70">
                             <div class="glyphicon glyphicon-triangle-top tank_arrow_top _neutral"></div>
@@ -622,15 +628,15 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2 park_name">Схема соединений <span class="rn_color">///</span></div>
-                    <div class="col-md-2 col-md-offset-1 park_name">Парк 2 <span class="rn_color">///</span></div>
-                    <div class="col-md-3 col-md-offset-1 park_name">Парк 4 <span class="rn_color">///</span></div>
+                    <div class="col-md-3 park_name">Схема соединений <span class="rn_color"></span></div>
+                    <div class="col-md-2 col-md-offset-1 park_name myoffset">Парк 2 <span class="rn_color"></span></div>
+                    <div class="col-md-3 col-md-offset-1 park_name myoffset">Парк 4 <span class="rn_color"></span></div>
                     <div class="col-md-3"></div>
                     <div class="clearfix"></div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 ">
                         <div class="scheme"><span>В РАЗРАБОТКЕ</span></div>
                     </div>
-                    <div href="#fancycontainer" class="col-md-1 tank" data-num="5">
+                    <div href="#fancycontainer" class="col-md-1 tank myoffset" data-num="5">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank5">
                             <div class="glyphicon glyphicon-triangle-top tank_arrow_top _neutral"></div>
@@ -678,7 +684,7 @@
                             </div>
                         </div>
                     </div>
-                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank" data-num="15">
+                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank myoffset" data-num="15">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank15">
                             <div class="glyphicon glyphicon-triangle-top tank_arrow_top _neutral"></div>
@@ -750,7 +756,7 @@
                             </div>
                         </div>
                     </div>
-                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank" data-num="69">
+                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank myoffset" data-num="69">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank69">
                             <div class="glyphicon glyphicon-triangle-top tank_arrow_top _neutral"></div>
@@ -800,7 +806,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div href="#fancycontainer" class="col-md-1 col-md-offset-3 tank" data-num="7">
+                    <div class="col-md-3"></div>
+                    <div href="#fancycontainer" class="col-md-1 tank myoffset" data-num="7">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank7">
                             <div class="glyphicon glyphicon-triangle-top tank_arrow_top _neutral"></div>
@@ -848,7 +855,7 @@
                             </div>
                         </div>
                     </div>
-                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank" data-num="18">
+                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank myoffset" data-num="18">
                         <span class="tank_title"></span>
                         <div class="progress_tank" id="progress_tank18">
                             <div class="glyphicon glyphicon-triangle-top tank_arrow_top _neutral"></div>
@@ -920,7 +927,7 @@
                         </div>
                     </div>
                 </div>
-                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank" data-num="73">
+                    <div href="#fancycontainer" class="col-md-1 col-md-offset-1 tank myoffset" data-num="73">
                     <span class="tank_title"></span>
                     <div class="progress_tank" id="progress_tank73">
                         <div class="glyphicon glyphicon-triangle-top tank_arrow_top _neutral"></div>
@@ -949,7 +956,6 @@
         </div>
     </div>
     <div id="footer">
-        Все права защищены ООО ИК Сибинтек 2016<br>
         Поддержка осуществляется по внутреннему номеру 112
     </div>
     <div id="fancycontainer" style="display: none">
