@@ -421,3 +421,35 @@ function openTank(num) {
         tankparmToggle(true);
     }
 }
+function calcArrows(data) {
+    var filter = 0;
+    if(Global.IntegratorForArrows){
+        if(data){
+            for(var el in data){
+                var tmpnum = Number(data[el].num);
+                if(data[el].num == "1"){//тестируем первый резервуар
+                    if(data[el].level){//если есть уровень у выбранного резервуара
+                        var tmplevel = Number(data[el].level);
+                        var result = Global.IntegratorForArrows.Integrity(tmplevel);
+                        if(Math.abs(result)>filter){//значение выходит на рамки
+                            if(result>0){
+                                console.log("Значение растет:"+result);
+                            }else {
+                                console.log("Значение падает:"+result);
+                            }
+                        }else {
+                            console.log("Значение без изменений:"+result);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    function renderArrows(tank,result) {
+        if(tank){
+            var TankObj = $(".tank[data-num]="+tank);
+
+        }
+
+    }
+}

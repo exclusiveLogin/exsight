@@ -55,7 +55,7 @@ $(document).ready(function(){
         Global.loginData.login = $('#loginName').val();
         Global.loginData.password = $('#passwordName').val();
         $.ajax({
-            url:"/enter.php",
+            url:"enter.php",
             dataType:"json",
             method:'GET',
             data:Global.loginData,

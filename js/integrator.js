@@ -79,4 +79,7 @@ function Integrator(){
         }
     };
 };
+
+Global.IntegratorForArrows = new Integrator();
+Global.IntegratorForArrows.setFilter(2,3);
 Global.IntegratorCon = true;
