@@ -2,6 +2,7 @@
  * Created by SavinSV on 15.12.16.
  */
 function Integrator(){
+    this.step = -1;
     this.lastPoint = 0;
     this.filtered = true;
     this.integrityOnly = false;
@@ -33,6 +34,7 @@ function Integrator(){
     };
 
     this.Integrity = function(val){
+        this.step++;
         var ret;
         if(!this.filtered){
             ret = val - this.lastPoint;
@@ -47,13 +49,18 @@ function Integrator(){
                 var Interg = this.Filter();
             }
         }
-        return Interg;
+        if(this.step<this.Buffer.length){
+            return 0;
+        }else{
+            return Interg;    
+        }
+        
     };
 
     this.Filter = function(){
         if(this.Buffer.length){
-            var summPost = 0.0;
-            var summPre = 0.0;
+            var summPost = 0;
+            var summPre = 0;
             for(var el = 0; el<this.Buffer.length; el++){
                 if(el<this.postfilterPoints){
                     summPost += this.Buffer[el];
@@ -64,8 +71,8 @@ function Integrator(){
             }
             var avrPost = summPost/this.postfilterPoints;
             var avrPre = summPre/this.prefilterPoints;
-            ret = avrPre - avrPost;
-            return ret;
+            ret = avrPre*10 - avrPost*10;
+            return ret/10;
         }
     };
     this.DFilter = function(){
@@ -80,6 +87,38 @@ function Integrator(){
     };
 };
 
-Global.IntegratorForArrows = new Integrator();
-Global.IntegratorForArrows.setFilter(2,3);
+Global.IntegratorForArrows1 = new Integrator();
+Global.IntegratorForArrows2 = new Integrator();
+Global.IntegratorForArrows3 = new Integrator();
+Global.IntegratorForArrows4 = new Integrator();
+Global.IntegratorForArrows5 = new Integrator();
+Global.IntegratorForArrows6 = new Integrator();
+Global.IntegratorForArrows7 = new Integrator();
+Global.IntegratorForArrows8 = new Integrator();
+Global.IntegratorForArrows9 = new Integrator();
+Global.IntegratorForArrows10 = new Integrator();
+Global.IntegratorForArrows11 = new Integrator();
+Global.IntegratorForArrows12 = new Integrator();
+Global.IntegratorForArrows13 = new Integrator();
+Global.IntegratorForArrows14 = new Integrator();
+Global.IntegratorForArrows15 = new Integrator();
+Global.IntegratorForArrows16 = new Integrator();
+Global.IntegratorForArrows17 = new Integrator();
+Global.IntegratorForArrows18 = new Integrator();
+Global.IntegratorForArrows19 = new Integrator();
+Global.IntegratorForArrows20 = new Integrator();
+
+Global.IntegratorForArrows51 = new Integrator();
+Global.IntegratorForArrows52 = new Integrator();
+Global.IntegratorForArrows53 = new Integrator();
+Global.IntegratorForArrows54 = new Integrator();
+Global.IntegratorForArrows55 = new Integrator();
+Global.IntegratorForArrows56 = new Integrator();
+
+Global.IntegratorForArrows69 = new Integrator();
+Global.IntegratorForArrows70 = new Integrator();
+Global.IntegratorForArrows71 = new Integrator();
+Global.IntegratorForArrows72 = new Integrator();
+Global.IntegratorForArrows73 = new Integrator();
+//Global.IntegratorForArrows.setFilter(2,2);
 Global.IntegratorCon = true;

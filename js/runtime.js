@@ -37,7 +37,7 @@ $(document).ready(function(){
 
 
     refreshPark();
-    Global.refreshParkTimer=setInterval(refreshPark,30000);
+    Global.refreshParkTimer=setInterval(refreshPark,10000);
     Global.jqready = true;
 
     Global.authkey = true;

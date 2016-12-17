@@ -217,6 +217,7 @@ function refreshPark() {
         data:{park:true},
         success:function(data){
             renderPark(data);
+            calcArrows(data);
         },
         error:function(){
             console.log("error to load refresh park ajax data");
@@ -231,9 +232,13 @@ function refreshPark() {
                     if(data[elem].level == "-1000"){
                         $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
                         $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.6);
+                        $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparent");
                     }else {
+                        
                         $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
                         $(".tank[data-num="+(data[elem].num)+"]").css("opacity",1);
+                        $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").removeClass("transparent");
+                        
                         var tmpperc = lvl2perc(Number(data[elem].level),Number(data[elem].max_level)).toFixed(0);
                         var tmpReal = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val_real");
                         var tmpPerc = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val");
@@ -423,33 +428,53 @@ function openTank(num) {
 }
 function calcArrows(data) {
     var filter = 0;
-    if(Global.IntegratorForArrows){
+    if(Global.IntegratorCon){
         if(data){
-            for(var el in data){
+            for(var el in data){//перебор резервуаров
+                var res = false;
                 var tmpnum = Number(data[el].num);
-                if(data[el].num == "1"){//тестируем первый резервуар
+                if(eval('Global.IntegratorForArrows'+data[el].num)){//тестируем первый резервуар
                     if(data[el].level){//если есть уровень у выбранного резервуара
                         var tmplevel = Number(data[el].level);
-                        var result = Global.IntegratorForArrows.Integrity(tmplevel);
+                        var result = eval('Global.IntegratorForArrows'+data[el].num+'.Integrity(tmplevel)');
                         if(Math.abs(result)>filter){//значение выходит на рамки
                             if(result>0){
                                 console.log("Значение растет:"+result);
+                                res = "up";
                             }else {
                                 console.log("Значение падает:"+result);
+                                res = "down";
                             }
                         }else {
-                            console.log("Значение без изменений:"+result);
+                            //console.log("Значение без изменений:"+result);
                         }
+                        renderArrows(tmpnum,res);
                     }
                 }
             }
         }
     }
     function renderArrows(tank,result) {
+        var TankObj = false
         if(tank){
-            var TankObj = $(".tank[data-num]="+tank);
-
+            TankObj = $(".tank[data-num="+tank+"]");
         }
-
+        if(tank && result){
+            TankObj = $(".tank[data-num="+tank+"]");
+            if(result=="up"){
+                TankObj.find(".tank_arrow_top").removeClass("_neutral").addClass("_up");
+            }else if(result=="down"){
+                TankObj.find(".tank_arrow_bottom").removeClass("_neutral").addClass("_down");
+            }
+            else{
+                TankObj.find(".tank_arrow_top").removeClass("_up").addClass("_neutral");
+                TankObj.find(".tank_arrow_bottom").removeClass("_down").addClass("_neutral");
+            }
+        }else{
+            if(tank){
+                TankObj.find(".tank_arrow_top").removeClass("_up").addClass("_neutral");
+                TankObj.find(".tank_arrow_bottom").removeClass("_down").addClass("_neutral");    
+            }
+        }
     }
 }
