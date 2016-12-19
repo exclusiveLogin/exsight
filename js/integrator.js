@@ -52,6 +52,7 @@ function Integrator(){
         if(this.step<this.Buffer.length){
             return 0;
         }else{
+            Global.blink2.stop();
             return Interg;    
         }
         
@@ -120,5 +121,39 @@ Global.IntegratorForArrows70 = new Integrator();
 Global.IntegratorForArrows71 = new Integrator();
 Global.IntegratorForArrows72 = new Integrator();
 Global.IntegratorForArrows73 = new Integrator();
-//Global.IntegratorForArrows.setFilter(2,2);
+
+Global.IntegratorForArrows1.setFilter(2,2);
+Global.IntegratorForArrows2.setFilter(2,2);
+Global.IntegratorForArrows3.setFilter(2,2);
+Global.IntegratorForArrows4.setFilter(2,2);
+Global.IntegratorForArrows5.setFilter(2,2);
+Global.IntegratorForArrows6.setFilter(2,2);
+Global.IntegratorForArrows7.setFilter(2,2);
+Global.IntegratorForArrows8.setFilter(2,2);
+Global.IntegratorForArrows9.setFilter(2,2);
+Global.IntegratorForArrows10.setFilter(2,2);
+Global.IntegratorForArrows11.setFilter(2,2);
+Global.IntegratorForArrows12.setFilter(2,2);
+Global.IntegratorForArrows13.setFilter(2,2);
+Global.IntegratorForArrows14.setFilter(2,2);
+Global.IntegratorForArrows15.setFilter(2,2);
+Global.IntegratorForArrows16.setFilter(2,2);
+Global.IntegratorForArrows17.setFilter(2,2);
+Global.IntegratorForArrows18.setFilter(2,2);
+Global.IntegratorForArrows19.setFilter(2,2);
+Global.IntegratorForArrows20.setFilter(2,2);
+
+Global.IntegratorForArrows51.setFilter(2,2);
+Global.IntegratorForArrows52.setFilter(2,2);
+Global.IntegratorForArrows53.setFilter(2,2);
+Global.IntegratorForArrows54.setFilter(2,2);
+Global.IntegratorForArrows55.setFilter(2,2);
+Global.IntegratorForArrows56.setFilter(2,2);
+
+Global.IntegratorForArrows69.setFilter(2,2);
+Global.IntegratorForArrows70.setFilter(2,2);
+Global.IntegratorForArrows71.setFilter(2,2);
+Global.IntegratorForArrows72.setFilter(2,2);
+Global.IntegratorForArrows73.setFilter(2,2);
+
 Global.IntegratorCon = true;

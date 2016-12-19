@@ -37,7 +37,7 @@ $(document).ready(function(){
 
 
     refreshPark();
-    Global.refreshParkTimer=setInterval(refreshPark,10000);
+    Global.refreshParkTimer=setInterval(refreshPark,30000);
     Global.jqready = true;
 
     Global.authkey = true;
@@ -152,9 +152,14 @@ function blink(selector,time) {
         if(this.timeObj){
             clearInterval(this.timeObj);
             this.timeObj = false;
+            $(selector).removeClass("transparentStatic");
         }
     }
 }
 Global.blink1 = new blink(".pereliv, .errortank,.blink",500);
 Global.blink1.init();
 Global.blink1.start();
+
+Global.blink2 = new blink("._neutral",1000);
+Global.blink2.init();
+Global.blink2.start();

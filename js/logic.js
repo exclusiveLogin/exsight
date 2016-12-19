@@ -427,7 +427,7 @@ function openTank(num) {
     }
 }
 function calcArrows(data) {
-    var filter = 0;
+    var filter = .5;
     if(Global.IntegratorCon){
         if(data){
             for(var el in data){//перебор резервуаров
@@ -455,26 +455,27 @@ function calcArrows(data) {
         }
     }
     function renderArrows(tank,result) {
-        var TankObj = false
+        var TankObj = false;
         if(tank){
             TankObj = $(".tank[data-num="+tank+"]");
+            TankObj.find(".tank_arrow_top").removeClass("_up _down _neutral");
+            TankObj.find(".tank_arrow_bottom").removeClass("_up _down _neutral");
         }
         if(tank && result){
             TankObj = $(".tank[data-num="+tank+"]");
             if(result=="up"){
-                TankObj.find(".tank_arrow_top").removeClass("_neutral").addClass("_up");
+                TankObj.find(".tank_arrow_top").addClass("_up");
             }else if(result=="down"){
-                TankObj.find(".tank_arrow_bottom").removeClass("_neutral").addClass("_down");
+                TankObj.find(".tank_arrow_bottom").addClass("_down");
             }
             else{
-                TankObj.find(".tank_arrow_top").removeClass("_up").addClass("_neutral");
-                TankObj.find(".tank_arrow_bottom").removeClass("_down").addClass("_neutral");
+                TankObj.find(".tank_arrow_top").addClass("_neutral");
+                TankObj.find(".tank_arrow_bottom").addClass("_neutral");
             }
-        }else{
-            if(tank){
-                TankObj.find(".tank_arrow_top").removeClass("_up").addClass("_neutral");
-                TankObj.find(".tank_arrow_bottom").removeClass("_down").addClass("_neutral");    
-            }
+        }
+        if(tank && !result){
+            TankObj.find(".tank_arrow_top").addClass("_neutral");
+            TankObj.find(".tank_arrow_bottom").addClass("_neutral");
         }
     }
 }

@@ -547,6 +547,7 @@ a:hover{
     /* margin-top: -18px; */
     /* left: 44px; */
     display: block;
+    transition: opacity .5s ease;
 }
 
 .glyphicon.glyphicon-triangle-bottom.tank_arrow_bottom {
@@ -558,6 +559,7 @@ a:hover{
     /* margin-top: -18px; */
     /* left: 44px; */
     display: block;
+    transition: opacity .5s ease;
 }
 ._up{
     color: greenyellow;
