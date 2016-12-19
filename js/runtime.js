@@ -38,6 +38,7 @@ $(document).ready(function(){
 
     refreshPark();
     Global.refreshParkTimer=setInterval(refreshPark,30000);
+	Global.refreshParkTimer=setInterval(stateRefresher,10000);
     Global.jqready = true;
 
     Global.authkey = true;
@@ -115,7 +116,7 @@ function userEnter(user) {
     Global.authkey=true;
     Global.loggedAs = user;
 }
-function showSysMsg(msg,state,static) {
+function showSysMsg(msg,state,statical) {
     if(state){
         $("#sysmsg").removeClass("sys_err");
         $("#sysmsg").addClass("sys_ok");
@@ -127,12 +128,55 @@ function showSysMsg(msg,state,static) {
     //$("#sysmsg").show();
     $("#sysmsg").removeClass("myhide");
     $("#sysmsg_val").html(msg);
-    if(!static)setTimeout(hideSysMsg,5000);
+    if(!statical)setTimeout(hideSysMsg,5000);
     function hideSysMsg() {
         $("#sysmsg").addClass("myhide");
         
     }
     
+}
+function stateRefresher(){
+    $.ajax({
+		url:"state.php",
+		dataType:"json",
+		method:'GET',
+		data:{"getstate":true},
+		success:function(data){
+			//console.log(data);
+			if(data){
+				for(var el in data){
+					if(data[el].sector == "main"){//отлавливаем сектор
+						//console.log("sector main");
+						if(data[el].state == "reset"){
+							//console.log("status = reset");
+							showSysMsg("Страница будет перезагружена",false,true);
+							setTimeout(function(){
+								//console.log("сетим normal");
+								$.ajax({
+									url:"state.php",
+									method:'GET',
+									data:{"setstate":"normal","sector":"main"},
+									success:function(data){
+										//console.log("all ok");
+									},
+									error:function(){
+										console.log("error");
+									}
+								});
+								setTimeout(function(){
+									//console.log("рефрешим страницу");
+									location.reload(true);
+								},10000);
+							},60000);
+						}	
+					}
+				}
+			}
+		},
+		error:function(){
+			console.log("error to load state ajax");
+		}
+    });
 }
 function blink(selector,time) {
     this.selector = selector;

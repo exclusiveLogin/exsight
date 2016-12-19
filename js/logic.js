@@ -439,10 +439,10 @@ function calcArrows(data) {
                         var result = eval('Global.IntegratorForArrows'+data[el].num+'.Integrity(tmplevel)');
                         if(Math.abs(result)>filter){//значение выходит на рамки
                             if(result>0){
-                                console.log("Значение растет:"+result);
+                                //console.log("Значение растет:"+result);
                                 res = "up";
                             }else {
-                                console.log("Значение падает:"+result);
+                                //console.log("Значение падает:"+result);
                                 res = "down";
                             }
                         }else {
