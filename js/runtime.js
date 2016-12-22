@@ -185,7 +185,13 @@ function blink(selector,time) {
     };
     this.timeObj = false;
     this.toggleState = function () {
-        $(selector).toggleClass("transparentStatic");
+        $(selector).each(function () {
+            var tmp = $(this).find(".transparent");
+            //console.log(tmp[0]);
+            if(!tmp[0]){
+                $(this).toggleClass("transparentStatic");
+            }
+        });
     };
     this.start = function () {
         if(time){
@@ -200,7 +206,7 @@ function blink(selector,time) {
         }
     }
 }
-Global.blink1 = new blink(".pereliv, .errortank,.blink",500);
+Global.blink1 = new blink(".pereliv,.errortank,.blink",500);
 Global.blink1.init();
 Global.blink1.start();
 

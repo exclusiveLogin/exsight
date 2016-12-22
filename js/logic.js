@@ -150,7 +150,8 @@ function refreshTank(tank) {
                 Global.parmTankFancy.animate(0);
             }else {
                 var tmpperc = lvl2perc(data.level,data.max_level).toFixed(1);
-                $('.prog_val').text(tmpperc+"%");
+                //$('.prog_val').text(tmpperc+"%");
+                $('.prog_val').text(data.level);
                 if(tmpperc>95){
                     $('.prog_val').addClass("blink");
                 }
@@ -243,7 +244,7 @@ function refreshPark() {
                         var tmpReal = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val_real");
                         var tmpPerc = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val");
                         var tmpProd = $(".tank[data-num="+(data[elem].num)+"]").find(".tank_prod");
-
+/*
                         if(tmpperc>95){
                             tmpPerc.addClass("blink");
                             tmpReal.addClass("blink");
@@ -251,9 +252,9 @@ function refreshPark() {
                             tmpPerc.removeClass("blink");
                             tmpReal.removeClass("blink");
                         }
-
+*/
                         tmpPerc.text(tmpperc+"%");
-                        tmpReal.text(data[elem].level);
+                        tmpReal.text(Number(data[elem].level).toFixed(0));
                         if(Number(data[elem].product)){
                             var product = getProduct(Number(data[elem].product));
                             tmpProd.text(product.text);
@@ -276,28 +277,30 @@ function refreshPark() {
                         pr_opt = {};
                         if(tmpperc<10){
                             tmpPerc.css("color","#08f");
-                            tmpReal.css("color","#08f");
+                            tmpReal.css("color","#333");
                             pr_opt={
                                 from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
                                 to:{color:"#08f"}
                             };
                         }else if(tmpperc>70 && tmpperc<90){
                             tmpPerc.css("color","rgb(200, 100, 0)");
-                            tmpReal.css("color","rgb(200, 100, 0)");
+                            //tmpReal.css("color","rgb(200, 100, 0)");
+                            tmpReal.css("color","#333");
                             pr_opt={
                                 from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                                to:{color:"#ff8f00"}
+                                to:{color:"rgb(200, 100, 0)"}
                             };
                         }else if(tmpperc>90){
-                            tmpPerc.css("color","#f00");
-                            tmpReal.css("color","#f00");
+                            tmpPerc.css("color","#a00");
+                            tmpReal.css("color","#a00");
                             pr_opt={
                                 from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                                to:{color:"#f00"}
+                                to:{color:"#a00"}
                             };
                         }else{
                             tmpPerc.css("color","#090");
-                            tmpReal.css("color","#090");
+                            //tmpReal.css("color","#090");
+                            tmpReal.css("color","#333");
                             pr_opt={
                                 from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
                                 to:{color:"#090"}
@@ -427,7 +430,7 @@ function openTank(num) {
     }
 }
 function calcArrows(data) {
-    var filter = .5;
+    var filter = 1;
     if(Global.IntegratorCon){
         if(data){
             for(var el in data){//перебор резервуаров

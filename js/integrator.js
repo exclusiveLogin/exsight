@@ -2,7 +2,7 @@
  * Created by SavinSV on 15.12.16.
  */
 function Integrator(){
-    this.step = -1;
+    this.init = true;
     this.lastPoint = 0;
     this.filtered = true;
     this.integrityOnly = false;
@@ -34,7 +34,6 @@ function Integrator(){
     };
 
     this.Integrity = function(val){
-        this.step++;
         var ret;
         if(!this.filtered){
             ret = val - this.lastPoint;
@@ -49,7 +48,11 @@ function Integrator(){
                 var Interg = this.Filter();
             }
         }
-        if(this.step<this.Buffer.length){
+        if(this.init){
+            for(var el = 0; el<this.Buffer.length; el++){
+                this.Buffer[el]=val;
+            }
+            this.init = false;
             return 0;
         }else{
             Global.blink2.stop();
