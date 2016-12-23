@@ -213,3 +213,7 @@ Global.blink1.start();
 Global.blink2 = new blink("._neutral",1000);
 Global.blink2.init();
 Global.blink2.start();
+
+Global.blink3 = new blink(".glyphicon-warning-sign",500);
+Global.blink3.init();
+Global.blink3.start();

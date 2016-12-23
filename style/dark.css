@@ -600,3 +600,45 @@ a:hover{
     line-height: 20px;
     height: 64px;
 }
+.label-my-normal{
+    background: #6db563; /* Old browsers */
+    background: -moz-linear-gradient(top, #6db563 0%, #21680d 45%, #0f7516 64%, #3f663c 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #6db563 0%,#21680d 45%,#0f7516 64%,#3f663c 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #6db563 0%,#21680d 45%,#0f7516 64%,#3f663c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db563', endColorstr='#3f663c',GradientType=0 ); /* IE6-9 */
+    border: 1px outset darkgreen;
+}
+.label-my-old{
+    background: #a7cfdf; /* Old browsers */
+    background: -moz-linear-gradient(top, #a7cfdf 0%, #23538a 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #a7cfdf 0%,#23538a 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #a7cfdf 0%,#23538a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */
+    border: 1px outset #919191;
+}
+.label-my-error{
+    background: #9b5858; /* Old browsers */
+    background: -moz-linear-gradient(top, #9b5858 0%, #540101 45%, #a30000 75%, #4c0000 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #9b5858 0%,#540101 45%,#a30000 75%,#4c0000 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #9b5858 0%,#540101 45%,#a30000 75%,#4c0000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b5858', endColorstr='#4c0000',GradientType=0 ); /* IE6-9 */
+    border: 1px outset #91151b;
+}
+.glyphicon-arrow-up{
+    color: greenyellow;
+}
+.glyphicon-arrow-down{
+    color: cyan;
+}
+.glyphicon-warning-sign{
+    color: orange;
+}
+.glyphicon-ok-circle{
+    color: green;
+}
+.glyphicon-remove-circle{
+    color: red;
+}
+.glyphicon-glyphicon-transfer{
+    color: yellow;
+}

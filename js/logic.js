@@ -234,8 +234,13 @@ function refreshPark() {
                         $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
                         $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.6);
                         $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparent");
+
+                        //статус резервуаров
+                        $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-remove-circle'></i>");
                     }else {
-                        
+                        //статус резервуаров
+                        $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-ok-circle'></i>");
+
                         $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
                         $(".tank[data-num="+(data[elem].num)+"]").css("opacity",1);
                         $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").removeClass("transparent");
@@ -308,17 +313,37 @@ function refreshPark() {
                         }
 
                         Global.pr_tank[data[elem].num].animate(tmpperc/100,pr_opt);
-
-
-
-
+                        //проверка на устаревание данных
+                        {
+                            var xtime = new Date(Date.parse(data[elem].datetime));
+                            var t_year = xtime.getFullYear();
+                            var t_month = xtime.getMonth();
+                            var t_day = xtime.getDate();
+                            var t_hour = xtime.getHours();
+                            var t_minute = xtime.getMinutes();
+                            var t_second = xtime.getSeconds();
+                            var offset = new Date().getTimezoneOffset()*60000;
+                            var utctime = Date.UTC(t_year,t_month,t_day,t_hour,t_minute,t_second);
+                            var nowt = Date.now();
+                            var now = nowt - offset;
+                            //var now = nowt;
+                            var compare_t = now-utctime;
+                            //console.log("elem:"+elem+"tank:"+data[elem].num+"now:"+now+" utc:"+utctime+" compare:"+compare_t);
+                            if(compare_t > 15*60*1000){
+                                $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-transfer'></i>");
+                            }
+                            if(compare_t > 30*60*1000){
+                                $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-warning-sign'></i>");
+                                $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.3);
+                            }
+                        }
                     }
-
                 }else {
                     Global.pr_tank[data[elem].num].animate(0,pr_opt);
                 }
+
+
             }
-            
         }
         if(Global.tankselect){
             refreshTank(Global.tankselect);
@@ -468,8 +493,12 @@ function calcArrows(data) {
             TankObj = $(".tank[data-num="+tank+"]");
             if(result=="up"){
                 TankObj.find(".tank_arrow_top").addClass("_up");
+                //статус резервуаров
+                $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-up'></i>");
             }else if(result=="down"){
                 TankObj.find(".tank_arrow_bottom").addClass("_down");
+                //статус резервуаров
+                $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-down'></i>");
             }
             else{
                 TankObj.find(".tank_arrow_top").addClass("_neutral");
