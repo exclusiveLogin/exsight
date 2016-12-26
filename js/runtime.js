@@ -5,28 +5,46 @@ Global.loginData={
 };
 Global.bugFixEv = new Event("resize");
 
-function tooltipHandler() {
-    $("[data-tooltip]").mousemove(function (eventObject) {
 
-        var data_tooltip = $(this).attr("data-tooltip");
 
-        $("#tooltip").text(data_tooltip)
-            .css({
-                "top" : eventObject.pageY + 10,
-                "left" : eventObject.pageX + 10
-            })
-            .show();
-
-    }).mouseout(function () {
-
-        $("#tooltip").hide()
-            .text("")
-            .css({
-                "top" : 0,
-                "left" : 0
-            });
+function refreshTooltips() {
+    $('.glyphicon-warning-sign').each(function () {
+        $(this).attr("data-tooltip", "давно не обновлялся");
     });
+    $('.glyphicon-arrow-down').each(function () {
+        $(this).attr("data-tooltip", "давно не обновлялся");
+    });
+    $('.glyphicon-arrow-up').each(function () {
+        $(this).attr("data-tooltip", "давно не обновлялся");
+    });
+    $('.glyphicon-remove-circle').each(function () {
+        $(this).attr("data-tooltip", "давно не обновлялся");
+    });
+    tooltipHandler();
+    function tooltipHandler() {
+        $("[data-tooltip]").mousemove(function (eventObject) {
+
+            var data_tooltip = $(this).attr("data-tooltip");
+
+            $("#tooltip").text(data_tooltip)
+                .css({
+                    "top" : eventObject.pageY + 10,
+                    "left" : eventObject.pageX + 10
+                })
+                .show();
+
+        }).mouseout(function () {
+
+            $("#tooltip").hide()
+                .text("")
+                .css({
+                    "top" : 0,
+                    "left" : 0
+                });
+        });
+    }
 }
+
 $(document).ready(function(){
     $(".tank_pereliv").addClass("transparent");
     $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
@@ -34,6 +52,7 @@ $(document).ready(function(){
         var tmp = $(this).data("num");
         $(this).find(".tank_title").text(tmp);
     });
+
 
 
     refreshPark();

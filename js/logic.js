@@ -349,6 +349,7 @@ function refreshPark() {
             refreshTank(Global.tankselect);
         }
     }
+    refreshTooltips();
 }
 function lvl2perc(val,max){
     var desc = max/100;
