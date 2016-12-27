@@ -317,7 +317,7 @@ a:hover{
     overflow: auto;
     transition: all 1s ease;
     text-align: center;
-    font-size: 150% !important;
+    /*font-size: 150% !important;*/
 }
 .btncont{
     text-align: center;

@@ -348,8 +348,9 @@ function refreshPark() {
         if(Global.tankselect){
             refreshTank(Global.tankselect);
         }
+
     }
-    refreshTooltips();
+
 }
 function lvl2perc(val,max){
     var desc = max/100;
@@ -510,5 +511,6 @@ function calcArrows(data) {
             TankObj.find(".tank_arrow_top").addClass("_neutral");
             TankObj.find(".tank_arrow_bottom").addClass("_neutral");
         }
+        refreshTooltips();
     }
 }
