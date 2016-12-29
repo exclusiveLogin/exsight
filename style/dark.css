@@ -642,3 +642,12 @@ a:hover{
 .glyphicon-glyphicon-transfer{
     color: yellow;
 }
+.initScroll{
+    transform: rotateY(90deg);
+    transform-style: preserve-3d;
+    opacity: 0 !important;
+}
+#snowflakesCanvas{
+    position:absolute;
+    top:0px;
+}

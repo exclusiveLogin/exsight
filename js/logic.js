@@ -514,3 +514,58 @@ function calcArrows(data) {
         refreshTooltips();
     }
 }
+
+function refreshTooltips() {
+    $('.glyphicon-warning-sign').each(function () {
+        $(this).attr("data-tooltip", "давно не обновлялся");
+    });
+    $('.glyphicon-arrow-down').each(function () {
+        $(this).attr("data-tooltip", "Идет слив НП");
+    });
+    $('.glyphicon-arrow-up').each(function () {
+        $(this).attr("data-tooltip", "Идет налив НП");
+    });
+    $('.glyphicon-remove-circle').each(function () {
+        $(this).attr("data-tooltip", "Ошибка уровнемера");
+    });
+    $("#panelstate").off();
+    tooltipHandler();
+    function tooltipHandler() {
+        $("#panelstate").on("mousemove","[data-tooltip]",function (eventObject) {
+
+            var data_tooltip = $(this).attr("data-tooltip");
+
+
+            var tmpoffset = $("#tooltip").offset().left;
+            var tmpw = $("#tooltip").width();
+            var tmppanelw = $("#panelstate").outerWidth();
+            //console.log("offset:"+tmpoffset+"width:"+tmpw+"panelwidth:"+tmppanelw);
+            if((tmpoffset+tmpw+100)>tmppanelw){
+                $("#tooltip").text(data_tooltip)
+                    .css({
+                        "top" : eventObject.pageY + 10,
+                        "left" : eventObject.pageX - 10 - tmpw
+                    })
+                    .show();
+            }else {
+                $("#tooltip").text(data_tooltip)
+                    .css({
+                        "top" : eventObject.pageY + 10,
+                        "left" : eventObject.pageX + 10
+                    })
+                    .show();
+            }
+
+        }).mouseout(function () {
+
+            $("#tooltip").hide(0,function () {
+                $(this).text("")
+                    .css({
+                        "top" : 0,
+                        "left" : 0
+                    });
+            })
+
+        });
+    }
+}

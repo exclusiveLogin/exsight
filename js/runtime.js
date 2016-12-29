@@ -5,82 +5,42 @@ Global.loginData={
 };
 Global.bugFixEv = new Event("resize");
 
-
-//refreshTooltips();
-function refreshTooltips() {
-    $('.glyphicon-warning-sign').each(function () {
-        $(this).attr("data-tooltip", "давно не обновлялся");
-    });
-    $('.glyphicon-arrow-down').each(function () {
-        $(this).attr("data-tooltip", "Идет слив НП");
-    });
-    $('.glyphicon-arrow-up').each(function () {
-        $(this).attr("data-tooltip", "Идет налив НП");
-    });
-    $('.glyphicon-remove-circle').each(function () {
-        $(this).attr("data-tooltip", "Ошибка уровнемера");
-    });
-    $("#panelstate").off();
-    tooltipHandler();
-    function tooltipHandler() {
-        $("#panelstate").on("mousemove","[data-tooltip]",function (eventObject) {
-
-            var data_tooltip = $(this).attr("data-tooltip");
-
-
-            var tmpoffset = $("#tooltip").offset().left;
-            var tmpw = $("#tooltip").width();
-            var tmppanelw = $("#panelstate").outerWidth();
-            //console.log("offset:"+tmpoffset+"width:"+tmpw+"panelwidth:"+tmppanelw);
-            if((tmpoffset+tmpw+100)>tmppanelw){
-                $("#tooltip").text(data_tooltip)
-                    .css({
-                        "top" : eventObject.pageY + 10,
-                        "left" : eventObject.pageX - 10 - tmpw
-                    })
-                    .show();
-            }else {
-                $("#tooltip").text(data_tooltip)
-                    .css({
-                        "top" : eventObject.pageY + 10,
-                        "left" : eventObject.pageX + 10
-                    })
-                    .show();
-            }
-
-        }).mouseout(function () {
-
-            $("#tooltip").hide(0,function () {
-                $(this).text("")
-                        .css({
-                            "top" : 0,
-                            "left" : 0
-                        });
-            })
-
-        });
-    }
-}
-
 $(document).ready(function(){
+
+    Global.jqready = true;
+    Global.authkey = true;
+    Global.loggedAs = "ssv";
+    refreshLog();
+    $(".tank").addClass("initScroll");
+    $(".tank").each(function (index, elem) {
+        setTimeout(function () {
+            $(elem).removeClass("initScroll");
+        },index*70);
+    });
+
+
     $(".tank_pereliv").addClass("transparent");
     $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
-    $('.tank').each(function (index,element) {
+    $(".tank").each(function () {
         var tmp = $(this).data("num");
         $(this).find(".tank_title").text(tmp);
     });
 
-
+    if(!Global.lastrefresh){
+        Global.lastrefresh = Date.now();
+    }else {
+        console.log("time:"+Global.lastrefresh+" now:"+Date.now());
+        console.log("Вот тут надо думать над обработчиками");
+    }
 
     refreshPark();
-    Global.refreshParkTimer=setInterval(refreshPark,30000);
+    Global.refreshParkTimer=setInterval(refreshPark,60000);
 	Global.refreshParkTimer=setInterval(stateRefresher,10000);
-    Global.jqready = true;
 
-    Global.authkey = true;
-    Global.loggedAs = "ssv";
 
-    refreshLog();
+
+
+
     $.ajaxSetup({
         cache:false
     });
