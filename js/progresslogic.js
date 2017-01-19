@@ -1,5 +1,4 @@
-console.log("progresslogic loaded");
-$(document).ready(function () {
+ function reloadProgressBar() {
     Global.parmTank = new ProgressBar.Line('#progress', {
         color: '#FCB03C',
         duration: 1000,
@@ -12,7 +11,6 @@ $(document).ready(function () {
             Global.parmTank.path.setAttribute("stroke",state.color);
         }
     });
-
 
     Global.parmTankFancy = new ProgressBar.Line('#progress_fancy', {
         color: '#FCB03C',
@@ -399,4 +397,4 @@ $(document).ready(function () {
             Global.pr_tank[73].path.setAttribute("stroke",state.color);
         }
     });
-});
+}

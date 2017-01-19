@@ -55,7 +55,7 @@ function Integrator(){
             this.init = false;
             return 0;
         }else{
-            Global.blink2.stop();
+            //Global.blink2.stop();
             return Interg;    
         }
         

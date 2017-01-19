@@ -4,27 +4,19 @@ Global.loginData={
     "password":""
 };
 Global.bugFixEv = new Event("resize");
-
+$.ajaxSetup({
+    cache:false
+});
 $(document).ready(function(){
 
     Global.jqready = true;
     Global.authkey = true;
     Global.loggedAs = "ssv";
     refreshLog();
-    $(".tank").addClass("initScroll");
-    $(".tank").each(function (index, elem) {
-        setTimeout(function () {
-            $(elem).removeClass("initScroll");
-        },index*70);
-    });
 
 
-    $(".tank_pereliv").addClass("transparent");
-    $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
-    $(".tank").each(function () {
-        var tmp = $(this).data("num");
-        $(this).find(".tank_title").text(tmp);
-    });
+
+
 
     if(!Global.lastrefresh){
         Global.lastrefresh = Date.now();
@@ -33,17 +25,14 @@ $(document).ready(function(){
         console.log("Вот тут надо думать над обработчиками");
     }
 
-    refreshPark();
-    Global.refreshParkTimer=setInterval(refreshPark,60000);
-	Global.refreshParkTimer=setInterval(stateRefresher,10000);
+    //refreshPark();
+    startRezpark();
 
 
 
 
 
-    $.ajaxSetup({
-        cache:false
-    });
+
     $('.btnlogin').on('click',function(){
         $(this).addClass('disabled active');
         $('#loginform').show(500);
@@ -83,7 +72,7 @@ $(document).ready(function(){
         showSysMsg("Вы успешно вышли из системы",true);
         refreshLog();
     });
-    $('.tank').on('click',function(){
+    $('#minview').on('click','.tank',function(){
         var num = $(this).data("num");
         //console.log("btn_tank num = "+num);
         if(num){
@@ -206,9 +195,9 @@ Global.blink1 = new blink(".pereliv,.errortank,.blink",500);
 Global.blink1.init();
 Global.blink1.start();
 
-Global.blink2 = new blink("._neutral",1000);
-Global.blink2.init();
-Global.blink2.start();
+//Global.blink2 = new blink("._neutral",1000);
+//Global.blink2.init();
+//Global.blink2.start();
 
 Global.blink3 = new blink(".glyphicon-warning-sign",500);
 Global.blink3.init();

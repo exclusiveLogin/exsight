@@ -233,7 +233,7 @@ function refreshPark() {
                     if(data[elem].level == "-1000"){
                         $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
                         $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.6);
-                        $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparent");
+                        $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
 
                         //статус резервуаров
                         $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-remove-circle'></i>");
@@ -243,7 +243,7 @@ function refreshPark() {
 
                         $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
                         $(".tank[data-num="+(data[elem].num)+"]").css("opacity",1);
-                        $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").removeClass("transparent");
+                        $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").removeClass("transparentStatic");
                         
                         var tmpperc = lvl2perc(Number(data[elem].level),Number(data[elem].max_level)).toFixed(0);
                         var tmpReal = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val_real");
@@ -568,4 +568,40 @@ function refreshTooltips() {
 
         });
     }
+}
+function startRezpark() {
+    $.ajax({
+        url:"nodes/respark.html",
+        dataType:"html",
+        method:'GET',
+        success:function(data){
+            if(data)$('#minview').html(data);
+            reloadProgressBar();
+            $(".tank").addClass("initScroll");
+            $(".tank").each(function (index, elem) {
+                setTimeout(function () {
+                    $(elem).removeClass("initScroll");
+                },index*70);
+            });
+            $(".tank_pereliv").addClass("transparent");
+            $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
+            $(".tank").each(function () {
+                var tmp = $(this).data("num");
+                $(this).find(".tank_title").text(tmp);
+            });
+            refreshPark();
+            if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
+            if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
+            Global.refreshParkTimer=setInterval(refreshPark,60000);
+            Global.refreshStateTimer=setInterval(stateRefresher,10000);
+        },
+        error:function(){
+            console.log("error to load respark");
+        }
+    });
+
+}
+function stopRezpark() {
+    if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
+    if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
 }
