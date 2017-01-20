@@ -24,5 +24,6 @@ Global = {
     },
     loggedAs:"",
     tankselect:"",
-    nodes:{}
+    nodes:{},
+    conerr:0
 };

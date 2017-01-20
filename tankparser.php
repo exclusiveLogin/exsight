@@ -125,5 +125,11 @@ for($i=1;$i<80;$i++) {
             $mysql->query($q);
             //echo "q:".$q."<br>";
         }
+        if (isset($ini_arr['fixtime'])) {
+            $tank_fixtime = $ini_arr['fixtime'];
+            $q = "INSERT INTO `rt_tanks` (`num`,`fixtime`) VALUES (" . $i . ",'" . $tank_fixtime . "') ON DUPLICATE KEY UPDATE `fixtime` = '" . $tank_fixtime . "';";
+            $mysql->query($q);
+            //echo "q:".$q."<br>";
+        }
     }
 }

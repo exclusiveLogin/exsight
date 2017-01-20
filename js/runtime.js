@@ -14,10 +14,6 @@ $(document).ready(function(){
     Global.loggedAs = "ssv";
     refreshLog();
 
-
-
-
-
     if(!Global.lastrefresh){
         Global.lastrefresh = Date.now();
     }else {
@@ -127,6 +123,7 @@ function stateRefresher(){
 		method:'GET',
 		data:{"getstate":true},
 		success:function(data){
+		    connectionState(1);
 			//console.log(data);
 			if(data){
 				for(var el in data){
@@ -160,6 +157,7 @@ function stateRefresher(){
 		},
 		error:function(){
 			console.log("error to load state ajax");
+            connectionState(0);
 		}
     });
 }

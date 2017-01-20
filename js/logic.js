@@ -210,6 +210,22 @@ function refreshTank(tank) {
         }
     }
 }
+function connectionState(state) {
+    if(state){
+        $('#panel').hide().addClass("transparent");
+        $('#minview').removeClass("transparent");
+        Global.conerr = 0;
+    }else{
+        Global.conerr++;
+        $('#panel').show().removeClass("transparent");
+        if(Global.conerr>3){
+            $('#minview').addClass("transparent");
+            $('#panel').html('<h2 class="label label-lg label-default conerror">Связь с сервером отключена</h2>');
+        }else {
+            $('#panel').html('<h2 class="label label-lg label-default conerror">Возникли проблемы со связью</h2>');
+        }
+    }
+}
 function refreshPark() {
     $.ajax({
         url:"gettank.php",
@@ -217,11 +233,13 @@ function refreshPark() {
         method:'GET',
         data:{park:true},
         success:function(data){
+            connectionState(1);
             renderPark(data);
             calcArrows(data);
         },
         error:function(){
             console.log("error to load refresh park ajax data");
+            connectionState(0);
         }
     });
     function renderPark(data) {
@@ -329,10 +347,10 @@ function refreshPark() {
                             //var now = nowt;
                             var compare_t = now-utctime;
                             //console.log("elem:"+elem+"tank:"+data[elem].num+"now:"+now+" utc:"+utctime+" compare:"+compare_t);
-                            if(compare_t > 15*60*1000){
+                            if(compare_t > 2*60*1000){
                                 $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-transfer'></i>");
                             }
-                            if(compare_t > 30*60*1000){
+                            if(compare_t > 3*60*1000){
                                 $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-warning-sign'></i>");
                                 $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.3);
                             }

@@ -698,3 +698,6 @@ a:hover{
 .copyright{
     float: right;
 }
+.conerror{
+    font-size: 200%;
+}
