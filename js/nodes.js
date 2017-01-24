@@ -1,6 +1,16 @@
 'use strict';
-class Node{
+class NodeCtrl{
+    static createNode(name,container){
+        return new Node(name,container);
+    }
+    static deleteNode(){}
+    static replaceNode(){}
+    static replaceAll(){}
+}
+class Node extends NodeCtrl{
     constructor(name,container){
+        super();
+        this.context = this;
         if(name){
             this.nameNode = name;
         }else {
@@ -18,7 +28,9 @@ class Node{
                         </div>`;
         this.elem = document.getElementById(this.containerNode);
         this.elem.innerHTML = this.pattern;
+        if(Global.nodeDependencies[name]){
+            this.start = Global.nodeDependencies[name].startNode;
+            this.stop = Global.nodeDependencies[name].stopNode;
+        }
     }
-
-
 }

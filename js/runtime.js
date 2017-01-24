@@ -22,9 +22,10 @@ $(document).ready(function(){
     }
 
     //refreshPark();
-    startRezpark();
 
-
+    //startRezpark();
+    Global.nodes.push(Node.createNode("respark","panelnodes"));
+    Global.nodes[Global.nodes.length-1].start();
 
 
 
@@ -72,11 +73,11 @@ $(document).ready(function(){
         var num = $(this).data("num");
         //console.log("btn_tank num = "+num);
         if(num){
-            openTank(num);
+            Global.nodeDependencies.respark.openTank(num);
         }
     });
     $('#btn_close_parm').on('click',function(){
-        tankparmToggle(0);
+        Global.nodeDependencies.respark.tankparmToggle(0);
     });
     $('.btn-fb').on('click',function(){
         toggleFancy();
