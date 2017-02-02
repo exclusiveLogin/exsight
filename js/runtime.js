@@ -3,12 +3,22 @@ Global.loginData={
     "login":"",
     "password":""
 };
-Global.bugFixEv = new Event("resize");
+if(navigator)Global.UA = detect.parse(navigator.userAgent);
+
+//Global.bugFixEv = new Event("resize");
 $.ajaxSetup({
     cache:false
 });
 $(document).ready(function(){
-
+    //if(Global.UA){
+    //    if(Global.UA.browser.family == "IE"){
+    //        $('#panel').show().removeClass("transparent");
+    //        $("#panel").html('<h2 class="label label-lg label-default conerror">Ваш браузер не поддерживается, воспользуйтесь нормальным (Chrome, Mozilla, Opera, Safari..и пр.)</h2>');
+    //    }else {
+            Global.nodes.push(Node.createNode("respark","panelnodes"));
+            Global.nodes[Global.nodes.length-1].start();
+    //    }
+    //}
     Global.jqready = true;
     Global.authkey = true;
     Global.loggedAs = "ssv";
@@ -20,15 +30,6 @@ $(document).ready(function(){
         console.log("time:"+Global.lastrefresh+" now:"+Date.now());
         console.log("Вот тут надо думать над обработчиками");
     }
-
-    //refreshPark();
-
-    //startRezpark();
-    Global.nodes.push(Node.createNode("respark","panelnodes"));
-    Global.nodes[Global.nodes.length-1].start();
-
-
-
 
     $('.btnlogin').on('click',function(){
         $(this).addClass('disabled active');

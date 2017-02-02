@@ -28,3 +28,4 @@ Global = {
     nodeDependencies:{},
     conerr:0
 };
+//module.exports = Global;

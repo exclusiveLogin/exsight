@@ -27,7 +27,7 @@ class Node extends NodeCtrl{
                             <div class="led"></div>
                         </div>`;
         this.elem = document.getElementById(this.containerNode);
-        this.elem.innerHTML = this.pattern;
+        this.elem.innerHTML += this.pattern;
         if(Global.nodeDependencies[name]){
             this.start = Global.nodeDependencies[name].startNode;
             this.stop = Global.nodeDependencies[name].stopNode;
