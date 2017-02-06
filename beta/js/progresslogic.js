@@ -24,7 +24,7 @@
             Global.parmTankFancy.path.setAttribute("stroke",state.color);
         }
     });
-
+    $('.progress_tank').find("svg").remove();
     Global.pr_tank[1] = new ProgressBar.Line('#progress_tank1', {
         color: '#FCB03C',
         duration: 3000,
@@ -398,3 +398,4 @@
         }
     });
 }
+export default reloadProgressBar;

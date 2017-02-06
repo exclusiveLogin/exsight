@@ -1,4 +1,4 @@
-function trendToggle(state,tube) {
+export function trendToggle(state,tube) {
     if(state){
         $("#tubecard").removeClass("transparent",function () {
             $("#arj_tube_num").text(tube);
@@ -15,7 +15,7 @@ function trendToggle(state,tube) {
         });
     }
 }
-function loginToggle(state){
+export function loginToggle(state){
     if(state){
         $('.btnlogin').addClass('disabled active');
         $('#loginform').show(500);
@@ -25,7 +25,7 @@ function loginToggle(state){
         $('#loginform').hide(500);
     }
 }
-function resultToggle(state){
+export function resultToggle(state){
     if(state){
         $('#result').removeClass("transparent");
     }
@@ -33,7 +33,7 @@ function resultToggle(state){
         $('#result').addClass("transparent");
     }
 }
-function refreshLog() {
+export function refreshLog() {
     if(Global.authkey){
         if(Global.jqready){
             $("#wrapper").removeClass("transparent");
@@ -59,7 +59,7 @@ function refreshLog() {
         }
     }
 }
-function connectionState(state) {
+export function connectionState(state) {
     if(state){
         $('#panel').hide().addClass("transparent");
         $('#minview').removeClass("transparent");
@@ -75,7 +75,7 @@ function connectionState(state) {
         }
     }
 }
-function renderFancy() {
+export function renderFancy() {
     $('#fancycontainer').fancybox({
         'scrolling':'no',
         'padding':10,
@@ -91,7 +91,7 @@ function renderFancy() {
         }
     });
 }
-function toggleFancy(num) {
+export function toggleFancy(num) {
     Global.fancy = !Global.fancy;
     if(Global.fancy){
         $('.tank').addClass("fancyemiter");//переводим на fancy
@@ -105,7 +105,7 @@ function toggleFancy(num) {
         Global.nodeDependencies.respark.tankparmToggle(true,Global.tankselect);
     }
 }
-function refreshTooltips() {
+export function refreshTooltips() {
     $('.glyphicon-warning-sign').each(function () {
         $(this).attr("data-tooltip", "давно не обновлялся");
     });
