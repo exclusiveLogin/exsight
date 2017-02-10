@@ -10,15 +10,15 @@ $.ajaxSetup({
     cache:false
 });
 $(document).ready(function(){
-    //if(Global.UA){
-    //    if(Global.UA.browser.family == "IE"){
-    //        $('#panel').show().removeClass("transparent");
-    //        $("#panel").html('<h2 class="label label-lg label-default conerror">Ваш браузер не поддерживается, воспользуйтесь нормальным (Chrome, Mozilla, Opera, Safari..и пр.)</h2>');
-    //    }else {
+    if(Global.UA){
+        if(Global.UA.browser.family == "IE"){
+            $('#panel').show().removeClass("transparent");
+            $("#panel").html('<h2 class="label label-lg label-default conerror">Ваш браузер не поддерживается, воспользуйтесь нормальным (Chrome, Mozilla, Opera, Safari..и пр.)</h2>');
+        }else {
             Global.nodes.push(Node.createNode("respark","panelnodes"));
             Global.nodes[Global.nodes.length-1].start();
-    //    }
-    //}
+        }
+    }
     Global.jqready = true;
     Global.authkey = true;
     Global.loggedAs = "ssv";
@@ -191,7 +191,7 @@ function blink(selector,time) {
         }
     }
 }
-Global.blink1 = new blink(".pereliv,.errortank,.blink",500);
+Global.blink1 = new blink(".pereliv,.blink",500);
 Global.blink1.init();
 Global.blink1.start();
 

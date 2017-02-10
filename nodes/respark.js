@@ -449,7 +449,7 @@ if(Global.nodeDependencies){
                     },index*70);
                 });
                 $(".tank_pereliv").addClass("transparent");
-                $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
+                $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default").text("Требует ремонта");
                 $(".tank").each(function () {
                     var tmp = $(this).data("num");
                     $(this).find(".tank_title").text(tmp);

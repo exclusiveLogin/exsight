@@ -1,4 +1,4 @@
 require("jquery2");
 require("fancybox")($);
-//require("fancybox/dist/css/jquery/fancybox.css");
+require("./fancybox/jquery.fancybox.css");
 //window.$ = window.jQuery = $;

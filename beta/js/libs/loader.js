@@ -60,15 +60,15 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/exsight/beta/js/libs/";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 23);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */,
-/* 1 */
+/******/ ({
+
+/***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -1270,7 +1270,8 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 })(window);
 
 /***/ }),
-/* 2 */
+
+/***/ 2:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1307,7 +1308,113 @@ let Global = {
 /* harmony default export */ __webpack_exports__["a"] = Global;
 
 /***/ }),
-/* 3 */
+
+/***/ 23:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__integrator_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__progresslogic_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detect_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detect_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__detect_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__logic_js__ = __webpack_require__(4);
+
+
+
+
+
+
+window.trendToggle = __WEBPACK_IMPORTED_MODULE_4__logic_js__["a" /* trendToggle */];
+window.loginToggle = __WEBPACK_IMPORTED_MODULE_4__logic_js__["b" /* loginToggle */];
+window.resultToggle = __WEBPACK_IMPORTED_MODULE_4__logic_js__["c" /* resultToggle */];
+window.refreshLog = __WEBPACK_IMPORTED_MODULE_4__logic_js__["d" /* refreshLog */];
+window.connectionState = __WEBPACK_IMPORTED_MODULE_4__logic_js__["e" /* connectionState */];
+window.renderFancy = __WEBPACK_IMPORTED_MODULE_4__logic_js__["f" /* renderFancy */];
+window.toggleFancy = __WEBPACK_IMPORTED_MODULE_4__logic_js__["g" /* toggleFancy */];
+window.refreshTooltips = __WEBPACK_IMPORTED_MODULE_4__logic_js__["h" /* refreshTooltips */];
+
+window.Global = __WEBPACK_IMPORTED_MODULE_0__global_js__["a" /* default */];
+window.reloadProgressBar = __WEBPACK_IMPORTED_MODULE_2__progresslogic_js__["a" /* default */];
+if(__WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */] && __WEBPACK_IMPORTED_MODULE_0__global_js__["a" /* default */]){
+    window.Integrator = __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */];
+
+    Global.IntegratorForArrows1 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows2 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows3 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows4 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows5 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows6 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows7 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows8 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows9 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows10 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows11 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows12 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows13 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows14 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows15 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows16 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows17 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows18 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows19 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows20 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+
+    Global.IntegratorForArrows51 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows52 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows53 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows54 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows55 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows56 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+
+    Global.IntegratorForArrows69 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows70 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows71 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows72 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+    Global.IntegratorForArrows73 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
+
+    Global.IntegratorForArrows1.setFilter(2,2);
+    Global.IntegratorForArrows2.setFilter(2,2);
+    Global.IntegratorForArrows3.setFilter(2,2);
+    Global.IntegratorForArrows4.setFilter(2,2);
+    Global.IntegratorForArrows5.setFilter(2,2);
+    Global.IntegratorForArrows6.setFilter(2,2);
+    Global.IntegratorForArrows7.setFilter(2,2);
+    Global.IntegratorForArrows8.setFilter(2,2);
+    Global.IntegratorForArrows9.setFilter(2,2);
+    Global.IntegratorForArrows10.setFilter(2,2);
+    Global.IntegratorForArrows11.setFilter(2,2);
+    Global.IntegratorForArrows12.setFilter(2,2);
+    Global.IntegratorForArrows13.setFilter(2,2);
+    Global.IntegratorForArrows14.setFilter(2,2);
+    Global.IntegratorForArrows15.setFilter(2,2);
+    Global.IntegratorForArrows16.setFilter(2,2);
+    Global.IntegratorForArrows17.setFilter(2,2);
+    Global.IntegratorForArrows18.setFilter(2,2);
+    Global.IntegratorForArrows19.setFilter(2,2);
+    Global.IntegratorForArrows20.setFilter(2,2);
+
+    Global.IntegratorForArrows51.setFilter(2,2);
+    Global.IntegratorForArrows52.setFilter(2,2);
+    Global.IntegratorForArrows53.setFilter(2,2);
+    Global.IntegratorForArrows54.setFilter(2,2);
+    Global.IntegratorForArrows55.setFilter(2,2);
+    Global.IntegratorForArrows56.setFilter(2,2);
+
+    Global.IntegratorForArrows69.setFilter(2,2);
+    Global.IntegratorForArrows70.setFilter(2,2);
+    Global.IntegratorForArrows71.setFilter(2,2);
+    Global.IntegratorForArrows72.setFilter(2,2);
+    Global.IntegratorForArrows73.setFilter(2,2);
+
+    Global.IntegratorCon = true;
+}
+if(navigator)Global.UA = __WEBPACK_IMPORTED_MODULE_3__detect_js___default.a.parse(navigator.userAgent);
+
+/***/ }),
+
+/***/ 3:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1408,7 +1515,8 @@ function Integrator(){
 /* harmony default export */ __webpack_exports__["a"] = Integrator;
 
 /***/ }),
-/* 4 */
+
+/***/ 4:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1583,7 +1691,8 @@ function refreshTooltips() {
 }
 
 /***/ }),
-/* 5 */
+
+/***/ 5:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1989,115 +2098,6 @@ function refreshTooltips() {
 }
 /* harmony default export */ __webpack_exports__["a"] = reloadProgressBar;
 
-/***/ }),
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__integrator_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__progresslogic_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detect_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detect_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__detect_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__logic_js__ = __webpack_require__(4);
-
-
-
-
-
-
-window.trendToggle = __WEBPACK_IMPORTED_MODULE_4__logic_js__["a" /* trendToggle */];
-window.loginToggle = __WEBPACK_IMPORTED_MODULE_4__logic_js__["b" /* loginToggle */];
-window.resultToggle = __WEBPACK_IMPORTED_MODULE_4__logic_js__["c" /* resultToggle */];
-window.refreshLog = __WEBPACK_IMPORTED_MODULE_4__logic_js__["d" /* refreshLog */];
-window.connectionState = __WEBPACK_IMPORTED_MODULE_4__logic_js__["e" /* connectionState */];
-window.renderFancy = __WEBPACK_IMPORTED_MODULE_4__logic_js__["f" /* renderFancy */];
-window.toggleFancy = __WEBPACK_IMPORTED_MODULE_4__logic_js__["g" /* toggleFancy */];
-window.refreshTooltips = __WEBPACK_IMPORTED_MODULE_4__logic_js__["h" /* refreshTooltips */];
-
-window.Global = __WEBPACK_IMPORTED_MODULE_0__global_js__["a" /* default */];
-window.reloadProgressBar = __WEBPACK_IMPORTED_MODULE_2__progresslogic_js__["a" /* default */];
-if(__WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */] && __WEBPACK_IMPORTED_MODULE_0__global_js__["a" /* default */]){
-    window.Integrator = __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */];
-
-    Global.IntegratorForArrows1 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows2 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows3 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows4 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows5 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows6 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows7 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows8 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows9 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows10 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows11 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows12 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows13 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows14 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows15 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows16 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows17 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows18 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows19 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows20 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-
-    Global.IntegratorForArrows51 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows52 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows53 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows54 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows55 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows56 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-
-    Global.IntegratorForArrows69 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows70 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows71 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows72 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-    Global.IntegratorForArrows73 = new __WEBPACK_IMPORTED_MODULE_1__integrator_js__["a" /* default */]();
-
-    Global.IntegratorForArrows1.setFilter(2,2);
-    Global.IntegratorForArrows2.setFilter(2,2);
-    Global.IntegratorForArrows3.setFilter(2,2);
-    Global.IntegratorForArrows4.setFilter(2,2);
-    Global.IntegratorForArrows5.setFilter(2,2);
-    Global.IntegratorForArrows6.setFilter(2,2);
-    Global.IntegratorForArrows7.setFilter(2,2);
-    Global.IntegratorForArrows8.setFilter(2,2);
-    Global.IntegratorForArrows9.setFilter(2,2);
-    Global.IntegratorForArrows10.setFilter(2,2);
-    Global.IntegratorForArrows11.setFilter(2,2);
-    Global.IntegratorForArrows12.setFilter(2,2);
-    Global.IntegratorForArrows13.setFilter(2,2);
-    Global.IntegratorForArrows14.setFilter(2,2);
-    Global.IntegratorForArrows15.setFilter(2,2);
-    Global.IntegratorForArrows16.setFilter(2,2);
-    Global.IntegratorForArrows17.setFilter(2,2);
-    Global.IntegratorForArrows18.setFilter(2,2);
-    Global.IntegratorForArrows19.setFilter(2,2);
-    Global.IntegratorForArrows20.setFilter(2,2);
-
-    Global.IntegratorForArrows51.setFilter(2,2);
-    Global.IntegratorForArrows52.setFilter(2,2);
-    Global.IntegratorForArrows53.setFilter(2,2);
-    Global.IntegratorForArrows54.setFilter(2,2);
-    Global.IntegratorForArrows55.setFilter(2,2);
-    Global.IntegratorForArrows56.setFilter(2,2);
-
-    Global.IntegratorForArrows69.setFilter(2,2);
-    Global.IntegratorForArrows70.setFilter(2,2);
-    Global.IntegratorForArrows71.setFilter(2,2);
-    Global.IntegratorForArrows72.setFilter(2,2);
-    Global.IntegratorForArrows73.setFilter(2,2);
-
-    Global.IntegratorCon = true;
-}
-if(navigator)Global.UA = __WEBPACK_IMPORTED_MODULE_3__detect_js___default.a.parse(navigator.userAgent);
-
 /***/ })
-/******/ ]);
+
+/******/ });

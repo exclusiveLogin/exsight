@@ -60,10 +60,10 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/exsight/beta/js/libs/";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -102,7 +102,7 @@ module.exports = g;
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["$"] = __webpack_require__(8);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["$"] = __webpack_require__(11);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
@@ -2142,11 +2142,149 @@ module.exports = function(jQuery) {
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["jQuery"] = __webpack_require__(9);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(9);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(20)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!./../../node_modules/css-loader/index.js!./jquery.fancybox.css", function() {
+			var newContent = require("!!./../../node_modules/css-loader/index.js!./jquery.fancybox.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(10)();
+// imports
+
+
+// module
+exports.push([module.i, "/*! fancyBox v2.1.5 fancyapps.com | fancyapps.com/fancybox/#license */\r\n.fancybox-wrap,\r\n.fancybox-skin,\r\n.fancybox-outer,\r\n.fancybox-inner,\r\n.fancybox-image,\r\n.fancybox-wrap iframe,\r\n.fancybox-wrap object,\r\n.fancybox-nav,\r\n.fancybox-nav span,\r\n.fancybox-tmp\r\n{\r\n\tpadding: 0;\r\n\tmargin: 0;\r\n\tborder: 0;\r\n\toutline: none;\r\n\tvertical-align: top;\r\n\tborder-radius: 10px;\r\n}\r\n\r\n.fancybox-wrap {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tleft: 0;\r\n\tz-index: 8020;\r\n\tborder-radius: 20px;\r\n\tborder: 2px outset #ff7;\r\n}\r\n\r\n.fancybox-skin {\r\n\tposition: relative;\r\n\tbackground: #444;\r\n\tbackground-image: url(" + __webpack_require__(18) + ");\r\n\tcolor: #ffe;\r\n\ttext-shadow: none;\r\n\t-webkit-border-radius: 20px;\r\n\t   -moz-border-radius: 20px;\r\n\t        border-radius: 20px;\r\n}\r\n\r\n.fancybox-opened {\r\n\tz-index: 8030;\r\n}\r\n\r\n.fancybox-opened .fancybox-skin {\r\n\t-webkit-box-shadow: 0 10px 25px rgba(200, 100, 0, 0.5);\r\n\t   -moz-box-shadow: 0 10px 25px rgba(200, 100, 0, 0.5);\r\n\t        box-shadow: 0 10px 25px rgba(200, 100, 0, 0.5);\r\n}\r\n\r\n.fancybox-outer, .fancybox-inner {\r\n\tposition: relative;\r\n}\r\n\r\n.fancybox-inner {\r\n\toverflow: hidden;\r\n}\r\n\r\n.fancybox-type-iframe .fancybox-inner {\r\n\t-webkit-overflow-scrolling: touch;\r\n}\r\n\r\n.fancybox-error {\r\n\tcolor: #444;\r\n\tfont: 14px/20px \"Helvetica Neue\",Helvetica,Arial,sans-serif;\r\n\tmargin: 0;\r\n\tpadding: 15px;\r\n\twhite-space: nowrap;\r\n}\r\n\r\n.fancybox-image, .fancybox-iframe {\r\n\tdisplay: block;\r\n\twidth: 100%;\r\n\theight: 100%;\r\n}\r\n\r\n.fancybox-image {\r\n\tmax-width: 100%;\r\n\tmax-height: 100%;\r\n}\r\n\r\n#fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {\r\n\tbackground-image: url(" + __webpack_require__(16) + ");\r\n}\r\n\r\n#fancybox-loading {\r\n\tposition: fixed;\r\n\ttop: 50%;\r\n\tleft: 50%;\r\n\tmargin-top: -22px;\r\n\tmargin-left: -22px;\r\n\tbackground-position: 0 -108px;\r\n\topacity: 0.8;\r\n\tcursor: pointer;\r\n\tz-index: 8060;\r\n}\r\n\r\n#fancybox-loading div {\r\n\twidth: 44px;\r\n\theight: 44px;\r\n\tbackground: url(" + __webpack_require__(13) + ") center center no-repeat;\r\n}\r\n\r\n.fancybox-close {\r\n\tposition: absolute;\r\n\ttop: -18px;\r\n\tright: -18px;\r\n\twidth: 36px;\r\n\theight: 36px;\r\n\tcursor: pointer;\r\n\tz-index: 8040;\r\n}\r\n\r\n.fancybox-nav {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\twidth: 40%;\r\n\theight: 100%;\r\n\tcursor: pointer;\r\n\ttext-decoration: none;\r\n\tbackground: transparent url(" + __webpack_require__(12) + "); /* helps IE */\r\n\t-webkit-tap-highlight-color: rgba(0,0,0,0);\r\n\tz-index: 8040;\r\n}\r\n\r\n.fancybox-prev {\r\n\tleft: 0;\r\n}\r\n\r\n.fancybox-next {\r\n\tright: 0;\r\n}\r\n\r\n.fancybox-nav span {\r\n\tposition: absolute;\r\n\ttop: 50%;\r\n\twidth: 36px;\r\n\theight: 34px;\r\n\tmargin-top: -18px;\r\n\tcursor: pointer;\r\n\tz-index: 8040;\r\n\tvisibility: hidden;\r\n}\r\n\r\n.fancybox-prev span {\r\n\tleft: 10px;\r\n\tbackground-position: 0 -36px;\r\n}\r\n\r\n.fancybox-next span {\r\n\tright: 10px;\r\n\tbackground-position: 0 -72px;\r\n}\r\n\r\n.fancybox-nav:hover span {\r\n\tvisibility: visible;\r\n}\r\n\r\n.fancybox-tmp {\r\n\tposition: absolute;\r\n\ttop: -99999px;\r\n\tleft: -99999px;\r\n\tvisibility: hidden;\r\n\tmax-width: 99999px;\r\n\tmax-height: 99999px;\r\n\toverflow: visible !important;\r\n}\r\n\r\n/* Overlay helper */\r\n\r\n.fancybox-lock {\r\n    overflow: hidden !important;\r\n    width: auto;\r\n}\r\n\r\n.fancybox-lock body {\r\n    overflow: hidden !important;\r\n}\r\n\r\n.fancybox-lock-test {\r\n    overflow-y: hidden !important;\r\n}\r\n\r\n.fancybox-overlay {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tleft: 0;\r\n\toverflow: hidden;\r\n\tdisplay: none;\r\n\tz-index: 8010;\r\n\tbackground: url(" + __webpack_require__(15) + ");\r\n}\r\n\r\n.fancybox-overlay-fixed {\r\n\tposition: fixed;\r\n\tbottom: 0;\r\n\tright: 0;\r\n}\r\n\r\n.fancybox-lock .fancybox-overlay {\r\n\toverflow: auto;\r\n\toverflow-y: scroll;\r\n}\r\n\r\n/* Title helper */\r\n\r\n.fancybox-title {\r\n\tvisibility: hidden;\r\n\tfont: normal 13px/20px \"Helvetica Neue\",Helvetica,Arial,sans-serif;\r\n\tposition: relative;\r\n\ttext-shadow: none;\r\n\tz-index: 8050;\r\n}\r\n\r\n.fancybox-opened .fancybox-title {\r\n\tvisibility: visible;\r\n}\r\n\r\n.fancybox-title-float-wrap {\r\n\tposition: absolute;\r\n\tbottom: 0;\r\n\tright: 50%;\r\n\tmargin-bottom: -35px;\r\n\tz-index: 8050;\r\n\ttext-align: center;\r\n}\r\n\r\n.fancybox-title-float-wrap .child {\r\n\tdisplay: inline-block;\r\n\tmargin-right: -100%;\r\n\tpadding: 2px 20px;\r\n\tbackground: transparent; /* Fallback for web browsers that doesn't support RGBa */\r\n\tbackground: rgba(0, 0, 0, 0.8);\r\n\t-webkit-border-radius: 15px;\r\n\t   -moz-border-radius: 15px;\r\n\t        border-radius: 15px;\r\n\ttext-shadow: 0 1px 2px #222;\r\n\tcolor: #FFF;\r\n\tfont-weight: bold;\r\n\tline-height: 24px;\r\n\twhite-space: nowrap;\r\n}\r\n\r\n.fancybox-title-outside-wrap {\r\n\tposition: relative;\r\n\tmargin-top: 10px;\r\n\tcolor: #fff;\r\n}\r\n\r\n.fancybox-title-inside-wrap {\r\n\tpadding-top: 10px;\r\n}\r\n\r\n.fancybox-title-over-wrap {\r\n\tposition: absolute;\r\n\tbottom: 0;\r\n\tleft: 0;\r\n\tcolor: #fff;\r\n\tpadding: 10px;\r\n\tbackground: #000;\r\n\tbackground: rgba(0, 0, 0, .8);\r\n}\r\n\r\n/*Retina graphics!*/\r\n@media only screen and (-webkit-min-device-pixel-ratio: 1.5),\r\n\t   only screen and (min--moz-device-pixel-ratio: 1.5),\r\n\t   only screen and (min-device-pixel-ratio: 1.5){\r\n\r\n\t#fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {\r\n\t\tbackground-image: url(" + __webpack_require__(17) + ");\r\n\t\tbackground-size: 44px 152px; /*The size of the normal image, half the size of the hi-res image*/\r\n\t}\r\n\r\n\t#fancybox-loading div {\r\n\t\tbackground-image: url(" + __webpack_require__(14) + ");\r\n\t\tbackground-size: 24px 24px; /*The size of the normal image, half the size of the hi-res image*/\r\n\t}\r\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["jQuery"] = __webpack_require__(19);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "js/fancybox/blank.gif";
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "js/fancybox/fancybox_loading.gif";
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "js/fancybox/fancybox_loading@2x.gif";
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "js/fancybox/fancybox_overlay.png";
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "js/fancybox/fancybox_sprite.png";
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "js/fancybox/fancybox_sprite@2x.png";
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "style/bg2.png";
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10980,10 +11118,262 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 
 })( window );
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)(module)))
 
 /***/ }),
-/* 10 */
+/* 20 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+var stylesInDom = {},
+	memoize = function(fn) {
+		var memo;
+		return function () {
+			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+			return memo;
+		};
+	},
+	isOldIE = memoize(function() {
+		return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+	}),
+	getHeadElement = memoize(function () {
+		return document.head || document.getElementsByTagName("head")[0];
+	}),
+	singletonElement = null,
+	singletonCounter = 0,
+	styleElementsInsertedAtTop = [];
+
+module.exports = function(list, options) {
+	if(typeof DEBUG !== "undefined" && DEBUG) {
+		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the bottom of <head>.
+	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+	var styles = listToStyles(list);
+	addStylesToDom(styles, options);
+
+	return function update(newList) {
+		var mayRemove = [];
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+		if(newList) {
+			var newStyles = listToStyles(newList);
+			addStylesToDom(newStyles, options);
+		}
+		for(var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+			if(domStyle.refs === 0) {
+				for(var j = 0; j < domStyle.parts.length; j++)
+					domStyle.parts[j]();
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+}
+
+function addStylesToDom(styles, options) {
+	for(var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+		if(domStyle) {
+			domStyle.refs++;
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles(list) {
+	var styles = [];
+	var newStyles = {};
+	for(var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+		if(!newStyles[id])
+			styles.push(newStyles[id] = {id: id, parts: [part]});
+		else
+			newStyles[id].parts.push(part);
+	}
+	return styles;
+}
+
+function insertStyleElement(options, styleElement) {
+	var head = getHeadElement();
+	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+	if (options.insertAt === "top") {
+		if(!lastStyleElementInsertedAtTop) {
+			head.insertBefore(styleElement, head.firstChild);
+		} else if(lastStyleElementInsertedAtTop.nextSibling) {
+			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			head.appendChild(styleElement);
+		}
+		styleElementsInsertedAtTop.push(styleElement);
+	} else if (options.insertAt === "bottom") {
+		head.appendChild(styleElement);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement(styleElement) {
+	styleElement.parentNode.removeChild(styleElement);
+	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+	if(idx >= 0) {
+		styleElementsInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement(options) {
+	var styleElement = document.createElement("style");
+	styleElement.type = "text/css";
+	insertStyleElement(options, styleElement);
+	return styleElement;
+}
+
+function createLinkElement(options) {
+	var linkElement = document.createElement("link");
+	linkElement.rel = "stylesheet";
+	insertStyleElement(options, linkElement);
+	return linkElement;
+}
+
+function addStyle(obj, options) {
+	var styleElement, update, remove;
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+		styleElement = singletonElement || (singletonElement = createStyleElement(options));
+		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+	} else if(obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function") {
+		styleElement = createLinkElement(options);
+		update = updateLink.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+			if(styleElement.href)
+				URL.revokeObjectURL(styleElement.href);
+		};
+	} else {
+		styleElement = createStyleElement(options);
+		update = applyToTag.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle(newObj) {
+		if(newObj) {
+			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+				return;
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag(styleElement, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = styleElement.childNodes;
+		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+		if (childNodes.length) {
+			styleElement.insertBefore(cssNode, childNodes[index]);
+		} else {
+			styleElement.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag(styleElement, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		styleElement.setAttribute("media", media)
+	}
+
+	if(styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = css;
+	} else {
+		while(styleElement.firstChild) {
+			styleElement.removeChild(styleElement.firstChild);
+		}
+		styleElement.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink(linkElement, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	if(sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = linkElement.href;
+
+	linkElement.href = URL.createObjectURL(blob);
+
+	if(oldSrc)
+		URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -11011,12 +11401,12 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 11 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
 __webpack_require__(7)($);
-//require("fancybox/dist/css/jquery/fancybox.css");
+__webpack_require__(8);
 //window.$ = window.jQuery = $;
 
 /***/ })
