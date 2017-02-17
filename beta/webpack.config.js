@@ -2,12 +2,12 @@ var webpack = require("webpack");
 module.exports = {
     entry:{
         loader:"./js/loader.js",
-        jq:"./js/jqloader.js"
+        vendor:"./js/vendor.js"
     },
     output:{
-        path: __dirname + "/js/libs/",
+        path: __dirname + "/public/",
         filename: "[name].js",
-        publicPath:"/exsight/beta/js/libs/"
+        publicPath:"/exsight/beta/public/"
     },
     module: {
         loaders: [
