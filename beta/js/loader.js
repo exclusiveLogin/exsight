@@ -1,20 +1,43 @@
+setTimeout(function(){
+	window.RE = require.ensure(["./test.js"],function(){
+		console.log(RE);
+		setTimeout(function(){
+			window.TEST = require("./test");
+			console.log(TEST);
+		},5000);
+		
+	});
+},5000);
+
 import gl from "./global.js";
 import Integrator from "./integrator.js";
 import reloadProg from "./progresslogic.js";
 import detect from "./detect.js";
-import {trendToggle,loginToggle,resultToggle,refreshLog,connectionState,renderFancy,toggleFancy,refreshTooltips} from "./logic.js";
+import UtilClass from "./logic.js";
+import Blink from "./blink.js"
+window.ProgressBar = require("progressbar.js");
 
-window.trendToggle = trendToggle;
-window.loginToggle = loginToggle;
-window.resultToggle = resultToggle;
-window.refreshLog = refreshLog;
-window.connectionState = connectionState;
-window.renderFancy = renderFancy;
-window.toggleFancy = toggleFancy;
-window.refreshTooltips = refreshTooltips;
+window.Utility = new UtilClass();
 
+//temporary adapter
+window.trendToggle = Utility.trendToggle;
+window.loginToggle = Utility.loginToggle;
+window.resultToggle = Utility.resultToggle;
+window.refreshLog = Utility.refreshLog;
+window.connectionState = Utility.connectionState;
+window.renderFancy = Utility.renderFancy;
+window.toggleFancy = Utility.toggleFancy;
+window.refreshTooltips = Utility.refreshTooltips;
+
+window.userEnter = Utility.userEnter;
+window.showSysMsg = Utility.showSysMsg;
+window.stateRefresher = Utility.stateRefresher;
+//-----------------------------------
 window.Global = gl;
 window.reloadProgressBar = reloadProg;
+
+window.Blink = Blink;
+
 if(Integrator && gl){
     window.Integrator = Integrator;
 

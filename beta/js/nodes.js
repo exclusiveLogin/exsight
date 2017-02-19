@@ -10,7 +10,7 @@ class NodeCtrl{
 class Node extends NodeCtrl{
     constructor(name,container){
         super();
-        this.context = this;
+        //this.context = this;
         if(name){
             this.nameNode = name;
         }else {
