@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/exclusivelogin/exsight#readme",
   "dependencies": {
+    "bundle-loader": "^0.5.4",
     "css-loader": "",
     "expose-loader": "",
     "fancybox": "",

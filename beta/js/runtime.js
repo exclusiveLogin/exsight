@@ -15,7 +15,7 @@ $(document).ready(function(){
     //        $("#panel").html('<h2 class="label label-lg label-default conerror">Ваш браузер не поддерживается, воспользуйтесь нормальным (Chrome, Mozilla, Opera, Safari..и пр.)</h2>');
     //    }else {
             Global.nodes.push(Node.createNode("respark","panelnodes"));
-            Global.nodes[Global.nodes.length-1].start();
+            //Global.nodes[Global.nodes.length-1].start();
     //    }
     //}
     Global.jqready = true;

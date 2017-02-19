@@ -1,14 +1,3 @@
-setTimeout(function(){
-	window.RE = require.ensure(["./test.js"],function(){
-		console.log(RE);
-		setTimeout(function(){
-			window.TEST = require("./test");
-			console.log(TEST);
-		},5000);
-		
-	});
-},5000);
-
 import gl from "./global.js";
 import Integrator from "./integrator.js";
 import reloadProg from "./progresslogic.js";

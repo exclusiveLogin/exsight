@@ -1,9 +1,5 @@
-/**
- * Created by SavinSV on 24.01.17.
- */
-if(Global.nodeDependencies){
-    Global.nodeDependencies.respark = {
-        tankparmToggle(state){
+class respark{
+    tankparmToggle(state){
         if(state){
             $('#tankparm_panel').show(0,function () {
                 $(this).removeClass("transparent");
@@ -15,23 +11,22 @@ if(Global.nodeDependencies){
                 Global.tankselect = false;
             });
         }
-    },
-        refreshTank(tank) {
-            var context = Global.nodeDependencies.respark;
-            var wrapperRenderTank = renderTank.bind(context);
-            $.ajax({
-                url:"gettank.php",
-                dataType:"json",
-                method:'GET',
-                data:{"tank":tank},
-                success:function(data){
-                    wrapperRenderTank(data);
-                },
-                error:function(){
-                    console.log("error to load refresh tank ajax data");
-                }
-            });
-            function renderTank(data) {
+    }
+    refreshTank(tank) {
+        var wrapperRenderTank = renderTank.bind(this);
+        $.ajax({
+            url:"gettank.php",
+            dataType:"json",
+            method:'GET',
+            data:{"tank":tank},
+            success:function(data){
+                wrapperRenderTank(data);
+            },
+            error:function(){
+                console.log("error to load refresh tank ajax data");
+            }
+        });
+        function renderTank(data) {
             $('.prog_val').removeClass("transparentStatic").removeClass("blink");
 
             if(data.mass){
@@ -154,27 +149,26 @@ if(Global.nodeDependencies){
                 $('.prog_val').text("---");
             }
         }
-        },
-        refreshPark(){
-            var context = Global.nodeDependencies.respark;
-            var wrapperRenderpark = renderPark.bind(context);
-            var wrapperCalcArrows = calcArrows.bind(context);
-            $.ajax({
-                url:"gettank.php",
-                dataType:"json",
-                method:'GET',
-                data:{park:true},
-                success:function(data){
-                    connectionState(1);
-                    wrapperRenderpark(data);
-                    wrapperCalcArrows(data);
-                },
-                error:function(){
-                    console.log("error to load refresh park ajax data");
-                    connectionState(0);
-                }
-            });
-            function renderPark(data) {
+    }
+    refreshPark(){
+        var wrapperRenderpark = renderPark.bind(this);
+        var wrapperCalcArrows = calcArrows.bind(this);
+        $.ajax({
+            url:"gettank.php",
+            dataType:"json",
+            method:'GET',
+            data:{park:true},
+            success:function(data){
+                connectionState(1);
+                wrapperRenderpark(data);
+                wrapperCalcArrows(data);
+            },
+            error:function(){
+                console.log("error to load refresh park ajax data");
+                connectionState(0);
+            }
+        });
+        function renderPark(data) {
             if(data){
                 for(var elem in data){
                     elem = Number(elem);
@@ -300,72 +294,72 @@ if(Global.nodeDependencies){
             }
 
         }
-            function calcArrows(data) {
-                var filter = 1;
-                if(Global.IntegratorCon){
-                    if(data){
-                        for(var el in data){//перебор резервуаров
-                            var res = false;
-                            var tmpnum = Number(data[el].num);
-                            if(eval('Global.IntegratorForArrows'+data[el].num)){//тестируем первый резервуар
-                                if(data[el].level){//если есть уровень у выбранного резервуара
-                                    var tmplevel = Number(data[el].level);
-                                    var result = eval('Global.IntegratorForArrows'+data[el].num+'.Integrity(tmplevel)');
-                                    if(Math.abs(result)>filter){//значение выходит на рамки
-                                        if(result>0){
-                                            //console.log("Значение растет:"+result);
-                                            res = "up";
-                                        }else {
-                                            //console.log("Значение падает:"+result);
-                                            res = "down";
-                                        }
+        function calcArrows(data) {
+            var filter = 1;
+            if(Global.IntegratorCon){
+                if(data){
+                    for(var el in data){//перебор резервуаров
+                        var res = false;
+                        var tmpnum = Number(data[el].num);
+                        if(eval('Global.IntegratorForArrows'+data[el].num)){//тестируем первый резервуар
+                            if(data[el].level){//если есть уровень у выбранного резервуара
+                                var tmplevel = Number(data[el].level);
+                                var result = eval('Global.IntegratorForArrows'+data[el].num+'.Integrity(tmplevel)');
+                                if(Math.abs(result)>filter){//значение выходит на рамки
+                                    if(result>0){
+                                        //console.log("Значение растет:"+result);
+                                        res = "up";
                                     }else {
-                                        //console.log("Значение без изменений:"+result);
+                                        //console.log("Значение падает:"+result);
+                                        res = "down";
                                     }
-                                    renderArrows(tmpnum,res);
+                                }else {
+                                    //console.log("Значение без изменений:"+result);
                                 }
+                                renderArrows(tmpnum,res);
                             }
                         }
                     }
                 }
-                function renderArrows(tank,result) {
-                    var TankObj = false;
-                    if(tank){
-                        TankObj = $(".tank[data-num="+tank+"]");
-                        TankObj.find(".tank_arrow_top").removeClass("_up _down _neutral");
-                        TankObj.find(".tank_arrow_bottom").removeClass("_up _down _neutral");
+            }
+            function renderArrows(tank,result) {
+                var TankObj = false;
+                if(tank){
+                    TankObj = $(".tank[data-num="+tank+"]");
+                    TankObj.find(".tank_arrow_top").removeClass("_up _down _neutral");
+                    TankObj.find(".tank_arrow_bottom").removeClass("_up _down _neutral");
+                }
+                if(tank && result){
+                    TankObj = $(".tank[data-num="+tank+"]");
+                    if(result=="up"){
+                        TankObj.find(".tank_arrow_top").addClass("_up");
+                        //статус резервуаров
+                        $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-up'></i>");
+                    }else if(result=="down"){
+                        TankObj.find(".tank_arrow_bottom").addClass("_down");
+                        //статус резервуаров
+                        $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-down'></i>");
                     }
-                    if(tank && result){
-                        TankObj = $(".tank[data-num="+tank+"]");
-                        if(result=="up"){
-                            TankObj.find(".tank_arrow_top").addClass("_up");
-                            //статус резервуаров
-                            $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-up'></i>");
-                        }else if(result=="down"){
-                            TankObj.find(".tank_arrow_bottom").addClass("_down");
-                            //статус резервуаров
-                            $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-down'></i>");
-                        }
-                        else{
-                            TankObj.find(".tank_arrow_top").addClass("_neutral");
-                            TankObj.find(".tank_arrow_bottom").addClass("_neutral");
-                        }
-                    }
-                    if(tank && !result){
+                    else{
                         TankObj.find(".tank_arrow_top").addClass("_neutral");
                         TankObj.find(".tank_arrow_bottom").addClass("_neutral");
                     }
-                    refreshTooltips();
                 }
+                if(tank && !result){
+                    TankObj.find(".tank_arrow_top").addClass("_neutral");
+                    TankObj.find(".tank_arrow_bottom").addClass("_neutral");
+                }
+                refreshTooltips();
             }
-    },
-        lvl2perc(val,max){
+        }
+    }
+    lvl2perc(val,max){
         var desc = max/100;
         var cur = val/desc;
         //console.log(cur);
         return cur;
-    },
-        getProduct(code){
+    }
+    getProduct(code){
         var textProd = "";
         var className = "";
         switch (code) {
@@ -418,8 +412,8 @@ if(Global.nodeDependencies){
                 break;
         }
         return {text:textProd,class:className};
-    },
-        openTank(num) {
+    }
+    openTank(num) {
         if(num){
             Global.tankselect = num;
             $(".tank_num_val").text(num);
@@ -432,56 +426,55 @@ if(Global.nodeDependencies){
         }else {
             this.tankparmToggle(true);
         }
-    },
-        startNode() {
-            $("#btnrespark").addClass("nodeselected");
-            var resparkbodyPromise = fetch("nodes/templates/respark.html").then(function (response) {
-                return response.text();
+    }
+    startNode() {
+        $("#btnrespark").addClass("nodeselected");
+        var resparkbodyPromise = fetch("nodes/templates/respark.html").then(function (response) {
+            return response.text();
+        });
+        resparkbodyPromise.then(function (text) {
+            $('#minview').html(text);
+            reloadProgressBar();
+
+            $(".tank").addClass("initScroll");
+            $(".tank").each(function (index, elem) {
+                setTimeout(function () {
+                    $(elem).removeClass("initScroll");
+                },index*70);
             });
-            resparkbodyPromise.then(function (text) {
-                $('#minview').html(text);
-                reloadProgressBar();
-
-                $(".tank").addClass("initScroll");
-                $(".tank").each(function (index, elem) {
-                    setTimeout(function () {
-                        $(elem).removeClass("initScroll");
-                    },index*70);
-                });
-                $(".tank_pereliv").addClass("transparent");
-                $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
-                $(".tank").each(function () {
-                    var tmp = $(this).data("num");
-                    $(this).find(".tank_title").text(tmp);
-                });
-             });
-
-            var resparkpanelPromise = fetch("nodes/templates/resparkpanel.html").then(function (response) {
-                return response.text();
+            $(".tank_pereliv").addClass("transparent");
+            $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
+            $(".tank").each(function () {
+                var tmp = $(this).data("num");
+                $(this).find(".tank_title").text(tmp);
             });
-            resparkpanelPromise.then(function (text) {
-                $('#panelstate').html(text);
-            });
+        });
 
-            Promise.all([resparkbodyPromise,resparkpanelPromise]).then(function () {
-               console.log("all respark module is loaded");
+        var resparkpanelPromise = fetch("nodes/templates/resparkpanel.html").then(function (response) {
+            return response.text();
+        });
+        resparkpanelPromise.then(function (text) {
+            $('#panelstate').html(text);
+        });
 
-                var context = Global.nodeDependencies.respark;
-                var wrapperRefreshPark = context.refreshPark.bind(context);
-                wrapperRefreshPark();
+        Promise.all([resparkbodyPromise,resparkpanelPromise]).then(function () {
+            console.log("all respark module is loaded");
 
-                if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
-                if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
-                Global.refreshParkTimer=setInterval(wrapperRefreshPark,60000);
-                Global.refreshStateTimer=setInterval(stateRefresher,10000);
-            });
-    },
-        stopNode() {
+            var context = Global.nodeDependencies.respark;
+            var wrapperRefreshPark = context.refreshPark.bind(context);
+            wrapperRefreshPark();
+
             if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
             if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
-            $('#minview').empty();
-            $("#btnrespark").removeClass("nodeselected");
+            Global.refreshParkTimer=setInterval(wrapperRefreshPark,60000);
+            Global.refreshStateTimer=setInterval(stateRefresher,10000);
+        });
+    }
+    stopNode() {
+        if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
+        if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
+        $('#minview').empty();
+        $("#btnrespark").removeClass("nodeselected");
 
-        }
-    };
+    }
 }
