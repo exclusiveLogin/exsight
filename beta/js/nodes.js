@@ -49,13 +49,15 @@ class Node extends NodeCtrl{
             };
         });
         pr_node.then(function () {
-            console.log("Promise ok");
+            //console.log("Promise ok");
             Global.nodes.map(function (node,index) {
                 if(node.nameNode==name){
                     console.log("Есть такой узел - "+node.nameNode+"index - "+index);
                     Global.nodes[index].nodeObj = eval("new "+name+"();");
+                    Global.nodes[index].nodeObj.startNode();//temp
                 }
             });
+
         },function () {
             console.log("Promise error");
         });

@@ -92,18 +92,22 @@ export default class Utility{
 			}
 		});
 	}
-	toggleFancy(num) {
+	toggleFancy(num,dep) {
+		let index = 0;
+		if(dep){
+			index = getNode(dep);
+		}
 		Global.fancy = !Global.fancy;
 		if(Global.fancy){
 			$('.tank').addClass("fancyemiter");//переводим на fancy
-			var tmpnum = Global.tankselect;
-			Global.nodeDependencies.respark.tankparmToggle(false);//закрываем окно
-			Global.tankselect = tmpnum;
+			//var tmpnum = Global.tankselect;
+			Global.nodes[index].nodeObj.tankparmToggle(false);//закрываем окно
+			//Global.tankselect = tmpnum;
 			$.fancybox.open("#fancycontainer");
 		}else {
 			$('.tank').removeClass("fancyemiter");//delete fancy
 			$.fancybox.close();
-			Global.nodeDependencies.respark.tankparmToggle(true,Global.tankselect);
+            Global.nodes[index].nodeObj.tankparmToggle(true,Global.tankselect);
 		}
 	}
 	refreshTooltips() {

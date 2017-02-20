@@ -58,18 +58,18 @@
     left: -10px;
 }
 .progress_tank > svg {
-    height: 50px;
-    display: inline;
+    height: 45px;
+    display: inline !important;
     position: relative;
-    top: 3px;
+    top: 5px;
     transform-style: preserve-3d;
     transform: perspective(350px) rotateX(-12deg) rotateY(40deg) rotateZ(-90deg);
-    left: 40%;
+    right: -40%;
     border-radius: 7px;
-    box-shadow: 0 0 20px 2px gray;
+    box-shadow: 0 0 20px 2px grey;
     border: 2px inset #B4B5B5;
-    width: 67px;
+    width: 70px !important;
 }
-#tankparm_panel{
+#parm_panel{
     display: none;
 }

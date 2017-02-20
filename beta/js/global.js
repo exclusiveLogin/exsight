@@ -1,4 +1,5 @@
 let Global = {
+    demo:true,
     pr_tank:[],
     jqready:false,
     swready:false,

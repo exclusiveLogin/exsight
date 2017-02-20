@@ -8,7 +8,16 @@ $.ajaxSetup({
     cache:false
 });
 $(document).ready(function(){
-	
+	if(Global.demo){
+	    $("#fancydemo").fancybox({
+	        modal:true
+        }).click();
+	    setTimeout(function(){
+	        $.fancybox.close();
+        },5000);
+    }
+
+
     //if(Global.UA){
     //    if(Global.UA.browser.family == "IE"){
     //        $('#panel').show().removeClass("transparent");
@@ -64,13 +73,17 @@ $(document).ready(function(){
     });
     $('#minview').on('click','.tank',function(){
         var num = $(this).data("num");
-        //console.log("btn_tank num = "+num);
         if(num){
-            Global.nodeDependencies.respark.openTank(num);
+            if(getNode(respark)>(-1)){
+                console.log("открываем");
+                Global.nodes[getNode(respark)].nodeObj.openTank(num);
+            }
         }
     });
     $('#btn_close_parm').on('click',function(){
-        Global.nodeDependencies.respark.tankparmToggle(0);
+        if(getNode(respark)>(-1)){
+            Global.nodes[getNode(respark)].nodeObj.tankparmToggle(0);
+        }
     });
     $('.btn-fb').on('click',function(){
         toggleFancy();
@@ -87,6 +100,19 @@ $(document).ready(function(){
         }
     });
 });
+
+function getNode(classNode){
+    let status = -1;
+    Global.nodes.map(function (node, index) {
+        if(node.nodeObj instanceof classNode){
+            console.log("node ok index:"+index);
+            status = index;
+        }else {
+            console.log("node NOT OK index:-1");
+        }
+    });
+    return status;
+}
 
 Global.blink1 = new Blink(".pereliv,.errortank,.blink",500);
 Global.blink1.init();

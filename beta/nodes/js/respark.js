@@ -1,12 +1,12 @@
 class respark{
     tankparmToggle(state){
         if(state){
-            $('#tankparm_panel').show(0,function () {
+            $('#parm_panel').show(0,function () {
                 $(this).removeClass("transparent");
             });
         }
         else{
-            $('#tankparm_panel').hide(0,function () {
+            $('#parm_panel').hide(0,function () {
                 $(this).addClass("transparent");
                 Global.tankselect = false;
             });
@@ -95,7 +95,8 @@ class respark{
                     if(tmpperc>95){
                         $('.prog_val').addClass("blink");
                     }
-                    pr_opt = {};
+                    let pr_opt = {};
+                    let pr_optfancy ={};
                     if(tmpperc<10){
                         $('.prog_val').css("color","#08f");
                         pr_opt={
@@ -223,7 +224,7 @@ class respark{
                             }
 
 
-                            pr_opt = {};
+                            let pr_opt = {};
                             if(tmpperc<10){
                                 tmpPerc.css("color","#08f");
                                 tmpReal.css("color","#333");
@@ -434,7 +435,7 @@ class respark{
         });
         resparkbodyPromise.then(function (text) {
             $('#minview').html(text);
-            reloadProgressBar();
+            //reloadProgressBar();
 
             $(".tank").addClass("initScroll");
             $(".tank").each(function (index, elem) {
@@ -456,12 +457,26 @@ class respark{
         resparkpanelPromise.then(function (text) {
             $('#panelstate').html(text);
         });
+        console.log("before promise start");
+        console.log(this);
+        var context;
+
+        if(this instanceof respark){
+            context = this;
+        }else {
+            Global.nodes.map(function (node,index) {
+                if(node.nodeObj instanceof respark){
+                    context = node.nodeObj;
+                }
+            });
+        }
+
+        var wrapperRefreshPark = this.refreshPark.bind(context);
 
         Promise.all([resparkbodyPromise,resparkpanelPromise]).then(function () {
             console.log("all respark module is loaded");
+            reloadProgressBar();
 
-            var context = Global.nodeDependencies.respark;
-            var wrapperRefreshPark = context.refreshPark.bind(context);
             wrapperRefreshPark();
 
             if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);

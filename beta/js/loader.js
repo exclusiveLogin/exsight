@@ -6,6 +6,9 @@ import UtilClass from "./logic.js";
 import Blink from "./blink.js"
 window.ProgressBar = require("progressbar.js");
 
+require("../style/dark.css");
+require("../style/progress.css");
+
 window.Utility = new UtilClass();
 
 //temporary adapter

@@ -401,4 +401,5 @@ export default function reloadProgressBar() {
 		"width":"",
 		"display":""
 	});
+	console.log("reload progressbar init");
 }

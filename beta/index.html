@@ -8,28 +8,16 @@
 
 
     <title>EXSIGHT - WEB SCADA CLIENT</title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
-    <link rel="icon" sizes="192x192" href="/style/logo.png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-    <link rel="stylesheet" href="style/dark.css">
-    <link rel="stylesheet" href="style/progress.css">
- 
+    <link rel="icon" sizes="192x192" href="public/images/rn_logo.png">
     <!--Система сборки-->
-    <script src="public/loader.js" type="application/javascript"></script>
     <script src="public/vendor.js" type="application/javascript"></script>
+    <script src="public/loader.js" type="application/javascript"></script>
 
     <!--Nodes-->
     <script src="js/nodes.js" type="application/javascript"></script>
-    <!--script src="nodes/js/respark.js"></script-->
     <script src="js/runtime.js" type="application/javascript"></script>
 
-    <!--Bootstrap-->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous" type="application/javascript"></script>
-    
     <!--Snow>
     <script type='text/javascript' src='http://mvcreative.ru/example/6/1/snow.js'></script>
     <script-- type='text/javascript'>
@@ -48,8 +36,8 @@
         <div class="logo col-xs-12 visible-xs  text-center">EXSIGHT - WEB SCADA CLIENT</div>
         <div class="col-lg-4 col-md-4 col-sm-4 hidden-xs demo">Ограниченная демоверсия</div>
         <div id="menu" class="col-lg-3 col-md-3 col-sm-3 text-right hidden-xs">
-            <button class="btn btn-success btnlogin">Войти в систему</button>
-            <button class="btn btn-danger btnlogout">Выйти из системы</button>
+            <button class="btn btn-success btnlogin"><i class="fa fa-user-circle"></i> Войти в систему</button>
+            <button class="btn btn-danger btnlogout"><i class="fa fa-user-circle"></i> Выйти из системы</button>
         </div>
         <div id="menupda" class="col-xs-12 visible-xs text-center"></div>
 
@@ -71,7 +59,7 @@
     </div>
     <div class="danger_field"></div>
     <div id="wrapper" class="transparent">
-        <div class="tank_panel transparent" id="tankparm_panel">
+        <div class="tank_panel transparent" id="parm_panel">
             <div class="row">
                 <button class="btn_close btn btn-danger" id="btn_close_parm"><i class="fa fa-close"></i></button>
                 <div class="col-md-10 col-md-offset-2">
@@ -223,6 +211,13 @@
                             </div>
                 <div class="mydevider"></div>
             </div>
+        </div>
+    </div>
+    <div id="fancydemo" style="display: none">
+        <div class="row fb text-center">
+            <h1>Загрузка системы EXSIGHT v0.9.1 beta (Demo)</h1>
+            <h1 class="fa fa-spin fa-spinner fa-4x" a></h1cla>
+            <h3 class="rn_color">пожалуйста подождите...</h3>
         </div>
     </div>
 </body>

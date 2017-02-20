@@ -63,11 +63,319 @@
 /******/ 	__webpack_require__.p = "/exsight/beta/public/";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 31);
+/******/ 	return __webpack_require__(__webpack_require__.s = 68);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+var stylesInDom = {},
+	memoize = function(fn) {
+		var memo;
+		return function () {
+			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+			return memo;
+		};
+	},
+	isOldIE = memoize(function() {
+		return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+	}),
+	getHeadElement = memoize(function () {
+		return document.head || document.getElementsByTagName("head")[0];
+	}),
+	singletonElement = null,
+	singletonCounter = 0,
+	styleElementsInsertedAtTop = [];
+
+module.exports = function(list, options) {
+	if(typeof DEBUG !== "undefined" && DEBUG) {
+		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the bottom of <head>.
+	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+	var styles = listToStyles(list);
+	addStylesToDom(styles, options);
+
+	return function update(newList) {
+		var mayRemove = [];
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+		if(newList) {
+			var newStyles = listToStyles(newList);
+			addStylesToDom(newStyles, options);
+		}
+		for(var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+			if(domStyle.refs === 0) {
+				for(var j = 0; j < domStyle.parts.length; j++)
+					domStyle.parts[j]();
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+}
+
+function addStylesToDom(styles, options) {
+	for(var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+		if(domStyle) {
+			domStyle.refs++;
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles(list) {
+	var styles = [];
+	var newStyles = {};
+	for(var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+		if(!newStyles[id])
+			styles.push(newStyles[id] = {id: id, parts: [part]});
+		else
+			newStyles[id].parts.push(part);
+	}
+	return styles;
+}
+
+function insertStyleElement(options, styleElement) {
+	var head = getHeadElement();
+	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+	if (options.insertAt === "top") {
+		if(!lastStyleElementInsertedAtTop) {
+			head.insertBefore(styleElement, head.firstChild);
+		} else if(lastStyleElementInsertedAtTop.nextSibling) {
+			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			head.appendChild(styleElement);
+		}
+		styleElementsInsertedAtTop.push(styleElement);
+	} else if (options.insertAt === "bottom") {
+		head.appendChild(styleElement);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement(styleElement) {
+	styleElement.parentNode.removeChild(styleElement);
+	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+	if(idx >= 0) {
+		styleElementsInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement(options) {
+	var styleElement = document.createElement("style");
+	styleElement.type = "text/css";
+	insertStyleElement(options, styleElement);
+	return styleElement;
+}
+
+function createLinkElement(options) {
+	var linkElement = document.createElement("link");
+	linkElement.rel = "stylesheet";
+	insertStyleElement(options, linkElement);
+	return linkElement;
+}
+
+function addStyle(obj, options) {
+	var styleElement, update, remove;
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+		styleElement = singletonElement || (singletonElement = createStyleElement(options));
+		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+	} else if(obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function") {
+		styleElement = createLinkElement(options);
+		update = updateLink.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+			if(styleElement.href)
+				URL.revokeObjectURL(styleElement.href);
+		};
+	} else {
+		styleElement = createStyleElement(options);
+		update = applyToTag.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle(newObj) {
+		if(newObj) {
+			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+				return;
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag(styleElement, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = styleElement.childNodes;
+		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+		if (childNodes.length) {
+			styleElement.insertBefore(cssNode, childNodes[index]);
+		} else {
+			styleElement.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag(styleElement, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		styleElement.setAttribute("media", media)
+	}
+
+	if(styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = css;
+	} else {
+		while(styleElement.firstChild) {
+			styleElement.removeChild(styleElement.firstChild);
+		}
+		styleElement.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink(linkElement, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	if(sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = linkElement.href;
+
+	linkElement.href = URL.createObjectURL(blob);
+
+	if(oldSrc)
+		URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 // Utility functions
@@ -210,13 +518,13 @@ module.exports = {
 
 
 /***/ }),
-/* 1 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Base object for different progress bar shapes
 
-var Path = __webpack_require__(3);
-var utils = __webpack_require__(0);
+var Path = __webpack_require__(9);
+var utils = __webpack_require__(2);
 
 var DESTROYED_ERROR = 'Object is destroyed';
 
@@ -534,13 +842,32 @@ module.exports = Shape;
 
 
 /***/ }),
-/* 2 */
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "style/bg.jpg";
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "style/bg2.png";
+
+/***/ }),
+/* 6 */,
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "style/tank.png";
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Circle shaped progress bar
 
-var Shape = __webpack_require__(1);
-var utils = __webpack_require__(0);
+var Shape = __webpack_require__(3);
+var utils = __webpack_require__(2);
 
 var Circle = function Circle(container, options) {
     // Use two arcs to form a circle
@@ -580,13 +907,13 @@ module.exports = Circle;
 
 
 /***/ }),
-/* 3 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Lower level API to animate any kind of svg path
 
-var Tweenable = __webpack_require__(28);
-var utils = __webpack_require__(0);
+var Tweenable = __webpack_require__(66);
+var utils = __webpack_require__(2);
 
 var EASING_ALIASES = {
     easeIn: 'easeInCubic',
@@ -758,8 +1085,8 @@ module.exports = Path;
 
 
 /***/ }),
-/* 4 */,
-/* 5 */
+/* 10 */,
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -797,7 +1124,7 @@ class Blink{
 
 
 /***/ }),
-/* 6 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -1999,11 +2326,12 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 })(window);
 
 /***/ }),
-/* 7 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 let Global = {
+    demo:true,
     pr_tank:[],
     jqready:false,
     swready:false,
@@ -2036,7 +2364,7 @@ let Global = {
 /* harmony default export */ __webpack_exports__["a"] = Global;
 
 /***/ }),
-/* 8 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2137,7 +2465,7 @@ function Integrator(){
 /* harmony default export */ __webpack_exports__["a"] = Integrator;
 
 /***/ }),
-/* 9 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2235,18 +2563,22 @@ class Utility{
 			}
 		});
 	}
-	toggleFancy(num) {
+	toggleFancy(num,dep) {
+		let index = 0;
+		if(dep){
+			index = getNode(dep);
+		}
 		Global.fancy = !Global.fancy;
 		if(Global.fancy){
 			$('.tank').addClass("fancyemiter");//переводим на fancy
-			var tmpnum = Global.tankselect;
-			Global.nodeDependencies.respark.tankparmToggle(false);//закрываем окно
-			Global.tankselect = tmpnum;
+			//var tmpnum = Global.tankselect;
+			Global.nodes[index].nodeObj.tankparmToggle(false);//закрываем окно
+			//Global.tankselect = tmpnum;
 			$.fancybox.open("#fancycontainer");
 		}else {
 			$('.tank').removeClass("fancyemiter");//delete fancy
 			$.fancybox.close();
-			Global.nodeDependencies.respark.tankparmToggle(true,Global.tankselect);
+            Global.nodes[index].nodeObj.tankparmToggle(true,Global.tankselect);
 		}
 	}
 	refreshTooltips() {
@@ -2378,7 +2710,7 @@ class Utility{
 
 
 /***/ }),
-/* 10 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2786,53 +3118,167 @@ function reloadProgressBar() {
 		"width":"",
 		"display":""
 	});
+	console.log("reload progressbar init");
 }
 
 /***/ }),
-/* 11 */,
-/* 12 */,
-/* 13 */
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
     // Higher level API, different shaped progress bars
-    Line: __webpack_require__(26),
-    Circle: __webpack_require__(2),
-    SemiCircle: __webpack_require__(27),
+    Line: __webpack_require__(64),
+    Circle: __webpack_require__(8),
+    SemiCircle: __webpack_require__(65),
 
     // Lower level API to use any SVG path
-    Path: __webpack_require__(3),
+    Path: __webpack_require__(9),
 
     // Base-class for creating new custom shapes
     // to be in line with the API of built-in shapes
     // Undocumented.
-    Shape: __webpack_require__(1),
+    Shape: __webpack_require__(3),
 
     // Internal utils, undocumented.
-    utils: __webpack_require__(0)
+    utils: __webpack_require__(2)
 };
 
 
 /***/ }),
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
 /* 21 */,
 /* 22 */,
 /* 23 */,
 /* 24 */,
-/* 25 */,
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(43);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!./../node_modules/css-loader/index.js!./dark.css", function() {
+			var newContent = require("!!./../node_modules/css-loader/index.js!./dark.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
 /* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(44);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!./../node_modules/css-loader/index.js!./progress.css", function() {
+			var newContent = require("!!./../node_modules/css-loader/index.js!./progress.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 27 */,
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".headerdark{\r\n    background-color: #313131;\r\n    margin-left: 0;\r\n    margin-right: 0;\r\n    padding-left: 0;\r\n    padding-right: 0;\r\n    color: #E0E0E0;\r\n    text-shadow: 0 0 5px rgba(255,255,255,0.5);\r\n    //border-bottom: 2px solid #10FF00;\r\n    box-shadow: 0 0 10px 0px rgba(0,0,0,0.7);\r\n    z-index: 100;\r\n    position: relative;\r\n}\r\n.headerdark::after{\r\n    border-bottom: 2px red solid;\r\n    border-left:2px red solid;\r\n}\r\n.danger_field{\r\n    width: 100%;\r\n    height: 10px;\r\n    background-color:#FFD100;\r\n    box-shadow: 0 0 10px 0px rgba(0,0,0,0.7);\r\n    z-index: 150;\r\n    position: relative;\r\n}\r\n.myhide{\r\n    /*transform: translate(0,-100px);*/\r\n    margin-top: -100px;\r\n}\r\nhtml{\r\n    height: 100%;\r\n}\r\nbody{\r\n    margin: 0;\r\n    height: 100%;\r\n    /*background-color: #777;*/\r\n    margin-bottom: 30px;\r\n    background: #4c4c4c; /* Old browsers */\r\n    background: linear-gradient(to bottom, #888 0%,#333 30%,#444 70%,#888 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\r\n    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#6d6d6d',GradientType=0 ); /* IE6-9 */\r\n}\r\n#container{\r\n    padding-top: 10px;\r\n}\r\n#menu{\r\n    margin-bottom: 10px;\r\n}\r\nsmall{\r\n    font-size: 50%;\r\n}\r\n.logo{\r\n    margin-top: 15px;\r\n    text-align: left;\r\n    padding-left: 70px;\r\n    padding-top: 10px;\r\n    font-size: 125%;\r\n    text-transform: uppercase;\r\n    color: #FFD100;\r\n    text-shadow: 0 0 10px #FFD100;\r\n    background-image: url(" + __webpack_require__(46) + ");\r\n    background-repeat: no-repeat;\r\n    background-position: left;\r\n    line-height: 20px;\r\n    background-size: 70px;\r\n    height: 64px;\r\n}\r\n.logo_title{\r\n    text-align: left;\r\n    font-weight: bold;\r\n    font-size: 200%;\r\n}\r\n#loginform{\r\n    padding: 10px;\r\n    border-top: 1px solid red;\r\n    display: none;\r\n}\r\n#fancytemp{\r\n    display: none;\r\n}\r\n\r\nh2.card_title{\r\n    font-size: 26px;\r\n    margin-top: 8px;\r\n    line-height: 20px;\r\n    color: white;\r\n    font-family: 'Josefin Sans', sans-serif;\r\n    text-transform: uppercase;\r\n}\r\nh3.card_status{\r\n    font-size: 10px;\r\n    line-height: 0px;\r\n    margin: 0px;\r\n    color: grey;\r\n    font-family: 'GardensC';\r\n    text-transform: uppercase;\r\n    font-weight: bold;\r\n}\r\nh3.card_status_on{\r\n    color: greenyellow;\r\n    text-shadow: 0 0 5px rgba(50,255,50,0.5);\r\n}\r\nh3.card_status_off{\r\n    color: red;\r\n    text-shadow: 0 0 5px rgba(255,50,50,0.5);\r\n}\r\n#free_cont{\r\n    margin-top: 15px;\r\n    padding-right: 0px;\r\n    padding-left: 0px;\r\n    padding-bottom: 5px;\r\n    border-top: black solid 2px;\r\n    font-family: 'Quicksand', sans-serif;\r\n    display: none;\r\n\r\n}\r\n\r\n.uc_col{\r\n    height: 100%;\r\n    color: whitesmoke;\r\n    line-height: 20px;\r\n    padding: 0px;\r\n    padding-bottom: 15px;\r\n}\r\n.uc_wrapper{\r\n    height: 100%;\r\n    padding: 0;\r\n}\r\n.uc_col_left{\r\n    padding-left: 0;\r\n    padding-right: 0;\r\n    height: 100%;\r\n    padding-top: 15px;\r\n}\r\n.uc_photo{\r\n    height: 150px;\r\n    width: 100%;\r\n    border: 2px solid white;\r\n    border-radius: 5px;\r\n    max-width: 150px;\r\n    margin: 0px auto;\r\n    margin-bottom: 10px;\r\n    background-size: cover;\r\n    box-shadow: 0 0 10px 5px rgba(255,255,255,0.7);\r\n\r\n}\r\n.btn{\r\n    margin-top: 5px;\r\n}\r\n.test{\r\n    border:1px solid red;\r\n}\r\n.uc_emo_slider{\r\n    margin: 15px auto;\r\n    height: 170px !important;\r\n}\r\n.uc_emocontrol{\r\n    padding: 0px;\r\n}\r\n.uc_card{\r\n    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#701717+0,aa2525+48,5b0404+76,930101+100 */\r\n    background: #701717; /* Old browsers */\r\n    background: -moz-linear-gradient(top,  #701717 0%, #aa2525 48%, #5b0404 76%, #930101 100%); /* FF3.6-15 */\r\n    background: -webkit-linear-gradient(top,  #701717 0%,#aa2525 48%,#5b0404 76%,#930101 100%); /* Chrome10-25,Safari5.1-6 */\r\n    background: linear-gradient(to bottom,  #701717 0%,#aa2525 48%,#5b0404 76%,#930101 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\r\n    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#701717', endColorstr='#930101',GradientType=0 ); /* IE6-9 */\r\n\r\n}\r\n.uc_emo{\r\n    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#959595+0,0d0d0d+46,010101+50,0a0a0a+53,4e4e4e+76,383838+87,1b1b1b+100;Black+Gloss+Pipe */\r\n    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#bfd255+0,8eb92a+50,72aa00+51,9ecb2d+100;Green+Gloss */\r\n    background: #bfd255; /* Old browsers */\r\n    background: -moz-linear-gradient(top,  #bfd255 0%, #8eb92a 50%, #72aa00 51%, #9ecb2d 100%); /* FF3.6-15 */\r\n    background: -webkit-linear-gradient(top,  #bfd255 0%,#8eb92a 50%,#72aa00 51%,#9ecb2d 100%); /* Chrome10-25,Safari5.1-6 */\r\n    background: linear-gradient(to bottom,  #bfd255 0%,#8eb92a 50%,#72aa00 51%,#9ecb2d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\r\n    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bfd255', endColorstr='#9ecb2d',GradientType=0 ); /* IE6-9 */\r\n    margin-bottom: 15px;\r\n}\r\n.uc_emo_val{\r\n    text-align: center;\r\n}\r\n.uc_weather{\r\n    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+50,207cca+51,7db9e8+100;Blue+Gloss+Default */\r\n    background: #1e5799; /* Old browsers */\r\n    background: -moz-linear-gradient(top,  #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%); /* FF3.6-15 */\r\n    background: -webkit-linear-gradient(top,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* Chrome10-25,Safari5.1-6 */\r\n    background: linear-gradient(to bottom,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\r\n    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */\r\n    margin-bottom: 15px;\r\n}\r\n.uc_title{\r\n    margin-bottom: 15px;\r\n}\r\n.uc_col_weather{\r\n\r\n}\r\n.uc_login, .uc_name, .uc_title{\r\n    text-transform: uppercase;\r\n}\r\n#sysmsg, #emer_code{\r\n    color: white;\r\n    text-align: center;\r\n    font-size: 12px;\r\n    font-family: Arial;\r\n    margin-bottom: 15px;\r\n    transition: all 1s ease;\r\n}\r\n.sys_err{\r\n    background: #91151b;\r\n}\r\n.sys_ok{\r\n    background: #1e9126;\r\n}\r\n#tooltip {\r\n    z-index: 10000;\r\n    position: absolute;\r\n    display: none;\r\n    top:0px;\r\n    left:0px;\r\n    background-color: #fff;\r\n    padding: 5px 10px 5px 10px;\r\n    color: grey;\r\n    opacity: 0.8;\r\n}\r\n.label-disabled{\r\n    opacity: 0.3;\r\n}\r\n.btn_clsuc{\r\n    margin-bottom: 15px;\r\n}\r\n#trend {\t\r\n    display: none;\r\n    transition:opacity 0.5s ease;\r\n}\r\n.pereliv{\r\n    transition:opacity 0.5s ease;\r\n    text-transform: uppercase;\r\n    font-weight: bold;\r\n    font-style: normal !important;\r\n}\r\n.transparent{\r\n    opacity:0;\r\n    transform: translateX(-100%);\r\n}\r\n.transparentStatic{\r\n    opacity:0;\r\n}\r\n.code_msg{\r\n    text-align: center;\r\n    font-size: 80%;\r\n    color: white;\r\n}\r\n.mydevider{\r\n    margin: 5px 0;\r\n    border-bottom: 1px grey solid;\r\n}\r\n.row{\r\n    margin-left: 0;\r\n    margin-right: 0;\r\n}\r\n::-webkit-scrollbar {\r\n    height: 12px;\r\n    width: 12px;\r\n    background: #333;\r\n}\r\n::-webkit-scrollbar-thumb {\r\n    background: #111;\r\n    -webkit-border-radius: 1ex;\r\n    -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);\r\n}\r\n::-webkit-scrollbar-corner {\r\n    background: #000;\r\n}\r\na{\r\n    font-weight: bold;\r\n    color: #FFD100;\r\n}\r\na:hover{\r\n    font-weight: bold;\r\n    text-transform: uppercase;\r\n    color: #bfd255;\r\n}\r\n#usermap {\r\n    height: 300px;\r\n    width: 100%;\r\n    border-radius:10px;\r\n    border: 3px grey outset;\r\n}\r\n#footer{\r\n    position: fixed;\r\n    bottom: 0;\r\n    text-align: center;\r\n    color: #FFD100;\r\n    background-color: #333;\r\n    font-size: 80%;\r\n    width: 100%;\r\n    line-height: 15px;\r\n    border-top:3px solid #FFD100;\r\n    padding-bottom: 10px;\r\n}\r\n\r\n/*-------------------------------trends---------------------------*/\r\n.rt-trend{\r\n    background-color: #4c4c4c;\r\n    border: 2px dotted red;\r\n    color: white;\r\n    font-size: 200%;\r\n    font-family: \"Arial Black\";\r\n    text-align: center;\r\n}\r\n.cont_panel{\r\n    padding: 5px;\r\n    background-color: #313131;\r\n    background-image: url(" + __webpack_require__(4) + ");\r\n    border-top:3px solid #FFD100;\r\n    border-bottom:3px solid #FFD100;\r\n    margin-top: 5px;\r\n    margin-bottom: 5px;\r\n    overflow: auto;\r\n    transition: all 1s ease;\r\n    text-align: center;\r\n    /*font-size: 150% !important;*/\r\n}\r\n.btncont{\r\n    text-align: center;\r\n    height: 50px;\r\n}\r\n#wrapper{\r\n    z-index: 0;\r\n    position: relative;\r\n    transition: all 0.5s ease;\r\n    /*background-image: url(\"park_bg.jpg\");*/\r\n}\r\n#tubecard{\r\n    padding-top: 15px;\r\n    padding-bottom: 15px;\r\n    border-top:3px solid #FFD100;\r\n    border-bottom:3px solid #FFD100;\r\n    background-color: #313131;\r\n    background-image: url(" + __webpack_require__(4) + ");\r\n    transition: all 0.5s ease;\r\n}\r\n#arj_trend{\r\n    height: 496px;\r\n}\r\n#map{\r\n    height: 300px;\r\n    background-color: #4c4c4c;\r\n}\r\n#info{\r\n    text-align: center;\r\n    font-size: 110%;\r\n    color: white;\r\n}\r\n.tubetitle{\r\n    font-size: 150%;\r\n    text-align: center;\r\n    color: white;\r\n    margin-top: -5px;\r\n    margin-bottom: 5px;\r\n}\r\n.btn_close{\r\n    top: -10px;\r\n    right: 5px;\r\n    display: block;\r\n    /* float: right; */\r\n    /* position: absolute; */\r\n    margin-bottom: -30px;\r\n}\r\n#result{\r\n    color: white;\r\n    font-size: 110%;\r\n    text-align: center;\r\n    padding-top: 15px;\r\n    padding-bottom: 15px;\r\n    border-top:3px solid #FFD100;\r\n    border-bottom:3px solid #FFD100;\r\n    background-color: #313131;\r\n    background-image: url(" + __webpack_require__(4) + ");\r\n    transition: all 0.5s ease;\r\n    text-transform: uppercase;\r\n    font-weight: bold;\r\n}\r\n.res_val{\r\n    font-size: 200%;\r\n}\r\n.res_title{\r\n    font-size: 90%;\r\n}\r\n.tank {\r\n    background-position: center center;\r\n    background-image: url(" + __webpack_require__(7) + ");\r\n    background-size: contain;\r\n    height: 120px;\r\n    margin-bottom: 20px;\r\n    margin-top: 20px;\r\n    background-repeat: no-repeat;\r\n    transition: all 0.5s ease;\r\n    border-radius: 20px;\r\n    border: 2px transparent solid;\r\n    cursor: pointer;\r\n    /*min-width:120px;*/\r\n}\r\n.tank_pic {\r\n    background-position: center center;\r\n    background-image: url(" + __webpack_require__(7) + ");\r\n    background-size: contain;\r\n    height: 230px;\r\n    background-repeat: no-repeat;\r\n    transition: all 0.5s ease;\r\n    border-radius: 20px;\r\n    border: 2px transparent solid;\r\n}\r\n.tank:hover{\r\n    border: 2px #FFD100 solid;\r\n\r\n}\r\n.tank_num{\r\n    font-size: 150%;\r\n    font-weight: bold;\r\n    margin-top: 10px;\r\n    text-shadow: 0 0 10px grey;\r\n}\r\n.tank_title{\r\n    font-size: 100%;\r\n    line-height: 30px;\r\n    font-weight: bold;\r\n    top: 30px;\r\n    left: -8px;\r\n    position: relative;\r\n    text-shadow: 2px 2px 5px grey;\r\n}\r\n.park_name{\r\n    font-size: 120%;\r\n    font-weight: bold;\r\n    color: #FFD100;\r\n    border-bottom: 4px #FFD100 solid;\r\n    text-shadow: 2px 2px 10px rgba(255,200,0,0.6);\r\n    line-height: 18px;\r\n}\r\n.rn_color{\r\n    color: #FFD100;\r\n    font-weight: bold;\r\n}\r\n.tank_panel{\r\n    color: #FFD100;\r\n    padding: 5px;\r\n    background-color: #222;\r\n    background-image: url(" + __webpack_require__(5) + ");\r\n    border-top:3px solid #FFD100;\r\n    border-bottom:3px solid #FFD100;\r\n    margin-top: 5px;\r\n    margin-bottom: 5px;\r\n    overflow: auto;\r\n    transition: all 1s ease;\r\n    text-align: center;\r\n}\r\n.tank_panel_parm{\r\n    font-size: 9px !important;\r\n    font-weight: normal;\r\n    text-align: right;\r\n}\r\n.tank_val{\r\n    font-size: 120%;\r\n    font-weight: bold;\r\n}\r\n.prod_cont{\r\n    bottom: -15px;\r\n    position: absolute;\r\n    width: 100%;\r\n    left: 0px;\r\n    text-align: center;\r\n}\r\n.tank_cont{\r\n    width: 90%;\r\n    display: block;\r\n}\r\n.fancycontainer{\r\n    margin:20px;\r\n    padding: 10px;\r\n    width: 1300px;\r\n\r\n}\r\n.fb{\r\n    width:1200px;\r\n}\r\n.pereliv{\r\n    margin-top: -75px;\r\n}\r\n.fancybox-wrap{\r\n    background-color: #222;\r\n}\r\n.label-default{\r\n    background-color: #111;\r\n    color: #d22;\r\n    border: 1px solid #930101;\r\n    border-radius: 5px;\r\n}\r\n.scheme{\r\n    width: 90%;\r\n    margin: 5%;\r\n    border: 1px red solid;\r\n    height: 122px;\r\n}\r\n.scheme span{\r\n    font-size: 200%;\r\n    transform: rotateZ(25deg);\r\n    transform-style: flat;\r\n    display: block;\r\n    position: relative;\r\n    top: 66px;\r\n    left: 63px;\r\n}\r\n\r\n/* products*/\r\n.a76{\r\n    background-color: #1b630c;\r\n}\r\n.a80{\r\n    background-color: #70360a;\r\n}\r\n.a92{\r\n    background-color: #3c9cca;\r\n}\r\n.a95{\r\n    background-color: #9e0b08;\r\n}\r\n.a98{\r\n    background-color: #8b0f9b;\r\n}\r\n.disel{\r\n    background-color: darkorange;\r\n    color: black;\r\n}\r\n.diseleuro{\r\n    background-color: #464646;\r\n    color: darkorange;\r\n }\r\n.smt{\r\n    background-color: #f4c039;\r\n    color: #464646;\r\n}\r\n\r\n.glyphicon.glyphicon-chevron-up.tank_arrow_top {\r\n    position: relative;\r\n    height: 0;\r\n    font-size: 180%;\r\n    /* width: 0; */\r\n    top: 35px;\r\n    margin-right: 0px;\r\n    /* margin-top: -18px; */\r\n    /* left: 44px; */\r\n    display: block;\r\n    opacity:0;\r\n    transition: opacity .5s ease;\r\n}\r\n\r\n.glyphicon.glyphicon-chevron-down.tank_arrow_bottom {\r\n    position: relative;\r\n    height: 0;\r\n    font-size: 180%;\r\n    /* width: 0; */\r\n    top: 40px;\r\n    margin-right: 0px;\r\n    /* margin-top: -18px; */\r\n    /* left: 44px; */\r\n    opacity: 0;\r\n    display: block;\r\n    transition: opacity .5s ease;\r\n}\r\n._up{\r\n    color: greenyellow;\r\n    text-shadow: 0 0 7px rgba(50,255,50,0.9);\r\n    opacity:1 !important;\r\n}\r\n._down{\r\n    color: red;\r\n    text-shadow: 0 0 7px rgba(255,50,50,0.9);\r\n    opacity:1 !important;\r\n}\r\n._neutral{\r\n    color: grey;\r\n    opacity: 1;\r\n    text-shadow: 0 0 5px rgba(50,50,50,0.5);\r\n}\r\n.vertline{\r\n    border-left:1px solid grey;\r\n    margin-left: 50px;\r\n}\r\n.myoffset{\r\n    margin-left: 4.15%;\r\n}\r\n.demo{\r\n    margin-top: 15px;\r\n    text-align: center;\r\n    padding-left: 70px;\r\n    padding-top: 10px;\r\n    font-size: 150%;\r\n    text-transform: uppercase;\r\n    color: #FF0000;\r\n    text-shadow: 0 0 10px #FF0000;\r\n    line-height: 20px;\r\n    height: 64px;\r\n}\r\n.label-my-normal{\r\n    background: #6db563; /* Old browsers */\r\n    background: -moz-linear-gradient(top, #6db563 0%, #21680d 45%, #0f7516 64%, #3f663c 100%); /* FF3.6-15 */\r\n    background: -webkit-linear-gradient(top, #6db563 0%,#21680d 45%,#0f7516 64%,#3f663c 100%); /* Chrome10-25,Safari5.1-6 */\r\n    background: linear-gradient(to bottom, #6db563 0%,#21680d 45%,#0f7516 64%,#3f663c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\r\n    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db563', endColorstr='#3f663c',GradientType=0 ); /* IE6-9 */\r\n    border: 1px outset darkgreen;\r\n}\r\n.label-my-old{\r\n    background: #a7cfdf; /* Old browsers */\r\n    background: -moz-linear-gradient(top, #a7cfdf 0%, #23538a 100%); /* FF3.6-15 */\r\n    background: -webkit-linear-gradient(top, #a7cfdf 0%,#23538a 100%); /* Chrome10-25,Safari5.1-6 */\r\n    background: linear-gradient(to bottom, #a7cfdf 0%,#23538a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\r\n    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */\r\n    border: 1px outset #919191;\r\n}\r\n.label-my-error{\r\n    background: #9b5858; /* Old browsers */\r\n    background: -moz-linear-gradient(top, #9b5858 0%, #540101 45%, #a30000 75%, #4c0000 100%); /* FF3.6-15 */\r\n    background: -webkit-linear-gradient(top, #9b5858 0%,#540101 45%,#a30000 75%,#4c0000 100%); /* Chrome10-25,Safari5.1-6 */\r\n    background: linear-gradient(to bottom, #9b5858 0%,#540101 45%,#a30000 75%,#4c0000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\r\n    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b5858', endColorstr='#4c0000',GradientType=0 ); /* IE6-9 */\r\n    border: 1px outset #91151b;\r\n}\r\n.glyphicon-arrow-up{\r\n    color: greenyellow;\r\n}\r\n.glyphicon-arrow-down{\r\n    color: cyan;\r\n}\r\n.glyphicon-warning-sign{\r\n    color: orange;\r\n}\r\n.glyphicon-ok-circle{\r\n    color: green;\r\n}\r\n.glyphicon-remove-circle{\r\n    color: red;\r\n}\r\n.glyphicon-glyphicon-transfer{\r\n    color: yellow;\r\n}\r\n.initScroll{\r\n    transform: rotateY(90deg);\r\n    transform-style: preserve-3d;\r\n    opacity: 0 !important;\r\n}\r\n#snowflakesCanvas{\r\n    position:absolute;\r\n    top:0px;\r\n}\r\n.node{\r\n    height: 40px;\r\n    min-width: 50px;\r\n    text-align: center;\r\n    padding: 5px 15px;\r\n    font-size: 120%;\r\n    border-radius: 9px;\r\n    border: darkorange 3px outset;\r\n    display: inline-block;\r\n    float: left;\r\n    margin: 0 5%;\r\n    margin-top: 3px;\r\n    margin-bottom: -8px;\r\n    cursor: pointer;\r\n    font-weight: bold;\r\n    user-select: none;\r\n    -webkit-user-select: none;\r\n    -moz-user-select: none;\r\n    box-shadow: 2px 2px 10px 0 rgba(0,0,0,0.5);\r\n}\r\n.node:active{\r\n    transform: translateY(1px);\r\n    border: orange 3px inset;\r\n    box-shadow: 2px 2px 10px 0 rgba(0,0,0,0.0);\r\n}\r\n.node.nodeselected{\r\n    transform: translateY(1px);\r\n    border: yellow 3px inset;\r\n    box-shadow: 0 0 10px 0 yellow;\r\n}\r\n.node .led{\r\n    width: 40px;\r\n    height: 5px;\r\n    background: grey;\r\n    margin: 5px auto;\r\n    margin-bottom: 20px;\r\n    border-radius: 5px;\r\n}\r\n.node .led.error{\r\n    background: red;\r\n    box-shadow: 0 0 10px 2px red;\r\n}\r\n.node .led.ok{\r\n    background: lightgreen;\r\n    box-shadow: 0 0 10px 2px lightgreen;\r\n}\r\n.node .led.warn{\r\n    background: orange;\r\n    box-shadow: 0 0 10px 2px orange;\r\n}\r\n.copyright{\r\n    float: right;\r\n}\r\n.conerror{\r\n    font-size: 200%;\r\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".prog_cont {\r\n    height: 100px;\r\n    position: relative;\r\n    left: -5%;\r\n    text-align: center;\r\n}\r\n.progress_line {\r\n    width:100px\r\n}\r\n\r\n.prog_cont > svg {\r\n    height: 60px;\r\n    width: 150px;\r\n    display: inline;\r\n    position: relative;\r\n    top: 105px;\r\n    transform-style: preserve-3d;\r\n    transform: perspective(900px) rotateX(-13deg) rotateY(37deg) rotateZ(-90deg);\r\n    left: 16%;\r\n    border-radius: 10px;\r\n    box-shadow: 0 0 20px 2px gray;\r\n    border: 2px inset #B7B7B7;\r\n}\r\n.prog_val{\r\n    position: relative;\r\n    top: 80px;\r\n    left: 0px;\r\n    font-size: 150%;\r\n    font-weight: bold;\r\n    width: 90px;\r\n    display: inline-block;\r\n    margin-right: -85px;\r\n}\r\n\r\n.progress_tank{\r\n    height: 60px;\r\n    position: relative;\r\n    left: -20px;\r\n    top: -32px;\r\n    text-align: center;\r\n}\r\n\r\n.progress_tank_val{\r\n    position: relative;\r\n    top: 60px;\r\n    left: 0;\r\n    font-size: 150%;\r\n    font-weight: bold;\r\n    display: none;\r\n}\r\n.progress_tank_val_real{\r\n    position: relative;\r\n    top: 70px;\r\n    font-size: 150%;\r\n    font-weight: bold;\r\n    margin-top: -31px;\r\n    line-height: 300%;\r\n    left: -10px;\r\n}\r\n.progress_tank > svg {\r\n    height: 45px;\r\n    display: inline !important;\r\n    position: relative;\r\n    top: 5px;\r\n    transform-style: preserve-3d;\r\n    transform: perspective(350px) rotateX(-12deg) rotateY(40deg) rotateZ(-90deg);\r\n    right: -40%;\r\n    border-radius: 7px;\r\n    box-shadow: 0 0 20px 2px grey;\r\n    border: 2px inset #B4B5B5;\r\n    width: 70px !important;\r\n}\r\n#parm_panel{\r\n    display: none;\r\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 45 */,
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/rn_logo.png";
+
+/***/ }),
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Line shaped progress bar
 
-var Shape = __webpack_require__(1);
-var utils = __webpack_require__(0);
+var Shape = __webpack_require__(3);
+var utils = __webpack_require__(2);
 
 var Line = function Line(container, options) {
     this._pathTemplate = 'M 0,{center} L 100,{center}';
@@ -2861,14 +3307,14 @@ module.exports = Line;
 
 
 /***/ }),
-/* 27 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Semi-SemiCircle shaped progress bar
 
-var Shape = __webpack_require__(1);
-var Circle = __webpack_require__(2);
-var utils = __webpack_require__(0);
+var Shape = __webpack_require__(3);
+var Circle = __webpack_require__(8);
+var utils = __webpack_require__(2);
 
 var SemiCircle = function SemiCircle(container, options) {
     // Use one arc to form a SemiCircle
@@ -2915,7 +3361,7 @@ module.exports = SemiCircle;
 
 
 /***/ }),
-/* 28 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* shifty - v1.5.3 - 2016-11-29 - http://jeremyckahn.github.io/shifty */
@@ -4572,27 +5018,29 @@ var Tweenable = (function () {
 
 
 /***/ }),
-/* 29 */,
-/* 30 */,
-/* 31 */
+/* 67 */,
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__integrator_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__progresslogic_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detect_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__integrator_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__progresslogic_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detect_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detect_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__detect_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__logic_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__blink_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__logic_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__blink_js__ = __webpack_require__(11);
 
 
 
 
 
 
-window.ProgressBar = __webpack_require__(13);
+window.ProgressBar = __webpack_require__(20);
+
+__webpack_require__(25);
+__webpack_require__(26);
 
 window.Utility = new __WEBPACK_IMPORTED_MODULE_4__logic_js__["a" /* default */]();
 
