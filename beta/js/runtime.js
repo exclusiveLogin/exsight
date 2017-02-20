@@ -8,6 +8,21 @@ $.ajaxSetup({
     cache:false
 });
 $(document).ready(function(){
+    setTimeout(function(){
+        panelStateToggle(false);
+    },10000);
+    $(document).on("mouseenter","#panelstate",function () {
+        panelStateToggle(true);
+        console.log("show");
+    });
+    $(document).on("mouseleave","#panelstate",function () {
+        console.log("prepare to hide");
+        setTimeout(function () {
+            panelStateToggle(false);
+            console.log("hide");
+        },5000);
+    });
+
 	if(Global.demo){
 	    $("#fancydemo").fancybox({
 	        modal:true

@@ -26,6 +26,14 @@ export default class Utility{
 			$('#loginform').hide(500);
 		}
 	}
+    panelStateToggle(state){
+        if(state){
+			$("#panelstate").removeClass("panelstate_hide");
+        }
+        else{
+            $("#panelstate").addClass("panelstate_hide");
+        }
+    }
 	resultToggle(state){
 		if(state){
 			$('#result').removeClass("transparent");

@@ -12,6 +12,7 @@ require("../style/progress.css");
 window.Utility = new UtilClass();
 
 //temporary adapter
+window.panelStateToggle = Utility.panelStateToggle;
 window.trendToggle = Utility.trendToggle;
 window.loginToggle = Utility.loginToggle;
 window.resultToggle = Utility.resultToggle;
