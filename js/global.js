@@ -1,4 +1,5 @@
-Global = {
+let Global = {
+    demo:true,
     pr_tank:[],
     jqready:false,
     swready:false,
@@ -28,4 +29,4 @@ Global = {
     nodeDependencies:{},
     conerr:0
 };
-//module.exports = Global;
+export default Global;

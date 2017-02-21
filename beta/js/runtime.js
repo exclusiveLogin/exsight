@@ -3,24 +3,40 @@ Global.loginData={
     "login":"",
     "password":""
 };
-
+Global.version = "0.9.1 beta";
+function visit() {
+    let req = {version:Global.version};
+    $.ajax({
+        url:"visitparser.php",
+        dataType:"text",
+        method:'GET',
+        data:req,
+        success:function(data){
+            console.log(data);
+        },
+        error:function(){
+            console.log("error visit");
+        }
+    });
+}
 $.ajaxSetup({
     cache:false
 });
 $(document).ready(function(){
+    visit();
+
     setTimeout(function(){
         panelStateToggle(false);
-    },10000);
+    },5000);
     $(document).on("mouseenter","#panelstate",function () {
-        panelStateToggle(true);
-        console.log("show");
+        Global.panelsateQ = true;
+        setTimeout(function () {
+            if(Global.panelsateQ)panelStateToggle(true);
+        },1000);
     });
     $(document).on("mouseleave","#panelstate",function () {
-        console.log("prepare to hide");
-        setTimeout(function () {
-            panelStateToggle(false);
-            console.log("hide");
-        },5000);
+        panelStateToggle(false);
+        Global.panelsateQ = false;
     });
 
 	if(Global.demo){

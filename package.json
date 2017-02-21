@@ -1,0 +1,32 @@
+{
+  "name": "exsight",
+  "version": "1.0.0",
+  "description": "Extended Sight (Scada &amp; OPC system)",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/exclusivelogin/exsight.git"
+  },
+  "author": "Serenity",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/exclusivelogin/exsight/issues"
+  },
+  "homepage": "https://github.com/exclusivelogin/exsight#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bundle-loader": "^0.5.4",
+    "css-loader": "",
+    "expose-loader": "",
+    "fancybox": "",
+    "file-loader": "",
+    "font-awesome": "^4.7.0",
+    "jquery2": "",
+    "progressbar.js": "^1.0.1",
+    "style-loader": "",
+    "webpack": "^2.2.1"
+  }
+}

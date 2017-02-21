@@ -10,7 +10,7 @@ class NodeCtrl{
 class Node extends NodeCtrl{
     constructor(name,container){
         super();
-        this.context = this;
+        //this.context = this;
         if(name){
             this.nameNode = name;
         }else {
@@ -28,9 +28,38 @@ class Node extends NodeCtrl{
                         </div>`;
         this.elem = document.getElementById(this.containerNode);
         this.elem.innerHTML += this.pattern;
-        if(Global.nodeDependencies[name]){
-            this.start = Global.nodeDependencies[name].startNode;
-            this.stop = Global.nodeDependencies[name].stopNode;
-        }
+        /*require.ensure([],function () {
+            let module = require("../nodes/js/"+name);
+            console.log(module);
+        });*/
+
+        let pr_node = new Promise(function (resolve,reject) {
+            let script = document.createElement("script");
+            document.body.appendChild(script);
+            script.src = "nodes/js/"+name+".js";
+
+            script.onerror = ()=>{
+                console.log("error load module");
+                reject();
+            };
+
+            script.onload = ()=>{
+                console.log("load ok");
+                resolve();
+            };
+        });
+        pr_node.then(function () {
+            //console.log("Promise ok");
+            Global.nodes.map(function (node,index) {
+                if(node.nameNode==name){
+                    console.log("Есть такой узел - "+node.nameNode+"index - "+index);
+                    Global.nodes[index].nodeObj = eval("new "+name+"();");
+                    Global.nodes[index].nodeObj.startNode();//temp
+                }
+            });
+
+        },function () {
+            console.log("Promise error");
+        });
     }
 }
