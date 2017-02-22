@@ -365,6 +365,8 @@ a:hover{
     /* float: right; */
     /* position: absolute; */
     margin-bottom: -30px;
+    z-index: 9999;
+    position: relative;
 }
 #result{
     color: white;
