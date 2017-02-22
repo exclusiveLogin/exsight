@@ -192,17 +192,18 @@ $(document).ready(function(){
 
     //init objects for trends
     Global.trendInTankParm = document.getElementById("trend_in_tankparms");
+	Global.trendInFancy = document.getElementById("trend_in_fancy");
 
 
     var Trend_inTankParm_setting = {
         credits:{enabled:false},
         chart: {
             //animation:false,
-            height:250,
+            height:280,
             renderTo:Global.trendInTankParm,
         },
         legend: {
-            enabled: false
+            enabled: true
         },
         xAxis: {
             type: 'datetime',
@@ -233,7 +234,7 @@ $(document).ready(function(){
             // data:[0,3,4,3,12,15,2],
             tooltip: {
                 valueDecimals: 2,
-                valueSuffix:' кг/см2'
+                valueSuffix:' мм.'
             },
             color:"orange",
             yAxis:0
@@ -244,7 +245,7 @@ $(document).ready(function(){
                 // data:[0,3,4,3,12,15,2],
                 tooltip: {
                     valueDecimals: 2,
-                    valueSuffix:' кг/см2'
+                    valueSuffix:' кг.'
                 },
                 color:"lightgreen",
                 yAxis:0
@@ -255,7 +256,7 @@ $(document).ready(function(){
                 // data:[0,3,4,3,12,15,2],
                 tooltip: {
                     valueDecimals: 2,
-                    valueSuffix:' кг/см2'
+                    valueSuffix:' см3'
                 },
                 color:"blue",
                 yAxis:0
@@ -266,7 +267,7 @@ $(document).ready(function(){
                 // data:[0,3,4,3,12,15,2],
                 tooltip: {
                     valueDecimals: 2,
-                    valueSuffix:' кг/см2'
+                    valueSuffix:' град. С.'
                 },
                 color:"red",
                 yAxis:1
@@ -277,7 +278,7 @@ $(document).ready(function(){
                 // data:[0,3,4,3,12,15,2],
                 tooltip: {
                     valueDecimals: 2,
-                    valueSuffix:' кг/см2'
+                    valueSuffix:' град. С.'
                 },
                 color:"yellow",
                 yAxis:1
@@ -288,12 +289,119 @@ $(document).ready(function(){
                 // data:[0,3,4,3,12,15,2],
                 tooltip: {
                     valueDecimals: 2,
-                    valueSuffix:' кг/см2'
+                    valueSuffix:' кг/м3'
+                },
+                color:"grey"
+            }]
+    };
+	var Trend_inFancy_setting = {
+        credits:{enabled:false},
+        chart: {
+            //animation:false,
+            height:300,
+			width:1100,
+            renderTo:Global.trendInFancy,
+        },
+		loading:{
+			labelStyle:{
+				color:"black"
+			}
+		},
+        legend: {
+            enabled: true
+        },
+        xAxis: {
+            type: 'datetime',
+            ordinal:false,
+        },
+        yAxis: [{
+            id:0,
+            title: {
+                text: 'Уровень'
+            },
+        },
+            {
+                id:1,
+                title: {
+                    text: 'Температура'
+                },
+            }],
+        plotOptions: {
+            line:{
+                marker:{
+                    enabled:false
+                },
+            },
+        },
+        series:[{
+            type: 'line',
+            name: 'Уровень',
+            // data:[0,3,4,3,12,15,2],
+            tooltip: {
+                valueDecimals: 2,
+                valueSuffix:' мм.'
+            },
+            color:"orange",
+            yAxis:0
+        },
+            {
+                type: 'line',
+                name: 'Масса',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' кг.'
+                },
+                color:"lightgreen",
+                yAxis:0
+            },
+            {
+                type: 'line',
+                name: 'Объем',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' см3'
+                },
+                color:"blue",
+                yAxis:0
+            },
+            {
+                type: 'line',
+                name: 'Температура',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' град. С.'
+                },
+                color:"red",
+                yAxis:1
+            },
+            {
+                type: 'line',
+                name: 'Т. паров',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' град. С.'
+                },
+                color:"yellow",
+                yAxis:1
+            },
+            {
+                type: 'line',
+                name: 'Плотность',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' кг/м3'
                 },
                 color:"grey"
             }]
     };
 
     Global.TrendTankParm = new Highcharts.Chart(Trend_inTankParm_setting);
+	Global.TrendFancy = new Highcharts.Chart(Trend_inFancy_setting);
     Global.TrendTankParm.showLoading("Нет данных для отображения");
+	Global.TrendFancy.showLoading("Нет данных для отображения");
 });

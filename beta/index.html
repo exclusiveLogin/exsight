@@ -11,15 +11,15 @@
 
     <link rel="icon" sizes="192x192" href="public/images/rn_logo.png">
     <!--Система сборки-->
-    <script src="public/vendor.js" type="application/javascript"></script>
-    <script src="public/loader.js" type="application/javascript"></script>
+    <script src="public/vendor.js?v0.9.2" type="application/javascript"></script>
+    <script src="public/loader.js?v0.9.2" type="application/javascript"></script>
 
     <!--Nodes-->
-    <script src="js/runtime.js" type="application/javascript"></script>
-    <script src="js/nodes.js" type="application/javascript"></script>
+    <script src="js/runtime.js?v0.9.2" type="application/javascript"></script>
+    <script src="js/nodes.js?v0.9.2" type="application/javascript"></script>
 
     <!--temp-->
-    <script src="js/trend.js" type="application/javascript"></script>
+    <script src="js/trend.js?v0.9.2" type="application/javascript"></script>
 
     <!--Snow>
     <script type='text/javascript' src='http://mvcreative.ru/example/6/1/snow.js'></script>
@@ -138,7 +138,10 @@
         <div id="panel" class="cont_panel transparent" style="display: none;">
             <h2 class="label label-lg label-default conerror">Связь отключена</h2>
         </div>
-        <div id="panelstate" class="cont_panel hidden-xs hidden-sm"></div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div id="panelstate" class="cont_panel hidden-xs hidden-sm col-md-12"></div>
+		</div>
         <div id="container" class="container-fluid">
             <div id="minview"></div>
         </div>
@@ -214,10 +217,13 @@
                 <div class="mydevider"></div>
             </div>
         </div>
+		<div class="row fb">
+			<div class="col-lg-12 visible-lg" id="trend_in_fancy"></div>
+		</div>
     </div>
     <div id="fancydemo" style="display: none">
         <div class="row fb text-center">
-            <h1>Загрузка системы EXSIGHT v0.9.1 beta (Demo)</h1>
+            <h1>Загрузка системы EXSIGHT v0.9.2 beta (Demo)</h1>
             <h1 class="fa fa-spin fa-spinner fa-4x"></h1>
             <h3 class="rn_color">пожалуйста подождите...</h3>
         </div>

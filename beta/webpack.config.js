@@ -11,6 +11,11 @@ module.exports = {
     },
     module: {
         loaders: [
+			{
+				test: /\.js$/,
+				exclude: /(node_modules|bower_components)/,
+				loader: 'babel-loader'
+			},
             {
                 test: require.resolve("jquery2"),
                 loader: "expose-loader?$!expose-loader?jQuery"
