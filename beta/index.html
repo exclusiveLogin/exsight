@@ -18,6 +18,8 @@
     <script src="js/runtime.js" type="application/javascript"></script>
     <script src="js/nodes.js" type="application/javascript"></script>
 
+    <!--temp-->
+    <script src="js/trend.js" type="application/javascript"></script>
 
     <!--Snow>
     <script type='text/javascript' src='http://mvcreative.ru/example/6/1/snow.js'></script>
@@ -63,71 +65,70 @@
         <div class="tank_panel transparent" id="parm_panel">
             <div class="row">
                 <button class="btn_close btn btn-danger" id="btn_close_parm"><i class="fa fa-close"></i></button>
-                <div class="col-md-10 col-md-offset-2">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div>
-                                <span class="tank_num">Резервуар № <span class="tank_num_val"></span></span>
-                            </div>
-                            <div class="tank_pic">
-                                <div class="prog_cont" id="progress">
-                                    <p class="label label-default prog_val" style="color: white">0%</p>
-                                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-3">
+                        <div>
+                            <span class="tank_num">Резервуар № <span class="tank_num_val"></span></span>
+                        </div>
+                        <div class="tank_pic">
+                            <div class="prog_cont" id="progress">
+                                <p class="label label-default prog_val" style="color: white">0%</p>
                             </div>
                         </div>
-                        <div class="col-md-8">
-                            <span class="tank_num">Показатели резервуара:</span>
-                            <p class="label label-success tank_parm_upd">дата время</p>
-                            <div class="mydevider"></div>
-                            <div class="row">
-                                <div class="tank_panel_parm col-md-6">
-                                    <div class="tank_num">
-                                        <span class="tank_val_name">Масса нефтепродукта: </span><span class="tank_parm_mass tank_val label label-success">-----</span>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span class="tank_val_name">Объем нефтепродукта: </span><span class="tank_parm_volume tank_val label label-success">-----</span>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span class="tank_val_name">Температура нефтепродукта: </span><span class=" tank_parm_temp tank_val label label-success">-----</span>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span class="tank_val_name">Температура паров: </span><span class=" tank_parm_vaportemp tank_val label label-success">-----</span>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span>Текущий уровень: </span><span class="tank_parm_level tank_val label label-success">----</span><br>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span>Максимальный уровень: <span class="tank_parm_maxlvl tank_val label label-danger">-----</span></span><br>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span>Сигнальный уровень: <span class="tank_parm_signallvl tank_val label label-warning">-----</span></span><br>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span class="tank_val_name">Плотность нефтепродукта: </span><span class="tank_parm_plot tank_val label label-success">-----</span>
-                                    </div>
+                    </div>
+                    <div class="hidden-xs col-lg-4 col-md-12" id="trend_in_tankparms"></div>
+                    <div class="col-md-12 col-lg-5">
+                        <span class="tank_num">Показатели резервуара:</span>
+                        <p class="label label-success tank_parm_upd">дата время</p>
+                        <div class="mydevider"></div>
+                        <div class="row">
+                            <div class="tank_panel_parm col-md-6">
+                                <div class="tank_num">
+                                    <span class="tank_val_name">Масса нефтепродукта: </span><span class="tank_parm_mass tank_val label label-success">-----</span>
                                 </div>
-                                <div class="tank_panel_parm col-md-6">
-                                    <div class="tank_num">
-                                        <span>Аварийный уровень: <span class="tank_parm_avlevel tank_val label label-warning">-----</span></span><br>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span class="tank_val_name">Статус перелива: </span><span class="tank_parm_pereliv tank_val label label-success">-----</span>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span class="tank_val_name">Продукт: </span><span class="tank_parm_product tank_val label label-success">-----</span>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span class="tank_val_name">Лабораторные данные: </span>
-                                        <div class="mydevider"></div>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span>Температура НП в НУ: </span><span class="tank_parm_temp_lab tank_val label label-success">-----</span><br>
-                                    </div>
-                                    <div class="tank_num">
-                                        <span>Плотность НП в НУ: <span class="tank_parm_plot_lab tank_val label label-danger">-----</span></span><br>
-                                    </div>
-                                    <button class="btn btn-fb btn-danger">Показывать в всплывающем окне</button>
+                                <div class="tank_num">
+                                    <span class="tank_val_name">Объем нефтепродукта: </span><span class="tank_parm_volume tank_val label label-success">-----</span>
                                 </div>
+                                <div class="tank_num">
+                                    <span class="tank_val_name">Температура нефтепродукта: </span><span class=" tank_parm_temp tank_val label label-success">-----</span>
+                                </div>
+                                <div class="tank_num">
+                                    <span class="tank_val_name">Температура паров: </span><span class=" tank_parm_vaportemp tank_val label label-success">-----</span>
+                                </div>
+                                <div class="tank_num">
+                                    <span>Текущий уровень: </span><span class="tank_parm_level tank_val label label-success">----</span><br>
+                                </div>
+                                <div class="tank_num">
+                                    <span>Максимальный уровень: <span class="tank_parm_maxlvl tank_val label label-danger">-----</span></span><br>
+                                </div>
+                                <div class="tank_num">
+                                    <span>Сигнальный уровень: <span class="tank_parm_signallvl tank_val label label-warning">-----</span></span><br>
+                                </div>
+                                <div class="tank_num">
+                                    <span class="tank_val_name">Плотность нефтепродукта: </span><span class="tank_parm_plot tank_val label label-success">-----</span>
+                                </div>
+                            </div>
+                            <div class="tank_panel_parm col-md-6">
+                                <div class="tank_num">
+                                    <span>Аварийный уровень: <span class="tank_parm_avlevel tank_val label label-warning">-----</span></span><br>
+                                </div>
+                                <div class="tank_num">
+                                    <span class="tank_val_name">Статус перелива: </span><span class="tank_parm_pereliv tank_val label label-success">-----</span>
+                                </div>
+                                <div class="tank_num">
+                                    <span class="tank_val_name">Продукт: </span><span class="tank_parm_product tank_val label label-success">-----</span>
+                                </div>
+                                <div class="tank_num">
+                                    <span class="tank_val_name">Лабораторные данные: </span>
+                                    <div class="mydevider"></div>
+                                </div>
+                                <div class="tank_num">
+                                    <span>Температура НП в НУ: </span><span class="tank_parm_temp_lab tank_val label label-success">-----</span><br>
+                                </div>
+                                <div class="tank_num">
+                                    <span>Плотность НП в НУ: <span class="tank_parm_plot_lab tank_val label label-danger">-----</span></span><br>
+                                </div>
+                                <button class="btn btn-fb btn-danger">Показывать в всплывающем окне</button>
                             </div>
                         </div>
                     </div>
@@ -137,7 +138,7 @@
         <div id="panel" class="cont_panel transparent" style="display: none;">
             <h2 class="label label-lg label-default conerror">Связь отключена</h2>
         </div>
-        <div id="panelstate" class="cont_panel"></div>
+        <div id="panelstate" class="cont_panel hidden-xs hidden-sm"></div>
         <div id="container" class="container-fluid">
             <div id="minview"></div>
         </div>
@@ -217,7 +218,7 @@
     <div id="fancydemo" style="display: none">
         <div class="row fb text-center">
             <h1>Загрузка системы EXSIGHT v0.9.1 beta (Demo)</h1>
-            <h1 class="fa fa-spin fa-spinner fa-4x" a></h1cla>
+            <h1 class="fa fa-spin fa-spinner fa-4x"></h1>
             <h3 class="rn_color">пожалуйста подождите...</h3>
         </div>
     </div>

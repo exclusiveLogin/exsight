@@ -2,6 +2,7 @@
 $ini_tank_path = "opcdata/data_tank";
 
 require_once "db.php";
+require_once "db_hd.php";
 
 //цикл парсинга с обходом ошибок
 //движок цикла
@@ -10,24 +11,25 @@ for($i=1;$i<80;$i++) {
     $f_exist = file_exists($ini_tank_path . $i . ".ini");
     //echo "tank_".$i.":".$f_exist."<br>";
     //внутренние переменные
-    $tank_mass = 888;
-    $tank_level = 888;
-    $tank_volume = 888;
-    $tank_plot = 888;
-    $tank_temp = 888;
-    $tank_max_level = 888;
-    $tank_templab = 888;
-    $tank_plotlab = 888;
-    $tank_avlevel = 888;
-    $tank_signallevel = 888;
-    $tank_pereliv = 888;
-    $tank_product = 888;
-    $tank_vaportemp = 888;
+    $tank_mass;
+    $tank_level;
+    $tank_volume;
+    $tank_plot;
+    $tank_temp;
+    $tank_max_level;
+    $tank_templab;
+    $tank_plotlab;
+    $tank_avlevel;
+    $tank_signallevel;
+    $tank_pereliv;
+    $tank_product;
+    $tank_vaportemp;
 
     if ($f_exist) {
         $ini_arr = parse_ini_file($ini_tank_path . $i . ".ini");
-
-        //var_dump($ini_arr);
+//        echo "<p>----VARDUMP for $i-----</p>";
+//        var_dump($ini_arr);
+//        echo "<p>---------</p>";
 
         if (isset($ini_arr['tank_mass'])) {
             if($i==2){
@@ -42,14 +44,12 @@ for($i=1;$i<80;$i++) {
             $mysql->query($q);
             //echo "q:".$q."<br>";
         }
-
         if (isset($ini_arr['tank_plot'])) {
             $tank_plot = round((float)str_replace(",", ".", $ini_arr['tank_plot']), 1);
             $q = "INSERT INTO `rt_tanks` (`num`,`plot`) VALUES (" . $i . "," . $tank_plot . ") ON DUPLICATE KEY UPDATE `plot` = " . $tank_plot . ";";
             $mysql->query($q);
             //echo "q:".$q."<br>";
         }
-
         if (isset($ini_arr['tank_volume'])) {
             if($i==2){
                 $tank_volume = round(((float)str_replace(",", ".", $ini_arr['tank_volume'])/1000), 1);
@@ -61,9 +61,8 @@ for($i=1;$i<80;$i++) {
             $mysql->query($q);
             //echo "q:".$q."<br>";
         }
-
         if (isset($ini_arr['tank_temp'])) {
-            $tank_temp = round((float)str_replace(",", ".", $ini_arr['tank_temp']), 1);
+            $tank_temp = round((float)str_replace(",", ".", $ini_arr['tank_temp']), 2);
             $q = "INSERT INTO `rt_tanks` (`num`,`temp`) VALUES (" . $i . "," . $tank_temp . ") ON DUPLICATE KEY UPDATE `temp` = " . $tank_temp . ";";
             $mysql->query($q);
             //echo "q:".$q."<br>";
@@ -120,7 +119,7 @@ for($i=1;$i<80;$i++) {
             //echo "q:".$q."<br>";
         }
         if (isset($ini_arr['tank_vaportemp'])) {
-            $tank_vaportemp = round((float)str_replace(",", ".", $ini_arr['tank_vaportemp']), 1);
+            $tank_vaportemp = round((float)str_replace(",", ".", $ini_arr['tank_vaportemp']), 2);
             $q = "INSERT INTO `rt_tanks` (`num`,`tempvapor`) VALUES (" . $i . "," . $tank_vaportemp . ") ON DUPLICATE KEY UPDATE `tempvapor` = " . $tank_vaportemp . ";";
             $mysql->query($q);
             //echo "q:".$q."<br>";
@@ -132,4 +131,8 @@ for($i=1;$i<80;$i++) {
             //echo "q:".$q."<br>";
         }
     }
+    $q_hd = "INSERT INTO `res".$i."_hd` (`level`,`plot`,`volume`,`temperature`,`vapor_temperature`,`mass`) VALUES ($tank_level,$tank_plot,$tank_volume,$tank_temp,$tank_vaportemp,$tank_mass);";
+    //echo $q_hd;
+    $mysql_res_hd->query($q_hd);
 }
+

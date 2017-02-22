@@ -11,7 +11,6 @@ export default function reloadProgressBar() {
             shape.path.setAttribute("stroke",state.color);
         }
     });
-	console.log(Global.parmTank);
     Global.parmTankFancy = new ProgressBar.Line('#progress_fancy', {
         color: '#FCB03C',
         duration: 1000,
@@ -401,5 +400,4 @@ export default function reloadProgressBar() {
 		"width":"",
 		"display":""
 	});
-	console.log("reload progressbar init");
 }

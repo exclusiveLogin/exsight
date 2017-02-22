@@ -44,7 +44,7 @@ class Node extends NodeCtrl{
             };
 
             script.onload = ()=>{
-                console.log("load ok");
+                //console.log("load ok");
                 resolve();
             };
         });
@@ -52,7 +52,7 @@ class Node extends NodeCtrl{
             //console.log("Promise ok");
             Global.nodes.map(function (node,index) {
                 if(node.nameNode==name){
-                    console.log("Есть такой узел - "+node.nameNode+"index - "+index);
+                    //console.log("Есть такой узел - "+node.nameNode+"index - "+index);
                     Global.nodes[index].nodeObj = eval("new "+name+"();");
                     Global.nodes[index].nodeObj.startNode();//temp
                 }
