@@ -14,7 +14,7 @@ module.exports = {
 			{
 				test: /\.js$/,
 				exclude: /(node_modules|bower_components)/,
-				loader: 'babel-loader'
+				loader: 'babel-loader?presets[]=es2015'
 			},
             {
                 test: require.resolve("jquery2"),
@@ -30,5 +30,14 @@ module.exports = {
             }
         ]
     },
+	devtool:'source-map',
+	plugins:[
+		new webpack.optimize.UglifyJsPlugin({
+			compress: {
+				warnings: false
+			},
+			sourceMap:true
+		})
+	]
 }
 

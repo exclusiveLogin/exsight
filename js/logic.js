@@ -108,14 +108,16 @@ export default class Utility{
 		Global.fancy = !Global.fancy;
 		if(Global.fancy){
 			$('.tank').addClass("fancyemiter");//переводим на fancy
-			//var tmpnum = Global.tankselect;
+			var tmpnum = Global.tankselect;
 			Global.nodes[index].nodeObj.tankparmToggle(false);//закрываем окно
-			//Global.tankselect = tmpnum;
+			Global.tankselect = tmpnum;
+			Global.nodes[index].nodeObj.openTank(tmpnum);
 			$.fancybox.open("#fancycontainer");
 		}else {
 			$('.tank').removeClass("fancyemiter");//delete fancy
 			$.fancybox.close();
-            Global.nodes[index].nodeObj.tankparmToggle(true,Global.tankselect);
+            //Global.nodes[index].nodeObj.tankparmToggle(true,Global.tankselect);
+			Global.nodes[index].nodeObj.openTank(Global.tankselect);
 		}
 	}
 	refreshTooltips() {

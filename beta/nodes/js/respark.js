@@ -23,20 +23,17 @@ class respark{
             vapor_temperature=[],
             plot=[];
         data.map(function (elem,index) {
-            let utc = Number(elem.utc);
-            level.push([utc,Number(elem.level)]);
-            mass.push([utc,Number(elem.mass)]);
-            volume.push([utc,Number(elem.volume)]);
-            temperature.push([utc,Number(elem.temperature)]);
-            vapor_temperature.push([utc,Number(elem.vapor_temperature)]);
-            plot.push([utc,Number(elem.plot)]);
+			let utc;
+			if(elem.utc)utc = Number(elem.utc);
+			if(elem.level && elem.mass && elem.volume && elem.temperature && elem.vapor_temperature && elem.plot){
+				level.push([utc,Number(elem.level)]);
+				mass.push([utc,Number(elem.mass)]);
+				volume.push([utc,Number(elem.volume)]);
+				temperature.push([utc,Number(elem.temperature)]);
+				vapor_temperature.push([utc,Number(elem.vapor_temperature)]);
+				plot.push([utc,Number(elem.plot)]);
+			}            
         });
-        // console.log("level:",level);
-        // console.log("plot:",plot);
-        // console.log("temperature:",temperature);
-        // console.log("vapor_temperature:",vapor_temperature);
-        // console.log("mass:",mass);
-        // console.log("volume:",volume);
 		if(Global.fancy){
 			//Trend in fancy
 			setTimeout(function(){
@@ -56,9 +53,8 @@ class respark{
 			},500);
 			setTimeout(function(){
 				Global.TrendFancy.series[5].setData(plot);
+				Global.TrendFancy.hideLoading();
 			},600);
-			
-			Global.TrendFancy.hideLoading();
 		}else{
 			//Trend In Tank Parm
 			
@@ -79,9 +75,8 @@ class respark{
 			},500);
 			setTimeout(function(){
 				Global.TrendTankParm.series[5].setData(plot);
+				Global.TrendTankParm.hideLoading();
 			},600);
-			
-			Global.TrendTankParm.hideLoading();
 		}
     }
     refreshTank(tank) {

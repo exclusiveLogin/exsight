@@ -1,6 +1,7 @@
 node_modules/
 beta/node_modules/
 .idea/
+beta/.idea/
 opcdata/*
 beta/opcdata/*
 public/

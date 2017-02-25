@@ -1,10 +1,12 @@
 $(document).ready(function(){
+    console.log("Модуль трендов загружен");
+
     Highcharts.theme = {
         colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
             "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
         chart: {
             backgroundColor: {
-                linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                //linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
                 stops: [
                     [0, '#2a2a2b'],
                     [1, '#3e3e40']
@@ -178,7 +180,6 @@ $(document).ready(function(){
         contrastTextColor: '#F0F0F3',
         maskColor: 'rgba(255,255,255,0.3)'
     };
-// Apply the theme
     Highcharts.setOptions(Highcharts.theme);
     var G_Setting = {
         global:{
@@ -188,40 +189,149 @@ $(document).ready(function(){
         }}
     };
     Highcharts.setOptions(G_Setting);
-    Global.trend1Container = document.getElementById("trend_tube1");
-    Global.trend2Container = document.getElementById("trend_tube2");
-    Global.trend3Container = document.getElementById("trend_tube3");
-    Global.trend4Container = document.getElementById("trend_tube4");
-    Global.trendHeapContainer = document.getElementById("trend_heap");
-    var Trend_rt_setting1 = {
+
+    //init objects for trends
+    Global.trendInTankParm = document.getElementById("trend_in_tankparms");
+	Global.trendInFancy = document.getElementById("trend_in_fancy");
+
+
+    var Trend_inTankParm_setting = {
         credits:{enabled:false},
         chart: {
             //animation:false,
-            height:250,
-            renderTo:Global.trend1Container,            
-        },
-        title: {
-            text: 'График давления в трубе 1'
+            height:280,
+            renderTo:Global.trendInTankParm,
         },
         legend: {
-            enabled: false
+            enabled: true
+        },
+		loading:{
+			labelStyle:{
+				color:"black"
+			}
+		},
+        xAxis: {
+            type: 'datetime',
+            ordinal:false,
+        },
+        yAxis: [{
+            id:0,
+            title: {
+                text: 'Уровень'
+            },
+        },
+            {
+                id:1,
+                title: {
+                    text: 'Температура'
+                },
+            }],
+        plotOptions: {
+            line:{
+                marker:{
+                    enabled:false
+                },
+            },
+        },
+        series:[{
+            type: 'line',
+            name: 'Уровень',
+            // data:[0,3,4,3,12,15,2],
+            tooltip: {
+                valueDecimals: 2,
+                valueSuffix:' мм.'
+            },
+            color:"orange",
+            yAxis:0
+        },
+            {
+                type: 'line',
+                name: 'Масса',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' кг.'
+                },
+                color:"lightgreen",
+                yAxis:0
+            },
+            {
+                type: 'line',
+                name: 'Объем',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' см3'
+                },
+                color:"blue",
+                yAxis:0
+            },
+            {
+                type: 'line',
+                name: 'Температура',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' град. С.'
+                },
+                color:"red",
+                yAxis:1
+            },
+            {
+                type: 'line',
+                name: 'Т. паров',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' град. С.'
+                },
+                color:"yellow",
+                yAxis:1
+            },
+            {
+                type: 'line',
+                name: 'Плотность',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' кг/м3'
+                },
+                color:"grey"
+            }]
+    };
+	var Trend_inFancy_setting = {
+        credits:{enabled:false},
+        chart: {
+            //animation:false,
+            height:300,
+			width:1100,
+            renderTo:Global.trendInFancy,
+        },
+		loading:{
+			labelStyle:{
+				color:"black"
+			}
+		},
+        legend: {
+            enabled: true
         },
         xAxis: {
             type: 'datetime',
             ordinal:false,
         },
-        yAxis: {
-            //min:0,
-            //max:16,
-            minRange:3,
+        yAxis: [{
+            id:0,
             title: {
-                text: 'Давление'
+                text: 'Уровень'
             },
         },
+            {
+                id:1,
+                title: {
+                    text: 'Температура'
+                },
+            }],
         plotOptions: {
-            series: {
-                threshold:40
-            },
             line:{
                 marker:{
                     enabled:false
@@ -230,209 +340,73 @@ $(document).ready(function(){
         },
         series:[{
             type: 'line',
-            name: 'Нефтебаза',
-            //data:[0,3,4,3,12,15,2],
+            name: 'Уровень',
+            // data:[0,3,4,3,12,15,2],
             tooltip: {
                 valueDecimals: 2,
-                valueSuffix:' кг/см2'
+                valueSuffix:' мм.'
             },
-            color:"orange"
-        },{
-            type: 'line',
-            name: 'Причал',
-            //data:[0,5,6,3,3,10,1],
-            tooltip: {
-                valueDecimals: 2,
-                valueSuffix:' кг/см2'
-            },
-            color:"cyan"
-        }]
-    };
-    var Trend_rt_setting2 = {
-        credits:{enabled:false},
-        chart: {
-            height:250,
-            renderTo:Global.trend2Container,            
+            color:"orange",
+            yAxis:0
         },
-        title: {
-            text: 'График давления в трубе 2'
-        },
-        legend: {
-            enabled: false
-        },
-        xAxis: {
-            type: 'datetime',
-            ordinal:false,
-        },
-        yAxis: {
-            title: {
-                text: 'Давление'
-            },
-	minRange:3,
-        },
-        plotOptions: {
-            series: {
-                threshold:40
-            },
-            line:{
-                marker:{
-                    enabled:false
+            {
+                type: 'line',
+                name: 'Масса',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' кг.'
                 },
+                color:"lightgreen",
+                yAxis:0
             },
-        },
-        series:[{
-            type: 'line',
-            name: 'Давление в трубе 2',
-            //data:[0,3,4,3,12,15,2],
-            tooltip: {
-                valueDecimals: 2,
-                valueSuffix:' кг/см2'
-            },
-            color:"orange"
-        }]
-    };
-    var Trend_rt_setting3 = {
-        credits:{enabled:false},
-        chart: {
-            height:250,
-            renderTo:Global.trend3Container,            
-        },
-        title: {
-            text: 'График давления в трубе 3'
-        },
-        legend: {
-            enabled: false
-        },
-        xAxis: {
-            type: 'datetime',
-            ordinal:false,
-        },
-        yAxis: {
-            title: {
-                text: 'Давление'
-            },
-	minRange:3,
-        },
-        plotOptions: {
-            series: {
-                threshold:40
-            },
-            line:{
-                marker:{
-                    enabled:false
+            {
+                type: 'line',
+                name: 'Объем',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' см3'
                 },
+                color:"blue",
+                yAxis:0
             },
-        },
-        series:[{
-            type: 'line',
-            name: 'Давление в трубе 3',
-            //data:[0,3,4,3,12,15,2],
-            tooltip: {
-                valueDecimals: 2,
-                valueSuffix:' кг/см2'
-            },
-            color:"orange"
-        }]
-    };
-    var Trend_rt_setting4 = {
-        credits:{enabled:false},
-        chart: {
-            height:250,
-            renderTo:Global.trend4Container,            
-        },
-        title: {
-            text: 'График давления в трубе 4'
-        },
-        legend: {
-            enabled: false
-        },
-        xAxis: {
-            type: 'datetime',
-            ordinal:false,
-        },
-        yAxis: {
-            title: {
-                text: 'Давление'
-            },
-	minRange:3,
-        },
-        plotOptions: {
-            series: {
-                threshold:40
-            },
-            line:{
-                marker:{
-                    enabled:false
+            {
+                type: 'line',
+                name: 'Температура',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' град. С.'
                 },
+                color:"red",
+                yAxis:1
             },
-        },
-        series:[{
-            type: 'line',
-            name: 'Давление в трубе 4',
-            //data:[0,3,4,3,12,15,2],
-            tooltip: {
-                valueDecimals: 2,
-                valueSuffix:' кг/см2'
-            },
-            color:"orange"
-        }]
-    };
-    var Trend_HeapSettings = {
-        credits:{enabled:false},
-        chart: {
-            height:250,
-            renderTo:Global.trendHeapContainer,            
-        },
-        title: {
-            text: 'График производительности'
-        },
-        legend: {
-            enabled: false
-        },
-        xAxis: {
-            //type: 'datetime',
-            //ordinal:false,
-        },
-        yAxis: {
-            title: {
-                text: 'Memory Used'
-            },
-        },
-        plotOptions: {
-            series: {
-                threshold:40
-            },
-            line:{
-                marker:{
-                    enabled:false
+            {
+                type: 'line',
+                name: 'Т. паров',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' град. С.'
                 },
+                color:"yellow",
+                yAxis:1
             },
-        },
-        series:[{
-            type: 'line',
-            name: 'Heap Used',
-            //data:[0,3,4,3,12,15,2],
-            tooltip: {
-                valueDecimals: 0,
-                valueSuffix:' bytes'
-            },
-            color:"orange"
-        },
-               {
-            type: 'line',
-            name: 'Heap Total',
-            //data:[0,3,4,3,12,15,2],
-            tooltip: {
-                valueDecimals: 0,
-                valueSuffix:' bytes'
-            },
-            color:"red"
-        }]
+            {
+                type: 'line',
+                name: 'Плотность',
+                // data:[0,3,4,3,12,15,2],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix:' кг/м3'
+                },
+                color:"grey"
+            }]
     };
-    Global.Trend1 = new Highcharts.Chart(Trend_rt_setting1);
-    Global.Trend2 = new Highcharts.Chart(Trend_rt_setting2);
-    Global.Trend3 = new Highcharts.Chart(Trend_rt_setting3);
-    Global.Trend4 = new Highcharts.Chart(Trend_rt_setting4);
-    Global.TrendHeap = new Highcharts.Chart(Trend_HeapSettings);
-    //console.log("test");
+
+    Global.TrendTankParm = new Highcharts.Chart(Trend_inTankParm_setting);
+	Global.TrendFancy = new Highcharts.Chart(Trend_inFancy_setting);
+    Global.TrendTankParm.showLoading("Нет данных для отображения");
+	Global.TrendFancy.showLoading("Нет данных для отображения");
 });

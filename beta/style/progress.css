@@ -1,7 +1,7 @@
 .prog_cont {
-    height: 100px;
     position: relative;
-    left: -5%;
+    max-width: 300px;
+    margin: 0 auto;
     text-align: center;
 }
 .progress_line {
@@ -27,8 +27,6 @@
     left: 0px;
     font-size: 150%;
     font-weight: bold;
-    width: 90px;
-    display: inline-block;
     margin-right: -85px;
 }
 
@@ -56,6 +54,8 @@
     margin-top: -31px;
     line-height: 300%;
     left: -10px;
+	z-index: 9999;
+    text-shadow: 0 0 10px white;
 }
 .progress_tank > svg {
     height: 45px;

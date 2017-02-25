@@ -12,7 +12,7 @@ function visit() {
         method:'GET',
         data:req,
         success:function(data){
-            console.log(data);
+            //console.log(data);
         },
         error:function(){
             console.log("error visit");
@@ -106,7 +106,6 @@ $(document).ready(function(){
         var num = $(this).data("num");
         if(num){
             if(getNode(respark)>(-1)){
-                console.log("открываем");
                 Global.nodes[getNode(respark)].nodeObj.openTank(num);
             }
         }
@@ -120,7 +119,7 @@ $(document).ready(function(){
         toggleFancy();
     });
     $('.fancyemiter').fancybox({
-        'scrolling':'no',
+        'scrolling':'yes',
         'padding':10,
         'margin':20,
         'hideOnOverlayClick':true,
@@ -136,10 +135,10 @@ function getNode(classNode){
     let status = -1;
     Global.nodes.map(function (node, index) {
         if(node.nodeObj instanceof classNode){
-            console.log("node ok index:"+index);
+            //console.log("node ok index:"+index);
             status = index;
         }else {
-            console.log("node NOT OK index:-1");
+            //console.log("node NOT OK index:-1");
         }
     });
     return status;

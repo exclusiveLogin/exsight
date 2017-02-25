@@ -205,6 +205,11 @@ $(document).ready(function(){
         legend: {
             enabled: true
         },
+		loading:{
+			labelStyle:{
+				color:"black"
+			}
+		},
         xAxis: {
             type: 'datetime',
             ordinal:false,

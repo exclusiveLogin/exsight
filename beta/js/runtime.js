@@ -119,7 +119,7 @@ $(document).ready(function(){
         toggleFancy();
     });
     $('.fancyemiter').fancybox({
-        'scrolling':'no',
+        'scrolling':'yes',
         'padding':10,
         'margin':20,
         'hideOnOverlayClick':true,
