@@ -23,34 +23,61 @@ class respark{
             vapor_temperature=[],
             plot=[];
         data.map(function (elem,index) {
-            let utc = Number(elem.utc);
-            level.push([utc,Number(elem.level)]);
-            mass.push([utc,Number(elem.mass)]);
-            volume.push([utc,Number(elem.volume)]);
-            temperature.push([utc,Number(elem.temperature)]);
-            vapor_temperature.push([utc,Number(elem.vapor_temperature)]);
-            plot.push([utc,Number(elem.plot)]);
+			let utc;
+			if(elem.utc)utc = Number(elem.utc);
+			if(elem.level && elem.mass && elem.volume && elem.temperature && elem.vapor_temperature && elem.plot){
+				level.push([utc,Number(elem.level)]);
+				mass.push([utc,Number(elem.mass)]);
+				volume.push([utc,Number(elem.volume)]);
+				temperature.push([utc,Number(elem.temperature)]);
+				vapor_temperature.push([utc,Number(elem.vapor_temperature)]);
+				plot.push([utc,Number(elem.plot)]);
+			}            
         });
-        // console.log("level:",level);
-        // console.log("plot:",plot);
-        // console.log("temperature:",temperature);
-        // console.log("vapor_temperature:",vapor_temperature);
-        // console.log("mass:",mass);
-        // console.log("volume:",volume);
-
-        Global.TrendTankParm.series[0].setData([]);
-        Global.TrendTankParm.series[0].setData(level);
-        Global.TrendTankParm.series[1].setData([]);
-        Global.TrendTankParm.series[1].setData(mass);
-        Global.TrendTankParm.series[2].setData([]);
-        Global.TrendTankParm.series[2].setData(volume);
-        Global.TrendTankParm.series[3].setData([]);
-        Global.TrendTankParm.series[3].setData(temperature);
-        Global.TrendTankParm.series[4].setData([]);
-        Global.TrendTankParm.series[4].setData(vapor_temperature);
-        Global.TrendTankParm.series[5].setData([]);
-        Global.TrendTankParm.series[5].setData(plot);
-        Global.TrendTankParm.hideLoading();
+		if(Global.fancy){
+			//Trend in fancy
+			setTimeout(function(){
+				Global.TrendFancy.series[0].setData(level);
+			},100);
+			setTimeout(function(){
+				Global.TrendFancy.series[1].setData(mass);
+			},200);
+			setTimeout(function(){
+				Global.TrendFancy.series[2].setData(volume);
+			},300);
+			setTimeout(function(){
+				Global.TrendFancy.series[3].setData(temperature);
+			},400);
+			setTimeout(function(){
+				Global.TrendFancy.series[4].setData(vapor_temperature);
+			},500);
+			setTimeout(function(){
+				Global.TrendFancy.series[5].setData(plot);
+				Global.TrendFancy.hideLoading();
+			},600);
+		}else{
+			//Trend In Tank Parm
+			
+			setTimeout(function(){
+				Global.TrendTankParm.series[0].setData(level);
+			},100);
+			setTimeout(function(){
+				Global.TrendTankParm.series[1].setData(mass);
+			},200);
+			setTimeout(function(){
+				Global.TrendTankParm.series[2].setData(volume);
+			},300);
+			setTimeout(function(){
+				Global.TrendTankParm.series[3].setData(temperature);
+			},400);
+			setTimeout(function(){
+				Global.TrendTankParm.series[4].setData(vapor_temperature);
+			},500);
+			setTimeout(function(){
+				Global.TrendTankParm.series[5].setData(plot);
+				Global.TrendTankParm.hideLoading();
+			},600);
+		}
     }
     refreshTank(tank) {
         var wrapperRenderTank = renderTank.bind(this);
@@ -476,6 +503,7 @@ class respark{
             Global.tankselect = num;
             $(".tank_num_val").text(num);
             Global.TrendTankParm.setTitle({text:"Параметры резервуара "+num});
+			Global.TrendFancy.setTitle({text:"Параметры резервуара "+num});
             this.refreshTank(num);
         }
         if(Global.fancy){

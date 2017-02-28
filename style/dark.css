@@ -57,9 +57,17 @@ small{
     text-transform: uppercase;
     color: #FFD100;
     text-shadow: 0 0 10px #FFD100;
-    background-image: url("../images/rn_logo.png");
+    background-image: url("rn_logo.png");
     background-repeat: no-repeat;
     background-position: left;
+    line-height: 20px;
+    background-size: 70px;
+    height: 64px;
+}
+.logo_m{
+    background-image: url("rn_logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
     line-height: 20px;
     background-size: 70px;
     height: 64px;
@@ -365,6 +373,8 @@ a:hover{
     /* float: right; */
     /* position: absolute; */
     margin-bottom: -30px;
+    z-index: 9999;
+    position: relative;
 }
 #result{
     color: white;
@@ -483,7 +493,8 @@ a:hover{
 
 }
 .fb{
-    width:1200px;
+    /*width:1200px;*/
+	/*overflow-y:scroll;*/
 }
 .pereliv{
     margin-top: -75px;
@@ -588,8 +599,10 @@ a:hover{
     border-left:1px solid grey;
     margin-left: 50px;
 }
-.myoffset{
-    margin-left: 4.15%;
+@media all and (min-width: 990px) {
+    .myoffset{
+        margin-left: 4.15%;
+    }
 }
 .demo{
     margin-top: 15px;
@@ -709,6 +722,11 @@ a:hover{
 }
 .conerror{
     font-size: 200%;
+}
+@media all and (max-width: 768px){
+	.conerror{
+		font-size: 75%;
+	}
 }
 .panelstate_hide{
     opacity:0;

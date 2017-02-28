@@ -1,7 +1,6 @@
 import gl from "./global.js";
 import Integrator from "./integrator.js";
 import reloadProg from "./progresslogic.js";
-import detect from "./detect.js";
 import UtilClass from "./logic.js";
 import Blink from "./blink.js"
 window.ProgressBar = require("progressbar.js");
@@ -29,7 +28,6 @@ window.stateRefresher = Utility.stateRefresher;
 //-----------------------------------
 window.Global = gl;
 window.reloadProgressBar = reloadProg;
-
 window.Blink = Blink;
 
 if(Integrator && gl){
@@ -105,4 +103,3 @@ if(Integrator && gl){
 
     Global.IntegratorCon = true;
 }
-if(navigator)Global.UA = detect.parse(navigator.userAgent);

@@ -71,8 +71,8 @@ for($i=1;$i<80;$i++) {
             $tank_level = round((float)str_replace(",", ".", $ini_arr['tank_level']), 1);
             $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . "," . $tank_level . ") ON DUPLICATE KEY UPDATE `level` = " . $tank_level . ";";
             $mysql->query($q);
-            //echo "q:".$q."<br>";
         }else{
+            $tank_level = 0;
             $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . ",-1000) ON DUPLICATE KEY UPDATE `level` = -1000;";
             $mysql->query($q);
         }
