@@ -1,4 +1,7 @@
 class respark{
+    constructor(){
+        this.coldstart = true;
+    }
     tankparmToggle(state){
         if(state){
             $('#parm_panel').show(0,function () {
@@ -102,11 +105,10 @@ class respark{
             method:'GET',
             data:{"tank":tank,"lazy":true},
             success:function(data){
-                //console.log("trends:",data);
                 wrapperTrend(data);
             },
             error:function(){
-                console.log("error to load refresh tank ajax data");
+                console.log("error to load refresh tank LazyTrends ajax data");
             }
         });
 
@@ -237,7 +239,7 @@ class respark{
     }
     refreshPark(){
         var wrapperRenderpark = renderPark.bind(this);
-        var wrapperCalcArrows = calcArrows.bind(this);
+        var wrapperCalcArrows = this.calcArrows.bind(this);
         $.ajax({
             url:"gettank.php",
             dataType:"json",
@@ -255,6 +257,13 @@ class respark{
         });
         function renderPark(data) {
             if(data){
+                /*Если это холодный старт то
+                надо список имеющихся активных резервуаров
+                передать на вычисление Тенденций*/
+                if(Global.nodes[getNode(respark)].nodeObj.coldstart){
+                    Global.nodes[getNode(respark)].nodeObj.coldstart = false //Выставляем флаг горячего старта
+                    this.tendsStart(data);
+                }
                 for(var elem in data){
                     elem = Number(elem);
                     //console.log(elem);
@@ -267,6 +276,10 @@ class respark{
                             //статус резервуаров
                             $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-remove-circle'></i>");
                         }else {
+                            // if(Global.nodes[getNode(respark)].){
+                            //
+                            // }
+
                             //статус резервуаров
                             $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-ok-circle'></i>");
 
@@ -379,64 +392,64 @@ class respark{
             }
 
         }
-        function calcArrows(data) {
-            var filter = 1;
-            if(Global.IntegratorCon){
-                if(data){
-                    for(var el in data){//перебор резервуаров
-                        var res = false;
-                        var tmpnum = Number(data[el].num);
-                        if(eval('Global.IntegratorForArrows'+data[el].num)){//тестируем первый резервуар
-                            if(data[el].level){//если есть уровень у выбранного резервуара
-                                var tmplevel = Number(data[el].level);
-                                var result = eval('Global.IntegratorForArrows'+data[el].num+'.Integrity(tmplevel)');
-                                if(Math.abs(result)>filter){//значение выходит на рамки
-                                    if(result>0){
-                                        //console.log("Значение растет:"+result);
-                                        res = "up";
-                                    }else {
-                                        //console.log("Значение падает:"+result);
-                                        res = "down";
-                                    }
+    }
+    calcArrows(data) {
+        var filter = 1;
+        if(Global.IntegratorCon){
+            if(data){
+                for(var el in data){//перебор резервуаров
+                    var res = false;
+                    var tmpnum = Number(data[el].num);
+                    if(eval('Global.IntegratorForArrows'+data[el].num)){//тестируем первый резервуар
+                        if(data[el].level){//если есть уровень у выбранного резервуара
+                            var tmpmass = Number(data[el].mass);
+                            var result = eval('Global.IntegratorForArrows'+data[el].num+'.Integrity('+tmpmass+')');
+                            if(Math.abs(result)>filter){//значение выходит на рамки
+                                if(result>0){
+                                    //console.log("Значение растет:"+result);
+                                    res = "up";
                                 }else {
-                                    //console.log("Значение без изменений:"+result);
+                                    //console.log("Значение падает:"+result);
+                                    res = "down";
                                 }
-                                renderArrows(tmpnum,res);
+                            }else {
+                                //console.log("Значение без изменений:"+result);
                             }
+                            this.renderArrows(tmpnum,res);
                         }
                     }
                 }
             }
-            function renderArrows(tank,result) {
-                var TankObj = false;
-                if(tank){
-                    TankObj = $(".tank[data-num="+tank+"]");
-                    TankObj.find(".tank_arrow_top").removeClass("_up _down _neutral");
-                    TankObj.find(".tank_arrow_bottom").removeClass("_up _down _neutral");
-                }
-                if(tank && result){
-                    TankObj = $(".tank[data-num="+tank+"]");
-                    if(result=="up"){
-                        TankObj.find(".tank_arrow_top").addClass("_up");
-                        //статус резервуаров
-                        $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-up'></i>");
-                    }else if(result=="down"){
-                        TankObj.find(".tank_arrow_bottom").addClass("_down");
-                        //статус резервуаров
-                        $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-down'></i>");
-                    }
-                    else{
-                        TankObj.find(".tank_arrow_top").addClass("_neutral");
-                        TankObj.find(".tank_arrow_bottom").addClass("_neutral");
-                    }
-                }
-                if(tank && !result){
-                    TankObj.find(".tank_arrow_top").addClass("_neutral");
-                    TankObj.find(".tank_arrow_bottom").addClass("_neutral");
-                }
-                refreshTooltips();
+        }
+    }
+    renderArrows(tank,result) {
+        var TankObj = false;
+        if(tank){
+            TankObj = $(".tank[data-num="+tank+"]");
+            TankObj.find(".tank_arrow_top").removeClass("_up _down _neutral");
+            TankObj.find(".tank_arrow_bottom").removeClass("_up _down _neutral");
+        }
+        if(tank && result){
+            TankObj = $(".tank[data-num="+tank+"]");
+            if(result=="up"){
+                TankObj.find(".tank_arrow_top").addClass("_up");
+                //статус резервуаров
+                $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-up'></i>");
+            }else if(result=="down"){
+                TankObj.find(".tank_arrow_bottom").addClass("_down");
+                //статус резервуаров
+                $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-down'></i>");
+            }
+            else{
+                TankObj.find(".tank_arrow_top").addClass("_neutral");
+                TankObj.find(".tank_arrow_bottom").addClass("_neutral");
             }
         }
+        if(tank && !result){
+            TankObj.find(".tank_arrow_top").addClass("_neutral");
+            TankObj.find(".tank_arrow_bottom").addClass("_neutral");
+        }
+        refreshTooltips();
     }
     lvl2perc(val,max){
         var desc = max/100;
@@ -520,7 +533,6 @@ class respark{
         });
         resparkbodyPromise.then(function (text) {
             $('#minview').html(text);
-            //reloadProgressBar();
 
             $(".tank").addClass("initScroll");
             $(".tank").each(function (index, elem) {
@@ -539,13 +551,12 @@ class respark{
         var resparkpanelPromise = fetch("nodes/templates/resparkpanel.html").then(function (response) {
             return response.text();
         });
+
         resparkpanelPromise.then(function (text) {
             $('#panelstate').html(text);
         });
-        // console.log("before promise start");
-        // console.log(this);
-        var context;
 
+        /*var context;
         if(this instanceof respark){
             context = this;
         }else {
@@ -554,19 +565,13 @@ class respark{
                     context = node.nodeObj;
                 }
             });
-        }
+        }*/
 
-        var wrapperRefreshPark = this.refreshPark.bind(context);
+        var wrapperStartOPC = this.startOPC.bind(this);
 
         Promise.all([resparkbodyPromise,resparkpanelPromise]).then(function () {
             reloadProgressBar();
-
-            wrapperRefreshPark();
-
-            if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
-            if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
-            Global.refreshParkTimer=setInterval(wrapperRefreshPark,60000);
-            Global.refreshStateTimer=setInterval(stateRefresher,10000);
+            wrapperStartOPC();
         });
     }
     stopNode() {
@@ -575,5 +580,65 @@ class respark{
         $('#minview').empty();
         $("#btnrespark").removeClass("nodeselected");
 
+    }
+    startOPC(){
+        var wrapperRefreshPark = this.refreshPark.bind(this);
+        let start = function () {
+            wrapperRefreshPark();
+
+            if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
+            if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
+            Global.refreshParkTimer=setInterval(wrapperRefreshPark,60000);
+            Global.refreshStateTimer=setInterval(stateRefresher,10000);
+        };
+
+        start();
+    }
+    tendsStart(data){
+        var wrapperRenderArrows = this.renderArrows.bind(this);
+        if(typeof data === "object"){
+            data.map(function (elem,idx) {
+                if(elem.level){
+                    if(Number(elem.level) > -1){//если резервуар не в ремонте
+                        //готовим AJAX
+                        $.ajax({
+                            url:"trendengine.php",
+                            dataType:"json",
+                            method:'GET',
+                            data:{tends:true,coldstart:true,tanktends:elem.num},
+                            success:function(data){
+                                let i = Number(elem.num);
+                                data.map(function (el,elidx) {
+                                    if(eval('Global.IntegratorForArrows'+elem.num)){
+                                        let filter = 1;
+                                        //если есть объект интегратора для данного резервуара
+                                        if(el.mass){//если есть уровень у выбранного резервуара
+                                            var tmpmass = Number(el.mass);
+                                            var result = eval('Global.IntegratorForArrows'+elem.num+'.Integrity('+tmpmass+')');
+                                            var res = false;
+                                            if(Math.abs(result)>filter){//значение выходит на рамки
+                                                if(result>0){
+                                                    res = "up";
+                                                }else {
+                                                    res = "down";
+                                                }
+                                            }else {
+                                                //console.log("Значение без изменений:"+result);
+                                            }
+                                            if(data.length-1 == elidx){
+                                                wrapperRenderArrows(elem.num,res);
+                                            }
+                                        }
+                                    }
+                                });
+                            },
+                            error:function(){
+                                console.log("error to load Tendentional ajax data from",elem.num);
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 }

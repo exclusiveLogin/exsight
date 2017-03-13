@@ -3,7 +3,7 @@ Global.loginData={
     "login":"",
     "password":""
 };
-Global.version = "0.9.1 beta";
+Global.version = "0.9.3 beta";
 function visit() {
     let req = {version:Global.version};
     $.ajax({
