@@ -45,7 +45,7 @@ export default class Utility{
 	refreshLog() {
 		if(Global.authkey){
 			if(Global.jqready){
-				$("#wrapper").removeClass("transparent");
+				$("#wrapper").removeClass("transparentStatic");
 				setTimeout(function () {
 					$("#panel").removeClass("transparent");
 				},500);
@@ -61,7 +61,7 @@ export default class Utility{
 					$("#panel").addClass("transparent");
 				},500);
 				setTimeout(function () {
-					$("#wrapper").addClass("transparent");
+					$("#wrapper").addClass("transparentStatic");
 				},1000);
 				$('.btnlogout').hide();
 				$('.btnlogin').show();
@@ -93,7 +93,7 @@ export default class Utility{
 			'hideOnContentClick':true,
 			'type':'inline'
 		});
-		$('#fancycontainer').click();
+        $.fancybox.open("#fancycontainer");
 		$('#fancycontainer').click(function (event) {
 			if(!Global.fancy) {
 				event.preventBubble();
@@ -116,7 +116,6 @@ export default class Utility{
 		}else {
 			$('.tank').removeClass("fancyemiter");//delete fancy
 			$.fancybox.close();
-            //Global.nodes[index].nodeObj.tankparmToggle(true,Global.tankselect);
 			Global.nodes[index].nodeObj.openTank(Global.tankselect);
 		}
 	}

@@ -3,9 +3,16 @@ Global.loginData={
     "login":"",
     "password":""
 };
-Global.version = "0.9.1 beta";
+Global.version = {};
+Global.version.v = "0.9.4 ( beta [generic runtime module] )";
+Global.version.desc = "<li>Производительность резервуаров</li>" +
+    "<li>Дневные тренды LazyTrends</li>" +
+    "<li>Добавлен суммарный баланс парка</li>" +
+    "<li>Исправлены мелкие недочеты</li>" +
+    "<li>Повышена произодительность системы</li>" +
+    "<li>Ускорена загрузка системы</li>";
 function visit() {
-    let req = {version:Global.version};
+    let req = {version:Global.version.v};
     $.ajax({
         url:"visitparser.php",
         dataType:"text",
@@ -23,6 +30,9 @@ $.ajaxSetup({
     cache:false
 });
 $(document).ready(function(){
+    $("#fancydemo .version").html(Global.version.v);
+    $("#fancydemo .verdescription").html(Global.version.desc);
+
     visit();
 
     setTimeout(function(){

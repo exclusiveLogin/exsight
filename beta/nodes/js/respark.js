@@ -620,7 +620,7 @@ class respark{
                 $(".scheme.summaryProd").html("").html(`<table width="100%" border="0" class="table table-condensed table-hover"></table>`).find("table").append(`
                     <tr>
                         <th width="50%" align="center">Продукт</th>
-                        <th width="50%" align="center">Общая масса продукта</th>
+                        <th width="50%" align="center">Общая масса</th>
                     </tr>
                 `);//чистим контайнер
                 for(var key in prod){
