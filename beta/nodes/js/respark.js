@@ -240,6 +240,7 @@ class respark{
     refreshPark(){
         var wrapperRenderpark = renderPark.bind(this);
         var wrapperCalcArrows = this.calcArrows.bind(this);
+        var wrapperSummaryBalance = this.summaryBalance.bind(this);
         $.ajax({
             url:"gettank.php",
             dataType:"json",
@@ -249,6 +250,7 @@ class respark{
                 connectionState(1);
                 wrapperRenderpark(data);
                 wrapperCalcArrows(data);
+                wrapperSummaryBalance(data);
             },
             error:function(){
                 console.log("error to load refresh park ajax data");
@@ -404,6 +406,7 @@ class respark{
                         if(data[el].level){//если есть уровень у выбранного резервуара
                             var tmpmass = Number(data[el].mass);
                             var result = eval('Global.IntegratorForArrows'+data[el].num+'.Integrity('+tmpmass+')');
+                            // console.log("CALC ARROWS Data:",data,"Result:",result);
                             if(Math.abs(result)>filter){//значение выходит на рамки
                                 if(result>0){
                                     //console.log("Значение растет:"+result);
@@ -415,28 +418,34 @@ class respark{
                             }else {
                                 //console.log("Значение без изменений:"+result);
                             }
-                            this.renderArrows(tmpnum,res);
+                            this.renderArrows(tmpnum,res,result.toFixed(2));
                         }
                     }
                 }
             }
         }
     }
-    renderArrows(tank,result) {
+    renderArrows(tank,result,res_val) {
         var TankObj = false;
         if(tank){
             TankObj = $(".tank[data-num="+tank+"]");
             TankObj.find(".tank_arrow_top").removeClass("_up _down _neutral");
             TankObj.find(".tank_arrow_bottom").removeClass("_up _down _neutral");
+
+            TankObj.find(".tends").removeClass("_up _down");
         }
         if(tank && result){
             TankObj = $(".tank[data-num="+tank+"]");
             if(result=="up"){
                 TankObj.find(".tank_arrow_top").addClass("_up");
+
+                TankObj.find(".tends").addClass("_up");
                 //статус резервуаров
                 $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-up'></i>");
             }else if(result=="down"){
                 TankObj.find(".tank_arrow_bottom").addClass("_down");
+
+                TankObj.find(".tends").addClass("_down");
                 //статус резервуаров
                 $("[data-ts="+tank+"]").html(tank+" <i class='glyphicon glyphicon-arrow-down'></i>");
             }
@@ -448,6 +457,9 @@ class respark{
         if(tank && !result){
             TankObj.find(".tank_arrow_top").addClass("_neutral");
             TankObj.find(".tank_arrow_bottom").addClass("_neutral");
+        }
+        if(res_val){
+            TankObj.find(".tends .val").text(res_val);
         }
         refreshTooltips();
     }
@@ -530,11 +542,10 @@ class respark{
         $("#btnrespark").addClass("nodeselected");
         var resparkbodyPromise = fetch("nodes/templates/respark.html").then(function (response) {
             return response.text();
-        });
-        resparkbodyPromise.then(function (text) {
+        }).then(function (text) {
             $('#minview').html(text);
 
-            $(".tank").addClass("initScroll");
+            $(".tank").addClass("initScroll");//Плавный старт
             $(".tank").each(function (index, elem) {
                 setTimeout(function () {
                     $(elem).removeClass("initScroll");
@@ -542,9 +553,13 @@ class respark{
             });
             $(".tank_pereliv").addClass("transparent");
             $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
-            $(".tank").each(function () {
+            $(".tank").each(function () {//расстановка номеров
                 var tmp = $(this).data("num");
                 $(this).find(".tank_title").text(tmp);
+            });
+            //Установка шаблона тенденций
+            $(".tank").each(function () {
+                $(this).find(".tends").html("<span class=\"val\">--</span> т/ч");
             });
         });
 
@@ -555,17 +570,6 @@ class respark{
         resparkpanelPromise.then(function (text) {
             $('#panelstate').html(text);
         });
-
-        /*var context;
-        if(this instanceof respark){
-            context = this;
-        }else {
-            Global.nodes.map(function (node,index) {
-                if(node.nodeObj instanceof respark){
-                    context = node.nodeObj;
-                }
-            });
-        }*/
 
         var wrapperStartOPC = this.startOPC.bind(this);
 
@@ -594,12 +598,51 @@ class respark{
 
         start();
     }
+    summaryBalance(data){
+        if(data){
+            let product = [];
+            data.map(function (elem) {
+                var prodId = Number(elem.product);
+                var prodText = this.getProduct(prodId);
+                var tmpProdMass = Number(elem.mass);
+                if(!product[prodText.text]){
+                    //создаем продукт
+                    product[prodText.text]=tmpProdMass;
+                }else {
+                    //добавляем к продукту
+                    product[prodText.text]+=tmpProdMass;
+                }
+            },this);
+
+            renderSummary(product);
+
+            function renderSummary(prod) {
+                $(".scheme.summaryProd").html("").html(`<table width="100%" border="0" class="table table-condensed table-hover"></table>`).find("table").append(`
+                    <tr>
+                        <th width="50%" align="center">Продукт</th>
+                        <th width="50%" align="center">Общая масса продукта</th>
+                    </tr>
+                `);//чистим контайнер
+                for(var key in prod){
+                    $(".scheme.summaryProd").html();
+                    $(".scheme.summaryProd table").append(`
+                        <tr>
+                            <td>${key}</td>
+                            <td>${prod[key].toFixed(2)} тонн.</td>
+                        </tr>
+                    `);
+                }
+            }
+        }
+    }
     tendsStart(data){
         var wrapperRenderArrows = this.renderArrows.bind(this);
         if(typeof data === "object"){
             data.map(function (elem,idx) {
+                // console.log("TEnds Data:",data,"elem:",elem);
+                //тут массив из 31 резервуара и одиночные замеры для каждого
                 if(elem.level){
-                    if(Number(elem.level) > -1){//если резервуар не в ремонте
+                    if(Number(elem.level) > -1 && elem.num){//если резервуар не в ремонте
                         //готовим AJAX
                         $.ajax({
                             url:"trendengine.php",
@@ -607,14 +650,18 @@ class respark{
                             method:'GET',
                             data:{tends:true,coldstart:true,tanktends:elem.num},
                             success:function(data){
+                                //сюда получаем 31 независимый запрос. из (60) элементов часового замера
                                 let i = Number(elem.num);
                                 data.map(function (el,elidx) {
-                                    if(eval('Global.IntegratorForArrows'+elem.num)){
+                                    if(eval('Global.IntegratorForArrows'+i)){
                                         let filter = 1;
                                         //если есть объект интегратора для данного резервуара
                                         if(el.mass){//если есть уровень у выбранного резервуара
                                             var tmpmass = Number(el.mass);
-                                            var result = eval('Global.IntegratorForArrows'+elem.num+'.Integrity('+tmpmass+')');
+                                            var result = eval('Global.IntegratorForArrows'+i+'.Integrity('+tmpmass+')');
+
+                                            // console.log("TENDS START Data:",data,"Result:",result, "el:",el);
+
                                             var res = false;
                                             if(Math.abs(result)>filter){//значение выходит на рамки
                                                 if(result>0){
@@ -626,7 +673,7 @@ class respark{
                                                 //console.log("Значение без изменений:"+result);
                                             }
                                             if(data.length-1 == elidx){
-                                                wrapperRenderArrows(elem.num,res);
+                                                wrapperRenderArrows(i,res,(result).toFixed(2));
                                             }
                                         }
                                     }

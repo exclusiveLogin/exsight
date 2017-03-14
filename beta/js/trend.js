@@ -250,7 +250,7 @@ $(document).ready(function(){
                 // data:[0,3,4,3,12,15,2],
                 tooltip: {
                     valueDecimals: 2,
-                    valueSuffix:' кг.'
+                    valueSuffix:' т.'
                 },
                 color:"lightgreen",
                 yAxis:0
@@ -355,7 +355,7 @@ $(document).ready(function(){
                 // data:[0,3,4,3,12,15,2],
                 tooltip: {
                     valueDecimals: 2,
-                    valueSuffix:' кг.'
+                    valueSuffix:' т.'
                 },
                 color:"lightgreen",
                 yAxis:0

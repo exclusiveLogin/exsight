@@ -511,17 +511,22 @@ a:hover{
 .scheme{
     width: 90%;
     margin: 5%;
-    border: 1px red solid;
-    height: 122px;
+    color: white;
+    top: -20px;
+    position: relative;
+    height: 150px;
 }
 .scheme span{
     font-size: 200%;
-    transform: rotateZ(25deg);
+    transform: rotateZ(10deg);
     transform-style: flat;
     display: block;
     position: relative;
     top: 66px;
     left: 63px;
+}
+.scheme table tr{
+    border-bottom: 1px dotted grey;
 }
 
 /* products*/
@@ -557,11 +562,8 @@ a:hover{
     position: relative;
     height: 0;
     font-size: 180%;
-    /* width: 0; */
     top: 35px;
     margin-right: 0px;
-    /* margin-top: -18px; */
-    /* left: 44px; */
     display: block;
     opacity:0;
     transition: opacity .5s ease;
@@ -571,23 +573,20 @@ a:hover{
     position: relative;
     height: 0;
     font-size: 180%;
-    /* width: 0; */
     top: 40px;
     margin-right: 0px;
-    /* margin-top: -18px; */
-    /* left: 44px; */
     opacity: 0;
     display: block;
     transition: opacity .5s ease;
 }
 ._up{
-    color: greenyellow;
+    color: greenyellow !important;
     text-shadow: 0 0 7px rgba(50,255,50,0.9);
     opacity:1 !important;
 }
 ._down{
-    color: red;
-    text-shadow: 0 0 7px rgba(255,50,50,0.9);
+    color: #ff4900 !important;
+    text-shadow: 0 0 7px rgba(218, 40, 0, 0.9);
     opacity:1 !important;
 }
 ._neutral{
@@ -732,4 +731,33 @@ a:hover{
     opacity:0;
     margin-top:-70px;
     /*transform: translateY(-70px);*/
+}
+.tends{
+    position: relative;
+    line-height: 0px;
+    top: -30%;
+    left: -10%;
+    font-size: 70%;
+    text-align: center;
+    color: darkgrey;
+    font-weight: 600;
+}
+.verdescription{
+    list-style-type: decimal;
+    list-style-position: inside;
+}
+.table-hover>tbody>tr:hover {
+    background-color: #3c3c3c !important;
+}
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #333 !important;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border: 0;
+}
+.table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th {
+    padding: 0;
 }
