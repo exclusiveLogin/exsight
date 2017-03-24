@@ -37,7 +37,7 @@ $(document).ready(function(){
 
     setTimeout(function(){
         panelStateToggle(false);
-    },5000);
+    },7000);
     $(document).on("mouseenter","#panelstate",function () {
         Global.panelsateQ = true;
         setTimeout(function () {
@@ -57,17 +57,12 @@ $(document).ready(function(){
 	        $.fancybox.close();
         },5000);
     }
+    //создаем ноду Резпарка
+    Global.nodes.push(Node.createNode("respark","panelnodes"));
 
+	//создаем ссылку на тренды
+    //Global.nodes.push(Node.createNode("restrends","panelnodes"));
 
-    //if(Global.UA){
-    //    if(Global.UA.browser.family == "IE"){
-    //        $('#panel').show().removeClass("transparent");
-    //        $("#panel").html('<h2 class="label label-lg label-default conerror">Ваш браузер не поддерживается, воспользуйтесь нормальным (Chrome, Mozilla, Opera, Safari..и пр.)</h2>');
-    //    }else {
-            Global.nodes.push(Node.createNode("respark","panelnodes"));
-            //Global.nodes[Global.nodes.length-1].start();
-    //    }
-    //}
     Global.jqready = true;
     Global.authkey = true;
     Global.loggedAs = "ssv";

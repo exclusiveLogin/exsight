@@ -58,16 +58,12 @@ $(document).ready(function(){
         },5000);
     }
 
+    //Создаем ноду Резпарка
+    Global.nodes.push(Node.createNode("respark","panelnodes"));
 
-    //if(Global.UA){
-    //    if(Global.UA.browser.family == "IE"){
-    //        $('#panel').show().removeClass("transparent");
-    //        $("#panel").html('<h2 class="label label-lg label-default conerror">Ваш браузер не поддерживается, воспользуйтесь нормальным (Chrome, Mozilla, Opera, Safari..и пр.)</h2>');
-    //    }else {
-            Global.nodes.push(Node.createNode("respark","panelnodes"));
-            //Global.nodes[Global.nodes.length-1].start();
-    //    }
-    //}
+    //Создаем ссылку на тренды
+    Global.nodes.push(Node.createNode("trends","panelnodes"));
+
     Global.jqready = true;
     Global.authkey = true;
     Global.loggedAs = "ssv";
@@ -143,15 +139,26 @@ $(document).ready(function(){
 
 function getNode(classNode){
     let status = -1;
-    Global.nodes.map(function (node, index) {
-        if(node.nodeObj instanceof classNode){
-            //console.log("node ok index:"+index);
-            status = index;
-        }else {
-            //console.log("node NOT OK index:-1");
-        }
-    });
+    if(typeof classNode === "function"){
+        Global.nodes.map(function (node, index) {
+            if(node.nodeObj instanceof classNode){
+                status = index;
+            }else {
+            }
+        });
+        return status;
+    }
+    if(typeof classNode === "string"){
+        Global.nodes.map(function (node, index) {
+            if(node.nameNode === classNode){
+                status = index;
+            }else {
+            }
+        });
+        return status;
+    }
     return status;
+
 }
 
 Global.blink1 = new Blink(".pereliv,.errortank,.blink",500);
