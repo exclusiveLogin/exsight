@@ -1,14 +1,14 @@
 'use strict';
 class NodeCtrl{
-    static createNode(name,container){
-        return new Node(name,container);
+    static createNode(name,container,alias){
+        return new Node(name,container,alias);
     }
     static deleteNode(){}
     static replaceNode(){}
     static replaceAll(){}
 }
 class Node extends NodeCtrl{
-    constructor(name,container){
+    constructor(name,container,alias){
         super();
         //проверка аргументов
         if(name){
@@ -21,12 +21,18 @@ class Node extends NodeCtrl{
         }else {
             return new Error("нет контейнера");
         }
+        let localName;
+        if(!alias){
+            localName = name;
+        }else {
+            localName = alias;
+        }
 
         //проверка дубликатов
         if(getNode(name)==(-1)){
             //создаем паттерн кнопки
-            this.pattern = `<div class="node" id="btn${this.nameNode}">
-                            <span>${this.nameNode}</span>
+            this.pattern = `<div class="node" id="btn${name}">
+                            <span>${localName}</span>
                             <div class="led"></div>
                         </div>`;
             this.elem = document.getElementById(this.containerNode);

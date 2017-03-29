@@ -218,17 +218,16 @@ export default class Utility{
 										url:"state.php",
 										method:'GET',
 										data:{"setstate":"normal","sector":"main"},
-										success:function(data){
-											//console.log("all ok");
-										},
 										error:function(){
 											console.log("error");
-										}
+										},
+										complete:function () {
+                                            setTimeout(function(){
+                                                //console.log("рефрешим страницу");
+                                                location.reload(true);
+                                            },1000);
+                                        }
 									});
-									setTimeout(function(){
-										//console.log("рефрешим страницу");
-										location.reload(true);
-									},10000);
 								},60000);
 							}	
 						}
@@ -240,6 +239,40 @@ export default class Utility{
 				connectionState(0);
 			}
 		});
+        $.ajax({
+            url:"defferreloader.php",
+            dataType:"json",
+            method:'GET',
+            data:{"ask":true},
+            success:function(data){
+                connectionState(1);
+                if(data){
+                	if(data.needreload) {
+                		console.log("Страница будет перезагружена по IP");
+                        showSysMsg("Страница будет перезагружена по IP", false, true);
+                        setTimeout(function () {
+                            $.ajax({
+                                url: "defferreloader.php",
+                                method: 'GET',
+                                data: {"ipdel": true},
+                                error: function () {
+                                    console.log("error");
+                                },
+                                complete: function () {
+                                    setTimeout(function () {
+                                        location.reload(true);
+                                    }, 1000);
+                                }
+                            });
+                        }, 60000);
+                    }
+                }
+            },
+            error:function(){
+                console.log("error to load defferreload ajax");
+                connectionState(0);
+            }
+        });
 	}
 
 }

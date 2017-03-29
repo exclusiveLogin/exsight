@@ -600,35 +600,66 @@ class respark{
     }
     summaryBalance(data){
         if(data){
-            let product = [];
+
+            let product = [];//инициализация массива
+
             data.map(function (elem) {
                 var prodId = Number(elem.product);
                 var prodText = this.getProduct(prodId);
                 var tmpProdMass = Number(elem.mass);
-                if(!product[prodText.text]){
-                    //создаем продукт
-                    product[prodText.text]=tmpProdMass;
-                }else {
-                    //добавляем к продукту
-                    product[prodText.text]+=tmpProdMass;
+                var tmpProdMassHideZone = Number(elem.hidezone);
+                var tmpNum = Number(elem.num);
+
+                if(!product[prodText.text]){//создаем продукт
+                    product[prodText.text] = {
+                        summ:tmpProdMass,
+                        summexport:tmpProdMass - tmpProdMassHideZone,
+                        tanks:[],
+                        class:prodText.class
+                    };
+                    product[prodText.text].tanks.push(tmpNum);
+                }else {//добавляем к продукту
+                    let tmpOldObj = {};
+                    Object.assign(tmpOldObj,product[prodText.text]);
+
+                    product[prodText.text].summ = tmpOldObj.summ + tmpProdMass;
+                    product[prodText.text].tanks = tmpOldObj.tanks;
+                    product[prodText.text].summexport = tmpOldObj.summexport + tmpProdMass - tmpProdMassHideZone;
+                    product[prodText.text].tanks.push(tmpNum);
+
+                    /*product[prodText.text]={
+                        summ:tmpOldObj.summ + tmpProdMass,
+                        tanks:tmpOldObj.tanks,
+                        summexport:tmpOldObj.summexport + tmpProdMass - tmpProdMassHideZone
+                    };*/
+
                 }
             },this);
 
             renderSummary(product);
 
             function renderSummary(prod) {
+                // console.log(prod);
+
                 $(".scheme.summaryProd").html("").html(`<table width="100%" border="0" class="table table-condensed table-hover"></table>`).find("table").append(`
-                    <tr>
-                        <th width="50%" align="center">Продукт</th>
-                        <th width="50%" align="center">Общая масса</th>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <td class="tab_prod" align="center">Продукт</td>
+                            <td class="tab_mass" align="center">Общая масса</td>
+                            <td class="tab_res" align="center">Резервуары</td>
+                            <td class="tab_export" align="center">Отгрузка</td>
+                        </tr>
+                    </thead> 
                 `);//чистим контайнер
                 for(var key in prod){
+                    // console.log("key:",key,"obj:",prod[key]);
                     $(".scheme.summaryProd").html();
                     $(".scheme.summaryProd table").append(`
-                        <tr>
-                            <td>${key}</td>
-                            <td>${prod[key].toFixed(2)} тонн.</td>
+                        <tr class="${prod[key].class}">
+                            <td class="tab_prod">${key}</td>
+                            <td class="tab_mass">${prod[key].summ.toFixed(1)} т.</td>
+                            <td class="tab_res">${prod[key].tanks.join(", ")}</td>
+                            <td class="tab_export">${prod[key].summexport.toFixed(1)} т.</td>
                         </tr>
                     `);
                 }

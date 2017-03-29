@@ -4,22 +4,23 @@ Global.loginData={
     "password":""
 };
 Global.version = {};
-Global.version.v = "0.9.4 ( beta [generic runtime module] )";
-Global.version.desc = "<li>Производительность резервуаров</li>" +
-    "<li>Дневные тренды LazyTrends</li>" +
-    "<li>Добавлен суммарный баланс парка</li>" +
+Global.version.v = "0.9.5";
+Global.version.build = "95100";
+Global.version.desc = "<li>Улучшен суммарный баланс парка</li>" +
+    "<li>Добавлена подсветка типа топлива</li>" +
+    "<li>Улучшены функции администрирования</li>" +
+    "<li>LazyTrends ограничен 72 часами</li>" +
     "<li>Исправлены мелкие недочеты</li>" +
-    "<li>Повышена произодительность системы</li>" +
-    "<li>Ускорена загрузка системы</li>";
+    "<li>Повышена произодительность системы</li>";
 function visit() {
-    let req = {version:Global.version.v};
+    let req = {version:Global.version.v,build:Global.version.build};
     $.ajax({
         url:"visitparser.php",
         dataType:"text",
         method:'GET',
         data:req,
         success:function(data){
-            //console.log(data);
+            console.log(data);
         },
         error:function(){
             console.log("error visit");
@@ -29,15 +30,30 @@ function visit() {
 $.ajaxSetup({
     cache:false
 });
+function adaptWin() {
+    if(window.innerWidth < 1450 && window.innerWidth > 990){
+        $("#minview").addClass("adapt");
+        $("#header").addClass("adapt");
+        $(".danger_field").addClass("adapt");
+    }else {
+        $("#minview").removeClass("adapt");
+        $("#header").removeClass("adapt");
+        $(".danger_field").removeClass("adapt");
+    }
+}
 $(document).ready(function(){
     $("#fancydemo .version").html(Global.version.v);
     $("#fancydemo .verdescription").html(Global.version.desc);
 
     visit();
+    adaptWin();
+    $(window).on("resize",function (e) {
+        adaptWin();
+    });
 
     setTimeout(function(){
         panelStateToggle(false);
-    },5000);
+    },7000);
     $(document).on("mouseenter","#panelstate",function () {
         Global.panelsateQ = true;
         setTimeout(function () {
@@ -59,10 +75,22 @@ $(document).ready(function(){
     }
 
     //Создаем ноду Резпарка
-    Global.nodes.push(Node.createNode("respark","panelnodes"));
+    Global.nodes.push(Node.createNode("respark","panelnodes","Парк"));
 
     //Создаем ссылку на тренды
-    Global.nodes.push(Node.createNode("trends","panelnodes"));
+    Global.nodes.push(Node.createNode("trends","panelnodes","Тренды парка"));
+
+    //Создаем ссылку на причал
+    Global.nodes.push(Node.createNode("port","panelnodes","Причал"));
+
+    //Создаем ссылку на тренды причала
+    Global.nodes.push(Node.createNode("porttrends","panelnodes","Тренды причала"));
+
+    //Создаем ссылку на газы
+    Global.nodes.push(Node.createNode("gas","panelnodes","СКЗ парка"));
+
+    //Создаем ссылку на учел учета
+    Global.nodes.push(Node.createNode("uku","panelnodes","Узел учета"));
 
     Global.jqready = true;
     Global.authkey = true;
