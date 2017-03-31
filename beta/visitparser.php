@@ -13,6 +13,6 @@ $q = "INSERT INTO `visits` (`ip`,`rip`,`ua`,`ver`,`build`) VALUES (\"$ip\",\"$ri
 $mysql->query($q);
 
 if(!$rip)$rip = $ip;
-$q = "INSERT IGNORE INTO `uniqueip` (`ip`,`ua`,`ver`,`build`) VALUES (\"$rip\",\"$ua\",\"$ver\",\"$build\")";
+$q = "INSERT INTO `uniqueip` (`ip`,`ua`,`ver`,`build`) VALUES (\"$rip\",\"$ua\",\"$ver\",\"$build\") ON DUPLICATE KEY UPDATE `ua`=\"$ua\",`ver`=\"$ver\",`build`=\"$build\"";
 $mysql->query($q);
 //echo $q;
