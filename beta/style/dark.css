@@ -706,10 +706,6 @@ a:hover{
     margin-bottom: 20px;
     border-radius: 5px;
 }
-.node .led.error{
-    background: red;
-    box-shadow: 0 0 10px 2px red;
-}
 .node .led.ok{
     background: lightgreen;
     box-shadow: 0 0 10px 2px lightgreen;
@@ -718,6 +714,10 @@ a:hover{
     background: orange;
     box-shadow: 0 0 10px 2px orange;
 }
+.node .led.error{
+     background: red;
+     box-shadow: 0 0 10px 2px red;
+ }
 .copyright{
     float: right;
 }
@@ -780,4 +780,8 @@ a:hover{
 .tab_export{
     min-width: 100px;
     text-align: center;
+}
+.tank_service{
+    z-index: 1000;
+    position: relative;
 }

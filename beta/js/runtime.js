@@ -4,14 +4,12 @@ Global.loginData={
     "password":""
 };
 Global.version = {};
-Global.version.v = "0.9.5";
-Global.version.build = "95100";
-Global.version.desc = "<li>Улучшен суммарный баланс парка</li>" +
-    "<li>Добавлена подсветка типа топлива</li>" +
-    "<li>Улучшены функции администрирования</li>" +
+Global.version.v = "0.9.6";
+Global.version.build = "95110";
+Global.version.desc = "<li>Добавлен режим [В ремонте] для резервуаров</li>" +
+    "<li>Исправлен алгоритм расчета баланса парка</li>" +
     "<li>LazyTrends ограничен 72 часами</li>" +
-    "<li>Исправлены мелкие недочеты</li>" +
-    "<li>Повышена произодительность системы</li>";
+    "<li>Исправлены мелкие недочеты</li>";
 function visit() {
     let req = {version:Global.version.v,build:Global.version.build};
     $.ajax({
