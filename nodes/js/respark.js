@@ -229,6 +229,12 @@ class respark{
                     Global.parmTankFancy.animate(tmpperc/100,pr_optfancy);
                 }
 
+                if(data.service){
+                    $(".tank_parm_service").html("<i class=\"label label-danger\"><i class=\"fa fa-wrench\" aria-hidden=\"true\"></i> В ремонте</i>");
+                }else {
+                    $(".tank_parm_service").html("<i class=\"label label-success\"><i class='glyphicon glyphicon-ok-circle'></i> В работе</i>");
+                }
+
             }else {
                 Global.parmTank.animate(0);
                 Global.parmTankFancy.animate(0);
@@ -263,25 +269,27 @@ class respark{
                 надо список имеющихся активных резервуаров
                 передать на вычисление Тенденций*/
                 if(Global.nodes[getNode(respark)].nodeObj.coldstart){
-                    Global.nodes[getNode(respark)].nodeObj.coldstart = false //Выставляем флаг горячего старта
+                    Global.nodes[getNode(respark)].nodeObj.coldstart = false; //Выставляем флаг горячего старта
                     this.tendsStart(data);
                 }
+
+                $("#btnrespark .led").removeClass("error warn");
+
                 for(var elem in data){
                     elem = Number(elem);
-                    //console.log(elem);
                     if(data[elem].level && data[elem].max_level){
-                        if(data[elem].level == "-1000"){
-                            $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
+                        if(data[elem].level == "-1000"){//если уровнемер не возвращает данных уровня
+                            if(!data[elem].service){// и нет "в ремонте"
+                                $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
+                                $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-remove-circle'></i>");
+
+                                $("#btnrespark .led").addClass("error");
+                            }
+
                             $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.6);
                             $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
 
-                            //статус резервуаров
-                            $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-remove-circle'></i>");
-                        }else {
-                            // if(Global.nodes[getNode(respark)].){
-                            //
-                            // }
-
+                        }else if(!data[elem].service){
                             //статус резервуаров
                             $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-ok-circle'></i>");
 
@@ -318,6 +326,7 @@ class respark{
                             //console.log("pereliv:"+Number(data[elem].pereliv));
                             if(Number(data[elem].pereliv)){
                                 $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").removeClass("transparent");
+                                $("#btnrespark .led").addClass("warn");
                             }else {
                                 $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").addClass("transparent");
                             }
@@ -378,15 +387,27 @@ class respark{
                                 }
                                 if(compare_t > 3*60*1000){
                                     $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-warning-sign'></i>");
-                                    $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.3);
+                                    $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.2);
+                                    $("#btnrespark .led").addClass("error");
                                 }
                             }
                         }
                     }else {
                         Global.pr_tank[data[elem].num].animate(0,pr_opt);
+                        $("#btnrespark .led").addClass("error");
                     }
+                    //Если резервуар в ремонте
+                    if(data[elem].service){//если в ремонте то ВСЕГДА
+                        $(".tank[data-num="+(data[elem].num)+"]").find(".tank_service").removeClass("transparent");
+                        $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class=\"fa fa-wrench\" aria-hidden=\"true\"></i>");
+                        $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
+                        $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
 
 
+                    }else {
+                        $(".tank[data-num="+(data[elem].num)+"]").find(".tank_service").addClass("transparent");
+
+                    }
                 }
             }
             if(Global.tankselect){
@@ -552,6 +573,7 @@ class respark{
                 },index*70);
             });
             $(".tank_pereliv").addClass("transparent");
+            $(".tank_service").addClass("transparent");
             $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
             $(".tank").each(function () {//расстановка номеров
                 var tmp = $(this).data("num");
@@ -597,6 +619,7 @@ class respark{
         };
 
         start();
+        $("#btnrespark .led").addClass("ok");
     }
     summaryBalance(data){
         if(data){
@@ -624,15 +647,10 @@ class respark{
 
                     product[prodText.text].summ = tmpOldObj.summ + tmpProdMass;
                     product[prodText.text].tanks = tmpOldObj.tanks;
-                    product[prodText.text].summexport = tmpOldObj.summexport + tmpProdMass - tmpProdMassHideZone;
-                    product[prodText.text].tanks.push(tmpNum);
-
-                    /*product[prodText.text]={
-                        summ:tmpOldObj.summ + tmpProdMass,
-                        tanks:tmpOldObj.tanks,
-                        summexport:tmpOldObj.summexport + tmpProdMass - tmpProdMassHideZone
-                    };*/
-
+                    if(tmpProdMass > tmpProdMassHideZone){
+                        product[prodText.text].summexport = tmpOldObj.summexport + tmpProdMass - tmpProdMassHideZone;
+                        product[prodText.text].tanks.push(tmpNum);
+                    }
                 }
             },this);
 
@@ -647,7 +665,7 @@ class respark{
                             <td class="tab_prod" align="center">Продукт</td>
                             <td class="tab_mass" align="center">Общая масса</td>
                             <td class="tab_res" align="center">Резервуары</td>
-                            <td class="tab_export" align="center">Отгрузка</td>
+                            <td class="tab_export" align="center">К отгрузке</td>
                         </tr>
                     </thead> 
                 `);//чистим контайнер

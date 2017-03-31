@@ -4,7 +4,7 @@ require_once "db_hd.php";
 
 if($_GET["lazy"]&&$_GET["tank"]){
     $tank = $_GET["tank"];
-    $q = "SELECT *,UNIX_TIMESTAMP(`datetime`)*1000 AS `utc` FROM `res".$tank."_hd` WHERE `datetime`>SUBDATE(NOW(),INTERVAL 7 DAY)";
+    $q = "SELECT *,UNIX_TIMESTAMP(`datetime`)*1000 AS `utc` FROM `res".$tank."_hd` WHERE `datetime`>SUBDATE(NOW(),INTERVAL 3 DAY)";
     $result = $mysql_res_hd->query($q);
 
     $json = array();

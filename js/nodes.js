@@ -32,9 +32,9 @@ class Node extends NodeCtrl{
         if(getNode(name)==(-1)){
             //создаем паттерн кнопки
             this.pattern = `<div class="node" id="btn${name}">
-                            <span>${localName}</span>
-                            <div class="led"></div>
-                        </div>`;
+                                <span>${localName}</span>
+                                <div class="led"></div>
+                            </div>`;
             this.elem = document.getElementById(this.containerNode);
             this.elem.innerHTML += this.pattern;
 
