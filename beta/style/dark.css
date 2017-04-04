@@ -763,6 +763,9 @@ a:hover{
 .table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th {
     padding: 0;
 }
+.asnLoad table{
+    color: wheat;
+}
 .adapt{
     min-width: 1450px;
 }
@@ -784,4 +787,23 @@ a:hover{
 .tank_service{
     z-index: 1000;
     position: relative;
+}
+.tab_asnValue{
+    text-align: right;
+    font-weight: bold;
+    color: ghostwhite;
+    width: 30%;
+    border-left: 1px solid grey;
+    padding: 5px;
+}
+.tab_asnProduct{
+    color: lightyellow;
+}
+.tab_asnHead{
+    color: white;
+    font-weight: bold;
+    border-bottom: 2px dotted wheat;
+}
+.tab_asnValue .asnlabel{
+    font-size: 1.5rem;
 }

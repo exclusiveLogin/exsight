@@ -247,6 +247,7 @@ class respark{
         var wrapperRenderpark = renderPark.bind(this);
         var wrapperCalcArrows = this.calcArrows.bind(this);
         var wrapperSummaryBalance = this.summaryBalance.bind(this);
+        var wrapperAsnBalance = this.asnLoading.bind(this);
         $.ajax({
             url:"gettank.php",
             dataType:"json",
@@ -257,6 +258,7 @@ class respark{
                 wrapperRenderpark(data);
                 wrapperCalcArrows(data);
                 wrapperSummaryBalance(data);
+                wrapperAsnBalance();
             },
             error:function(){
                 console.log("error to load refresh park ajax data");
@@ -417,14 +419,14 @@ class respark{
         }
     }
     calcArrows(data) {
-        var filter = 1;
+        var filter = 1/60;
         if(Global.IntegratorCon){
             if(data){
                 for(var el in data){//перебор резервуаров
                     var res = false;
                     var tmpnum = Number(data[el].num);
                     if(eval('Global.IntegratorForArrows'+data[el].num)){//тестируем первый резервуар
-                        if(data[el].level){//если есть уровень у выбранного резервуара
+                        if(data[el].level && data[el].mass){//если есть уровень у выбранного резервуара
                             var tmpmass = Number(data[el].mass);
                             var result = eval('Global.IntegratorForArrows'+data[el].num+'.Integrity('+tmpmass+')');
                             // console.log("CALC ARROWS Data:",data,"Result:",result);
@@ -439,7 +441,7 @@ class respark{
                             }else {
                                 //console.log("Значение без изменений:"+result);
                             }
-                            this.renderArrows(tmpnum,res,result.toFixed(2));
+                            this.renderArrows(tmpnum,res,result);
                         }
                     }
                 }
@@ -480,7 +482,13 @@ class respark{
             TankObj.find(".tank_arrow_bottom").addClass("_neutral");
         }
         if(res_val){
-            TankObj.find(".tends .val").text(res_val);
+            if(Math.abs(res_val*60) > 1){
+                TankObj.find(".tends .val").text((res_val*60).toFixed(1));
+            }else {
+                TankObj.find(".tends .val").text("колебания ~ "+(res_val*60).toFixed(1));
+            }
+        }else {
+            TankObj.find(".tends .val").text("0.0");
         }
         refreshTooltips();
     }
@@ -703,13 +711,11 @@ class respark{
                                 let i = Number(elem.num);
                                 data.map(function (el,elidx) {
                                     if(eval('Global.IntegratorForArrows'+i)){
-                                        let filter = 1;
+                                        let filter = 1/60;
                                         //если есть объект интегратора для данного резервуара
                                         if(el.mass){//если есть уровень у выбранного резервуара
                                             var tmpmass = Number(el.mass);
                                             var result = eval('Global.IntegratorForArrows'+i+'.Integrity('+tmpmass+')');
-
-                                            // console.log("TENDS START Data:",data,"Result:",result, "el:",el);
 
                                             var res = false;
                                             if(Math.abs(result)>filter){//значение выходит на рамки
@@ -722,7 +728,7 @@ class respark{
                                                 //console.log("Значение без изменений:"+result);
                                             }
                                             if(data.length-1 == elidx){
-                                                wrapperRenderArrows(i,res,(result).toFixed(2));
+                                                wrapperRenderArrows(i,res,result);
                                             }
                                         }
                                     }
@@ -736,5 +742,36 @@ class respark{
                 }
             });
         }
+    }
+    asnLoading(){
+        $.ajax({
+            url:"gettank.php",
+            dataType:"json",
+            method:'GET',
+            data:{asn2load:true},
+            success:function(data){
+                //сюда получаем массив из отгрузок ASN
+                $(".asnLoad").html("").html(`<table border="0" class="table"></table>`).find("table").append(`
+                    <thead>
+                        <tr class="tab_asnHead">
+                            <td align="center">Продукт</td>
+                            <td align="center">Масса</td>
+                        </tr>
+                    </thead> 
+                `);//чистим контайнер
+                data.map(function (elem) {
+                    $(".asnLoad table").append(`
+                         <tr>
+                             <td class="tab_asnProduct">${elem.product}</td>
+                             <td class="tab_asnValue"><i class="label-primary label asnlabel">${elem.value}</i>  тонн</td>
+                         </tr>
+                     `);
+                });
+
+            },
+            error:function(){
+                console.log("error to load Tendentional ajax data from",elem.num);
+            }
+        });
     }
 }

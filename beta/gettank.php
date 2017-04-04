@@ -24,3 +24,18 @@ if($_GET['park']){
     }
     echo json_encode($json);
 }
+if($_GET['asn2load']){
+    //запрос уровней парка
+    $q = "SELECT * FROM `asn2load`;";
+    $result = $mysql->query($q);
+    //var_dump($result);
+
+    $json = array();
+    $row = $result->fetch_assoc();
+
+    while($row){
+        array_push($json,$row);
+        $row = $result->fetch_assoc();
+    }
+    echo json_encode($json);
+}

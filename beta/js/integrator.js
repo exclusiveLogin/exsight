@@ -8,9 +8,12 @@ function Integrator(){
     this.integrityOnly = false;
     this.prefilterPoints = 1;
     this.postfilterPoints = 1;
+    this.current = 0;
+    this.flowControl = true;
 
 
     this.Buffer = [0,0];
+    this.relBuffer = [];
 
     this.setFilter = function(pre, post){
         this.Buffer = [];
@@ -40,12 +43,17 @@ function Integrator(){
             this.lastPoint = val;
 
         }else{
-            this.Buffer.shift();
+            this.lastPoint = this.Buffer.shift();
             this.Buffer.push(val);
             if(this.integrityOnly){
                 var Interg = this.DFilter();
             }else{
-                var Interg = this.Filter();
+                if (this.flowControl){
+                    Interg = this.FlowFilter();
+                }else {
+                    Interg = this.Filter();
+                }
+                
             }
         }
         if(this.init){
@@ -55,10 +63,30 @@ function Integrator(){
             this.init = false;
             return 0;
         }else{
-            //Global.blink2.stop();
+            this.current = Interg;
             return Interg;    
         }
         
+    };
+    
+    this.FlowFilter = function(){
+        if(this.Buffer.length){
+            var summ = 0;
+
+            var relBuffer = this.Buffer.map(function (el,idx) {
+                if(idx>0){
+                    summ += el - this.Buffer[idx-1];
+                    return el - this.Buffer[idx-1];
+                }else {
+                    summ += el - this.lastPoint;
+                    return el - this.lastPoint;
+                }
+            },this);
+            //теперь у нас есть буффер можно даже вывести в область видимости объекта(свойство)
+            // this.relBuffer = [];
+            // this.relBuffer = relBuffer;
+            return summ / relBuffer.length;
+        }
     };
 
     this.Filter = function(){
@@ -76,8 +104,8 @@ function Integrator(){
             }
             var avrPost = summPost/this.postfilterPoints;
             var avrPre = summPre/this.prefilterPoints;
-            ret = avrPre*10 - avrPost*10;
-            return ret/10;
+            ret = avrPre - avrPost;
+            return ret;
         }
     };
     this.DFilter = function(){
