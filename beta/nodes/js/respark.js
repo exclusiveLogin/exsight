@@ -419,7 +419,7 @@ class respark{
         }
     }
     calcArrows(data) {
-        var filter = 1/60;
+        var filter = 3/60;
         if(Global.IntegratorCon){
             if(data){
                 for(var el in data){//перебор резервуаров
@@ -482,13 +482,13 @@ class respark{
             TankObj.find(".tank_arrow_bottom").addClass("_neutral");
         }
         if(res_val){
-            if(Math.abs(res_val*60) > 1){
+            if(Math.abs(res_val*60) > 3){
                 TankObj.find(".tends .val").text((res_val*60).toFixed(1));
             }else {
-                TankObj.find(".tends .val").text("колебания ~ "+(res_val*60).toFixed(1));
+                TankObj.find(".tends .val").text("~ "+(res_val*60).toFixed(1));
             }
         }else {
-            TankObj.find(".tends .val").text("0.0");
+            TankObj.find(".tends .val").text("---");
         }
         refreshTooltips();
     }
@@ -711,7 +711,7 @@ class respark{
                                 let i = Number(elem.num);
                                 data.map(function (el,elidx) {
                                     if(eval('Global.IntegratorForArrows'+i)){
-                                        let filter = 1/60;
+                                        let filter = 3/60;
                                         //если есть объект интегратора для данного резервуара
                                         if(el.mass){//если есть уровень у выбранного резервуара
                                             var tmpmass = Number(el.mass);
@@ -760,10 +760,11 @@ class respark{
                     </thead> 
                 `);//чистим контайнер
                 data.map(function (elem) {
+                    var tmpValue = Number(elem.value.replace(",",".")).toFixed(3);
                     $(".asnLoad table").append(`
                          <tr>
                              <td class="tab_asnProduct">${elem.product}</td>
-                             <td class="tab_asnValue"><i class="label-primary label asnlabel">${elem.value}</i>  тонн</td>
+                             <td class="tab_asnValue"><i class="label-primary label asnlabel">${tmpValue}</i>  тонн</td>
                          </tr>
                      `);
                 });

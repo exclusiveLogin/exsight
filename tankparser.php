@@ -1,9 +1,23 @@
 <?php
 $ini_tank_path = "opcdata/data_tank";
+$ini_asnload_path = "opcdata/asn_to_load.ini";
 
 require_once "db.php";
 require_once "db_hd.php";
 
+//парсинг ASNLOAD
+$f_asn_exist = file_exists($ini_asnload_path);
+if($f_asn_exist){
+    $asn_ini_arr = parse_ini_file($ini_asnload_path);
+
+    $q = "DELETE FROM `asn2load`;";
+    $mysql->query($q);
+
+    foreach ($asn_ini_arr as $key => $val){
+        $q = "INSERT INTO `asn2load` (`product`,`value`) VALUES (\"$key\",\"$val\");";
+        $mysql->query($q);
+    }
+}
 //цикл парсинга с обходом ошибок
 //движок цикла
 for($i=1;$i<80;$i++) {

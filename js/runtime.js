@@ -4,11 +4,14 @@ Global.loginData={
     "password":""
 };
 Global.version = {};
-Global.version.v = "0.9.6";
-Global.version.build = "95110";
+Global.version.v = "0.9.7";
+Global.version.build = "97100";
 Global.version.desc = "<li>Добавлен режим [В ремонте] для резервуаров</li>" +
-    "<li>Исправлен алгоритм расчета баланса парка</li>" +
-    "<li>LazyTrends ограничен 72 часами</li>" +
+    "<li>Исправлен алгоритм расчета баланса парка[new]</li>" +
+    "<li>Добавлен алгоритм потокового слежение</li>" +
+    "<li>Добавлен дампер базы данных</li>" +
+    "<li>Добавлен модуль отгрузки АСН</li>" +
+    "<li>Добавлено отслеживание колебаний уровня в резервуарах</li>" +
     "<li>Исправлены мелкие недочеты</li>";
 function visit() {
     let req = {version:Global.version.v,build:Global.version.build};
