@@ -7,7 +7,7 @@ module.exports = {
     output:{
         path: __dirname + "/public/",
         filename: "[name].js",
-        publicPath:"/exsight/beta/public/"
+        publicPath:"public/"
     },
     module: {
         loaders: [

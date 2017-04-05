@@ -66,6 +66,15 @@ $(document).ready(function(){
         Global.panelsateQ = false;
     });
 
+    $(".btn_whatnew").on("click",function () {
+        $("#fancydemo").fancybox({
+            modal:true
+        }).click();
+        setTimeout(function(){
+            $.fancybox.close();
+        },20000);
+    });
+
 	if(Global.demo){
 	    $("#fancydemo").fancybox({
 	        modal:true
