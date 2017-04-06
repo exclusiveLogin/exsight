@@ -40,14 +40,14 @@ $(document).ready(function(){
         },20000);
     });
 
-	if(Global.demo){
-	    $("#fancydemo").fancybox({
-	        modal:true
-        }).click();
-	    setTimeout(function(){
-	        $.fancybox.close();
-        },5000);
-    }
+    // if(Global.demo){
+	 //    $("#fancydemo").fancybox({
+	 //        modal:true
+    //     }).click();
+	 //    setTimeout(function(){
+	 //        $.fancybox.close();
+    //     },5000);
+    // }
 
     Global.jqready = true;
     Global.authkey = true;

@@ -216,17 +216,16 @@ $(document).ready(function(){
             ordinal:false,
         },
         yAxis: [{
-            id:0,
+            id:"level",
             title: {
                 text: 'Уровень'
-            },
-        },
-            {
-                id:1,
-                title: {
-                    text: 'Температура'
-                },
-            }],
+            }
+        },{
+            id:"temper",
+            title: {
+                text: 'Температура'
+            }
+        }],
         plotOptions: {
             line:{
                 marker:{
@@ -237,70 +236,71 @@ $(document).ready(function(){
         series:[{
             type: 'line',
             name: 'Уровень',
-            // data:[0,3,4,3,12,15,2],
+            data:[0,1,2,3,4,5],
             tooltip: {
                 valueDecimals: 2,
                 valueSuffix:' мм.'
             },
             color:"orange",
-            yAxis:0
+            yAxis:"level"
         },
-            {
-                type: 'line',
-                name: 'Масса',
-                // data:[0,3,4,3,12,15,2],
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix:' т.'
-                },
-                color:"lightgreen",
-                yAxis:0
+        {
+            type: 'line',
+            name: 'Масса',
+            data:[0,3,4,3,12,15,2],
+            tooltip: {
+                valueDecimals: 2,
+                valueSuffix:' т.'
             },
-            {
-                type: 'line',
-                name: 'Объем',
-                // data:[0,3,4,3,12,15,2],
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix:' см3'
-                },
-                color:"blue",
-                yAxis:0
+            color:"lightgreen",
+            //yAxis:0
+        },
+        {
+            type: 'line',
+            name: 'Объем',
+            data:[0,3,4,3,12,15,2],
+            tooltip: {
+                valueDecimals: 2,
+                valueSuffix:' см3'
             },
-            {
-                type: 'line',
-                name: 'Температура',
-                // data:[0,3,4,3,12,15,2],
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix:' град. С.'
-                },
-                color:"red",
-                yAxis:1
+            color:"blue",
+            //yAxis:0
+        },
+        {
+            type: 'line',
+            name: 'Температура',
+            data:[0,3,4,3,12,15,2],
+            tooltip: {
+                valueDecimals: 2,
+                valueSuffix:' град. С.'
             },
-            {
-                type: 'line',
-                name: 'Т. паров',
-                // data:[0,3,4,3,12,15,2],
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix:' град. С.'
-                },
-                color:"yellow",
-                yAxis:1
+            color:"red",
+            yAxis:"temper"
+        },
+        {
+            type: 'line',
+            name: 'Т. паров',
+            data:[0,3,4,3,12,15,2],
+            tooltip: {
+                valueDecimals: 2,
+                valueSuffix:' град. С.'
             },
-            {
-                type: 'line',
-                name: 'Плотность',
-                // data:[0,3,4,3,12,15,2],
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix:' кг/м3'
-                },
-                color:"grey"
-            }]
+            color:"yellow",
+            yAxis:"temper"
+        },
+        {
+            type: 'line',
+            name: 'Плотность',
+            data:[0,3,4,3,12,15,2],
+            tooltip: {
+                valueDecimals: 2,
+                valueSuffix:' кг/м3'
+            },
+            color:"grey",
+            //yAxis:1
+        }]
     };
 
-    Global.MainTrend = new Highcharts.Chart(MainTrend_setting);
+    Global.MainTrend = new Highcharts.stockChart(MainTrend_setting);
     Global.MainTrend.showLoading("Нет данных для отображения");
 });
