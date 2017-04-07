@@ -362,22 +362,24 @@ a:hover{
 }
 .btn_tank{
     background-position: center center;
-    background-image: url("tank.png");
+    background-image: url('tank.png');
     background-repeat: no-repeat;
-    background-size: contain;
-    height: 50px;
-    width: 50px;
+    background-size: 85%;
+    height: 55px;
+    width: 55px;
     margin: 10px;
     transition: all 0.5s ease;
     float: left;
-    padding: 13px;
+    padding-top: 17px;
+    padding-right: 9px;
     font-size: 130%;
     font-weight: bold;
     border: 2px outset rgba(200,200,200,0.3);
     border-radius: 10px;
     cursor: pointer;
-    /*text-shadow: 2px 2px 5px grey;*/
+    text-align: center;
 }
 .btn_tank:hover{
     border: 2px #FFD100 solid;
+    color: #FFD100;
 }

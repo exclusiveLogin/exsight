@@ -236,7 +236,7 @@ $(document).ready(function(){
         series:[{
             type: 'line',
             name: 'Уровень',
-            data:[0,1,2,3,4,5],
+            //data:[0,1,2,3,4,5],
             tooltip: {
                 valueDecimals: 2,
                 valueSuffix:' мм.'
@@ -247,7 +247,7 @@ $(document).ready(function(){
         {
             type: 'line',
             name: 'Масса',
-            data:[0,3,4,3,12,15,2],
+            //data:[0,3,4,3,12,15,2],
             tooltip: {
                 valueDecimals: 2,
                 valueSuffix:' т.'
@@ -258,7 +258,7 @@ $(document).ready(function(){
         {
             type: 'line',
             name: 'Объем',
-            data:[0,3,4,3,12,15,2],
+            //data:[0,3,4,3,12,15,2],
             tooltip: {
                 valueDecimals: 2,
                 valueSuffix:' см3'
@@ -269,7 +269,7 @@ $(document).ready(function(){
         {
             type: 'line',
             name: 'Температура',
-            data:[0,3,4,3,12,15,2],
+            //data:[0,3,4,3,12,15,2],
             tooltip: {
                 valueDecimals: 2,
                 valueSuffix:' град. С.'
@@ -280,7 +280,7 @@ $(document).ready(function(){
         {
             type: 'line',
             name: 'Т. паров',
-            data:[0,3,4,3,12,15,2],
+            //data:[0,3,4,3,12,15,2],
             tooltip: {
                 valueDecimals: 2,
                 valueSuffix:' град. С.'
@@ -291,7 +291,7 @@ $(document).ready(function(){
         {
             type: 'line',
             name: 'Плотность',
-            data:[0,3,4,3,12,15,2],
+            //data:[0,3,4,3,12,15,2],
             tooltip: {
                 valueDecimals: 2,
                 valueSuffix:' кг/м3'
