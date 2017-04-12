@@ -383,3 +383,12 @@ a:hover{
     border: 2px #FFD100 solid;
     color: #FFD100;
 }
+.btn_tank:active{
+    border: 2px orangered solid;
+    color: orangered;
+}
+.btn_tank.tank_actived{
+    border: 2px #ffd100 solid;
+    color: #ffd100;
+    box-shadow: 0 0 10px 2px #ffd100;
+}

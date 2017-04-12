@@ -93,12 +93,15 @@ $(document).ready(function(){
         showSysMsg("Вы успешно вышли из системы",true);
         refreshLog();
     });
-    $('#minview').on('click','.tank',function(){
-        var num = $(this).data("num");
-        if(num){
-            if(getNode(respark)>(-1)){
-                Global.nodes[getNode(respark)].nodeObj.openTank(num);
+    $('#parkview').on('click','.btn_tank',function(){
+        if($(this).data("num")){
+            if($(this).hasClass("tank_actived")){//дизактивируем резервуар
+                $(this).removeClass("tank_actived");
+            }else{
+                $(this).addClass("tank_actived");//активируем резервуар
             }
+            //отправлем тренду нажатый резервуар
+
         }
     });
     $('#btn_close_parm').on('click',function(){
@@ -121,39 +124,6 @@ $(document).ready(function(){
         }
     });
 });
-
-function getNode(classNode){
-    let status = -1;
-    if(typeof classNode === "function"){
-        Global.nodes.map(function (node, index) {
-            if(node.nodeObj instanceof classNode){
-                status = index;
-            }else {
-            }
-        });
-        return status;
-    }
-    if(typeof classNode === "string"){
-        Global.nodes.map(function (node, index) {
-            if(node.nameNode === classNode){
-                status = index;
-            }else {
-            }
-        });
-        return status;
-    }
-    return status;
-
-}
-
-Global.blink1 = new Blink(".pereliv,.errortank,.blink",500);
-Global.blink1.init();
-Global.blink1.start();
-
-//Global.blink2 = new blink("._neutral",1000);
-//Global.blink2.init();
-//Global.blink2.start();
-
-Global.blink3 = new Blink(".glyphicon-warning-sign",500);
-Global.blink3.init();
-Global.blink3.start();
+// Global.blink1 = new Blink(".pereliv,.errortank,.blink",500);
+// Global.blink1.init();
+// Global.blink1.start();

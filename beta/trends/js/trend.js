@@ -1,7 +1,8 @@
 
 class TrendEngine{
     constructor(domid){
-        console.log("constructor this:",this);
+        this.selectedTanks = [1,2,3,4,5];
+        //console.log("constructor this:",this);
         Highcharts.theme = {
             colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
                 "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
@@ -210,8 +211,7 @@ class TrendEngine{
                 ordinal:false,
                 events:{
                     setExtremes:function (e) {
-                        // console.log("sx this:",this,"context:",this.context);
-                        this.chart.context.tempUploader(e);
+                        this.chart.context.Uploader(e);
                     }
                 }
             },
@@ -357,31 +357,29 @@ class TrendEngine{
         };
         this.Trend = new Highcharts.stockChart(MainTrend_setting);
         this.Trend.context = this;
-
-        this.tempUploader = function(e,cold){
-            var data = {"trend":true,"coldtrend":true,"tank":1};
-            if(e){
+        this.Uploader = function(e,tank){
+            var data = {};
+            if(e && tank){
+                data = {"trend":true,"coldtrend":true,"tank":tank};
                 if(e.rangeSelectorButton){
                     if(e.rangeSelectorButton._range){
                         if(e.rangeSelectorButton._range<10*24*3600*1000){
-                            data = {"trend":true,"tank":1,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                            data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
                         }else {
-                            data = {"trend":true,"tank":1,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                            data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
                         }
                     }else {
-                        data = {"trend":true,"tank":1,"trendall":true};
+                        data = {"trend":true,"tank":tank,"trendall":true};
                     }
-
                     upload.apply(this);
-
                 }
                 if(e.trigger == "zoom"){
                     var tmpInterval = e.max - e.min;
                     if(tmpInterval < 10*24*3600*1000){
-                        data = {"trend":true,"tank":1,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                        data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
                         upload.apply(this);
                     }else {
-                        data = {"trend":true,"tank":1,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                        data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
                         upload.apply(this);
                     }
                 }
@@ -391,10 +389,10 @@ class TrendEngine{
                             if(e.DOMEvent.type == "mouseup"){
                                 var tmpInterval = e.max - e.min;
                                 if(tmpInterval < 10*24*3600*1000){
-                                    data = {"trend":true,"tank":1,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                                    data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
                                     upload.apply(this);
                                 }else {
-                                    data = {"trend":true,"tank":1,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                                    data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
                                     upload.apply(this);
                                 }
                             }
@@ -402,12 +400,6 @@ class TrendEngine{
                     }
                 }
             }
-
-            if (cold){
-                upload.apply(this);
-            }
-
-
             function upload() {
                 var context = this;
                 $.ajax({
@@ -443,7 +435,6 @@ class TrendEngine{
                                 method:'GET',
                                 data:{"minmax":true,"tank":1},
                                 success:function(data){
-                                    //console.log(data);
                                     if(data){
                                         if(data[0] && data[1]){
                                             let tmpExtr = context.Trend.axes[0].getExtremes();
@@ -466,24 +457,34 @@ class TrendEngine{
                 });
 
             }
-
         };
     }
+    //Prototype context
+    OpenTank(numTank) {
+        //проверяем наличие
+        if((this.selectedTanks.indexOf(numTank)) == (-1)){
+            //в массиве нет элемента
+            this.selectedTanks.push(numTank);
+        }
+    };
+    CloseTank(numTank) {
+        let index = this.selectedTanks.indexOf(numTank);
+        if(index > -1){
+            this.selectedTanks.slice(index,1);
+        }
+    };
 }
-
 $(document).ready(function(){
     Global.MainTrend = new TrendEngine("maintrend");
     Global.MainTrend.Trend.showLoading("Нет данных для отображения");
-    Global.MainTrend.Trend.addSeries({
+    /*Global.MainTrend.Trend.addSeries({
         type: 'line',
         name: 'Уровень',
-        data:[0,1,2,3,4,5],
         tooltip: {
             valueDecimals: 2,
             valueSuffix:' мм.'
         },
         color:"orange",
         yAxis:"level"
-    });
-    Global.MainTrend.tempUploader(false,true);
+    });*/
 });
