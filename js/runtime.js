@@ -79,7 +79,7 @@ $(document).ready(function(){
 	    $("#fancydemo").fancybox({
 	        modal:true
         }).click();
-	    setTimeout(function(){
+        setTimeout(function(){
 	        $.fancybox.close();
         },5000);
     }

@@ -94,11 +94,14 @@ $(document).ready(function(){
         refreshLog();
     });
     $('#parkview').on('click','.btn_tank',function(){
-        if($(this).data("num")){
+        let numTank = $(this).data("num");
+        if(numTank){
             if($(this).hasClass("tank_actived")){//дизактивируем резервуар
                 $(this).removeClass("tank_actived");
+                Global.MainTrend.CloseTank(numTank);
             }else{
                 $(this).addClass("tank_actived");//активируем резервуар
+                Global.MainTrend.OpenTank(numTank);
             }
             //отправлем тренду нажатый резервуар
 

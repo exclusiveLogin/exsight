@@ -4,7 +4,7 @@ Global.loginData={
     "password":""
 };
 Global.version = {};
-Global.version.v = "0.9.7";
+Global.version.v = "0.9.7b";
 Global.version.build = "97100";
 Global.version.desc = "<li>Добавлен режим [В ремонте] для резервуаров</li>" +
     "<li>Исправлен алгоритм расчета баланса парка[new]</li>" +
@@ -15,6 +15,7 @@ Global.version.desc = "<li>Добавлен режим [В ремонте] дл�
     "<li>Исправлены мелкие недочеты</li>";
 function visit() {
     let req = {version:Global.version.v,build:Global.version.build};
+    console.log("req:",req);
     $.ajax({
         url:"visitparser.php",
         dataType:"text",
