@@ -205,7 +205,12 @@ class TrendEngine{
                     color:"black"
                 }
             },
+            scrollbar:{
+                liveRedraw:true,
+                enabled:false
+            },
             xAxis: {
+                id:"timeline",
                 type: 'datetime',
                 ordinal:false,
                 events:{
@@ -215,7 +220,7 @@ class TrendEngine{
                 }
             },
             navigator:{
-                adaptToUpdateData:false
+                adaptToUpdateData:true
             },
             yAxis: [{
                 id:"level",
@@ -296,8 +301,7 @@ class TrendEngine{
                         valueDecimals: 2,
                         valueSuffix:' мм.'
                     },
-                     color:"orange",
-                     yAxis:"level"
+                     color:"orange"
                 },{
                     id:"massroot",
                     type: 'line',
@@ -324,8 +328,7 @@ class TrendEngine{
                      valueDecimals: 2,
                      valueSuffix:' град. С.'
                     },
-                    color:"red",
-                    yAxis:"temper"
+                    color:"red"
                 },{
                     id:"vaportemperatureroot",
                     type: 'line',
@@ -334,8 +337,7 @@ class TrendEngine{
                      valueDecimals: 2,
                      valueSuffix:' град. С.'
                     },
-                    color:"yellow",
-                    yAxis:"temper"
+                    color:"yellow"
                 },{
                     id:"plotroot",
                     type: 'line',
@@ -383,7 +385,7 @@ class TrendEngine{
                                  }
                              });
                              //setter
-                             context.Trend.get("level"+tanknum).setData([]);
+                             //context.Trend.get("level"+tanknum).setData([]);
                              context.Trend.get("level"+tanknum).setData(level);
 
                              // context.Trend.get("mass"+tanknum).setData([]);
@@ -411,13 +413,13 @@ class TrendEngine{
                                      success:function(data){
                                          if(data){
                                              if(data[0] && data[1]){
-                                                 let tmpExtr = context.Trend.get("level").getExtremes();
+                                                 let tmpExtr = context.Trend.get("timeline").getExtremes();
                                                  console.log("extremes:",tmpExtr);
                                                  console.log("user interval:",tmpExtr.userMax - tmpExtr.userMin,"abs interval:",
                                                      tmpExtr.max - tmpExtr.min,"data interval:",tmpExtr.dataMax - tmpExtr.dataMin);
 
-                                                 context.Trend.get("level"+tanknum).addPoint([Number(data[0].utc),Number(data[0].level)],false);
-                                                 context.Trend.get("level"+tanknum).addPoint([Number(data[1].utc),Number(data[1].level)],false);
+                                                 context.Trend.get("level"+tanknum).addPoint([Number(data[0].utc),Number(data[0].level)]);
+                                                 context.Trend.get("level"+tanknum).addPoint([Number(data[1].utc),Number(data[1].level)]);
 
                                                  // context.Trend.get("mass"+tanknum).addPoint([Number(data[0].utc),Number(data[0].mass)],false);
                                                  // context.Trend.get("mass"+tanknum).addPoint([Number(data[1].utc),Number(data[1].mass)],false);
@@ -435,7 +437,7 @@ class TrendEngine{
                                                  // context.Trend.get("plot"+tanknum).addPoint([Number(data[1].utc),Number(data[1].plot)],false);
 
                                                  context.Trend.redraw();
-                                                 context.Trend.get("level").setExtremes(tmpExtr.dataMin,tmpExtr.dataMax);
+                                                 context.Trend.get("timeline").setExtremes(tmpExtr.dataMin,tmpExtr.dataMax);
 
                                              }
                                          }
@@ -560,6 +562,7 @@ class TrendEngine{
             this.selectedTanks.push(numTank);
             let levelPlot = {
                 id:"level"+numTank,
+                showInNavigator:true,
                 type: 'line',
                 name: 'Уровень',
                 tooltip: {
