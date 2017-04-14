@@ -79,9 +79,9 @@ $(document).ready(function(){
 	    $("#fancydemo").fancybox({
 	        modal:true
         }).click();
-        setTimeout(function(){
-	        $.fancybox.close();
-        },5000);
+        // setTimeout(function(){
+	     //    $.fancybox.close();
+        // },5000);
     }
 
     //Создаем ноду Резпарка
@@ -103,9 +103,9 @@ $(document).ready(function(){
     Global.nodes.push(Node.createNode("uku","panelnodes","Узел учета"));
 
     Global.jqready = true;
-    Global.authkey = true;
-    Global.loggedAs = "ssv";
-    refreshLog();
+    // Global.authkey = true;
+    // Global.loggedAs = "ssv";
+    // refreshLog();
 
     $('.btnlogin').on('click',function(){
         $(this).addClass('disabled active');
