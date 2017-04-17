@@ -792,7 +792,7 @@ a:hover{
     text-align: right;
     font-weight: bold;
     color: ghostwhite;
-    width: 30%;
+    width: 40%;
     border-left: 1px solid grey;
     padding: 5px;
 }
@@ -806,4 +806,17 @@ a:hover{
 }
 .tab_asnValue .asnlabel{
     font-size: 1.5rem;
+}
+
+/*Animation init*/
+@keyframes blink {
+    0%{opacity: 0;}
+    20%{opacity: 1;}
+    80%{opacity: 1;}
+    100%{opacity: 0;}
+}
+.blinkClass{
+    animation-duration: 1s;
+    animation-name: blink;
+    animation-iteration-count: infinite;
 }

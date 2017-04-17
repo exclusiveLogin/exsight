@@ -656,7 +656,7 @@ class TrendEngine{
                 id:"level"+numTank,
                 showInNavigator:true,
                 type: 'line',
-                name: 'Уровень',
+                name: 'Уровень резервуара '+numTank,
                 tooltip: {
                     valueDecimals: 2,
                     valueSuffix:' мм.'
@@ -668,7 +668,7 @@ class TrendEngine{
             let massPlot = {
                 id:"mass"+numTank,
                 type: 'line',
-                    name: 'Масса',
+                    name: 'Масса в резервуаре '+numTank,
                 tooltip: {
                 valueDecimals: 2,
                     valueSuffix:' т.'
@@ -679,7 +679,7 @@ class TrendEngine{
             let volumePlot = {
                 id:"volume"+numTank,
                 type: 'line',
-                name: 'Объем',
+                name: 'Объем в резервуаре '+numTank,
                 tooltip: {
                     valueDecimals: 2,
                     valueSuffix: ' см3'
@@ -690,7 +690,7 @@ class TrendEngine{
             let temperaturePlot = {
                 id:"temperature"+numTank,
                 type: 'line',
-                    name: 'Температура',
+                    name: 'Температура в резервуаре '+numTank,
                 tooltip: {
                 valueDecimals: 2,
                     valueSuffix:' град. С.'
@@ -702,7 +702,7 @@ class TrendEngine{
             let tempvaporPlot = {
                 id:"tempvapor"+numTank,
                 type: 'line',
-                name: 'Т. паров',
+                name: 'Т. паров в резервуаре '+numTank,
                 tooltip: {
                     valueDecimals: 2,
                     valueSuffix: ' град. С.'
@@ -714,7 +714,7 @@ class TrendEngine{
             let plotPlot = {
                 id:"plot"+numTank,
                 type: 'line',
-                    name: 'Плотность',
+                    name: 'Плотность продукта в резервуаре'+numTank,
                 tooltip: {
                 valueDecimals: 2,
                     valueSuffix:' кг/м3'

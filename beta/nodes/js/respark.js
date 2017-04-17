@@ -113,7 +113,7 @@ class respark{
         });
 
         function renderTank(data) {
-            $('.prog_val').removeClass("transparentStatic").removeClass("blink");
+            $('.prog_val').removeClass("transparentStatic").removeClass("blinkClass");
 
             if(data.mass){
                 $(".tank_parm_mass").text(data.mass);
@@ -179,7 +179,7 @@ class respark{
                     //$('.prog_val').text(tmpperc+"%");
                     $('.prog_val').text(data.level);
                     if(tmpperc>95){
-                        $('.prog_val').addClass("blink");
+                        $('.prog_val').addClass("blinkClass");
                     }
                     let pr_opt = {};
                     let pr_optfancy ={};
@@ -583,6 +583,9 @@ class respark{
             $(".tank_pereliv").addClass("transparent");
             $(".tank_service").addClass("transparent");
             $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
+
+            $(".pereliv,.errortank,.blink,.glyphicon-warning-sign,.glyphicon-remove-circle").addClass("blinkClass");
+
             $(".tank").each(function () {//расстановка номеров
                 var tmp = $(this).data("num");
                 $(this).find(".tank_title").text(tmp);

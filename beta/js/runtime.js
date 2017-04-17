@@ -44,6 +44,8 @@ function adaptWin() {
     }
 }
 $(document).ready(function(){
+
+
     $("#fancydemo .version").html(Global.version.v);
     $("#fancydemo .verdescription").html(Global.version.desc);
 
@@ -200,14 +202,15 @@ function getNode(classNode){
 
 }
 
-Global.blink1 = new Blink(".pereliv,.errortank,.blink",500);
-Global.blink1.init();
-Global.blink1.start();
+
+// Global.blink1 = new Blink(".pereliv,.errortank,.blink",500);
+// Global.blink1.init();
+// Global.blink1.start();
 
 //Global.blink2 = new blink("._neutral",1000);
 //Global.blink2.init();
 //Global.blink2.start();
 
-Global.blink3 = new Blink(".glyphicon-warning-sign",500);
-Global.blink3.init();
-Global.blink3.start();
+// Global.blink3 = new Blink(".glyphicon-warning-sign",500);
+// Global.blink3.init();
+// Global.blink3.start();

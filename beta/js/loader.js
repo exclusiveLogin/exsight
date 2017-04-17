@@ -28,7 +28,7 @@ window.stateRefresher = Utility.stateRefresher;
 //-----------------------------------
 window.Global = gl;
 window.reloadProgressBar = reloadProg;
-window.Blink = Blink;
+//window.Blink = Blink;
 
 if(Integrator && gl){
     window.Integrator = Integrator;
