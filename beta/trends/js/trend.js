@@ -1,6 +1,14 @@
 class TrendEngine{
     constructor(domid){
         this.selectedTanks = [];
+        this.schemeParm = {
+            level:true,
+            mass:false,
+            volume:false,
+            temperature:false,
+            vapor_temperature:false,
+            plot:false
+        };
         //console.log("constructor this:",this);
         Highcharts.theme = {
             colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
@@ -301,7 +309,17 @@ class TrendEngine{
                         valueDecimals: 2,
                         valueSuffix:' мм.'
                     },
-                     color:"orange"
+                     color:"orange",
+                    events:{
+                        hide:function (event) {
+                            event.target.chart.context.schemeParm.level = false;
+                        },
+                        show:function (event) {
+                            event.target.chart.context.schemeParm.level = true;
+                        }
+                    },
+                    visible:true,
+                    showInNavigator:false,
                 },{
                     id:"massroot",
                     type: 'line',
@@ -311,6 +329,16 @@ class TrendEngine{
                         valueSuffix:' т.'
                     },
                     color:"lightgreen",
+                    events:{
+                        hide:function (event) {
+                            event.target.chart.context.schemeParm.mass = false;
+                        },
+                        show:function (event) {
+                            event.target.chart.context.schemeParm.mass = true;
+                        }
+                    },
+                    visible:false,
+                    showInNavigator:false,
                 },{
                     id:"volumeroot",
                     type: 'line',
@@ -320,6 +348,16 @@ class TrendEngine{
                     valueSuffix:' см3'
                     },
                     color:"blue",
+                    events:{
+                        hide:function (event) {
+                            event.target.chart.context.schemeParm.volume = false;
+                        },
+                        show:function (event) {
+                            event.target.chart.context.schemeParm.volume = true;
+                        }
+                    },
+                    visible:false,
+                    showInNavigator:false,
                 },{
                     id:"temperatureroot",
                     type: 'line',
@@ -328,7 +366,17 @@ class TrendEngine{
                      valueDecimals: 2,
                      valueSuffix:' град. С.'
                     },
-                    color:"red"
+                    color:"red",
+                    events:{
+                        hide:function (event) {
+                            event.target.chart.context.schemeParm.temperature = false;
+                        },
+                        show:function (event) {
+                            event.target.chart.context.schemeParm.temperature = true;
+                        }
+                    },
+                    visible:false,
+                    showInNavigator:false,
                 },{
                     id:"vaportemperatureroot",
                     type: 'line',
@@ -337,7 +385,17 @@ class TrendEngine{
                      valueDecimals: 2,
                      valueSuffix:' град. С.'
                     },
-                    color:"yellow"
+                    color:"yellow",
+                    events:{
+                        hide:function (event) {
+                            event.target.chart.context.schemeParm.vapor_temperature = false;
+                        },
+                        show:function (event) {
+                            event.target.chart.context.schemeParm.vapor_temperature = true;
+                        }
+                    },
+                    visible:false,
+                    showInNavigator:false,
                 },{
                     id:"plotroot",
                     type: 'line',
@@ -347,6 +405,16 @@ class TrendEngine{
                      valueSuffix:' кг/м3'
                     },
                     color:"grey",
+                    events:{
+                        hide:function (event) {
+                            event.target.chart.context.schemeParm.plot = false;
+                        },
+                        show:function (event) {
+                            event.target.chart.context.schemeParm.plot = true;
+                        }
+                    },
+                    visible:false,
+                    showInNavigator:false,
                 }
             ]
         };
@@ -375,33 +443,44 @@ class TrendEngine{
                              data.map(function (elem) {
                                  let utc;
                                  if(elem.utc)utc = Number(elem.utc);
-                                 if(elem.level && elem.mass && elem.volume && elem.temperature && elem.vapor_temperature && elem.plot){
+                                 //if(elem.level && elem.mass && elem.volume && elem.temperature && elem.vapor_temperature && elem.plot){
+                                 if(elem.level && context.schemeParm.level){
                                      level.push([utc,Number(elem.level)]);
+                                 }
+                                 if (elem.mass && context.schemeParm.mass){
                                      mass.push([utc,Number(elem.mass)]);
+                                 }
+                                 if(elem.volume && context.schemeParm.volume){
                                      volume.push([utc,Number(elem.volume)]);
+                                 }
+                                 if(elem.temperature && context.schemeParm.temperature){
                                      temperature.push([utc,Number(elem.temperature)]);
+                                 }
+                                 if(elem.vapor_temperature && context.schemeParm.vapor_temperature){
                                      vapor_temperature.push([utc,Number(elem.vapor_temperature)]);
+                                 }
+                                 if(elem.plot && context.schemeParm.plot){
                                      plot.push([utc,Number(elem.plot)]);
                                  }
                              });
                              //setter
-                             //context.Trend.get("level"+tanknum).setData([]);
-                             context.Trend.get("level"+tanknum).setData(level);
+                             // context.Trend.get("level"+tanknum).setData([]);
+                              context.Trend.get("level"+tanknum).setData(level);
 
                              // context.Trend.get("mass"+tanknum).setData([]);
-                             // context.Trend.get("mass"+tanknum).setData(mass);
+                              context.Trend.get("mass"+tanknum).setData(mass);
                              //
                              // context.Trend.get("volume"+tanknum).setData([]);
-                             // context.Trend.get("volume"+tanknum).setData(volume);
+                              context.Trend.get("volume"+tanknum).setData(volume);
                              //
                              // context.Trend.get("temperature"+tanknum).setData([]);
-                             // context.Trend.get("temperature"+tanknum).setData(temperature);
+                              context.Trend.get("temperature"+tanknum).setData(temperature);
                              //
                              // context.Trend.get("tempvapor"+tanknum).setData([]);
-                             // context.Trend.get("tempvapor"+tanknum).setData(vapor_temperature);
+                              context.Trend.get("tempvapor"+tanknum).setData(vapor_temperature);
                              //
                              // context.Trend.get("plot"+tanknum).setData([]);
-                             // context.Trend.get("plot"+tanknum).setData(plot);
+                              context.Trend.get("plot"+tanknum).setData(plot);
 
 
                              if(minmax){
@@ -414,31 +493,31 @@ class TrendEngine{
                                          if(data){
                                              if(data[0] && data[1]){
                                                  let tmpExtr = context.Trend.get("timeline").getExtremes();
-                                                 console.log("extremes:",tmpExtr);
-                                                 console.log("user interval:",tmpExtr.userMax - tmpExtr.userMin,"abs interval:",
-                                                     tmpExtr.max - tmpExtr.min,"data interval:",tmpExtr.dataMax - tmpExtr.dataMin);
+                                                 // console.log("extremes:",tmpExtr);
+                                                 // console.log("user interval:",tmpExtr.userMax - tmpExtr.userMin,"abs interval:",
+                                                 //     tmpExtr.max - tmpExtr.min,"data interval:",tmpExtr.dataMax - tmpExtr.dataMin);
 
                                                  context.Trend.get("level"+tanknum).addPoint([Number(data[0].utc),Number(data[0].level)]);
                                                  context.Trend.get("level"+tanknum).addPoint([Number(data[1].utc),Number(data[1].level)]);
 
-                                                 // context.Trend.get("mass"+tanknum).addPoint([Number(data[0].utc),Number(data[0].mass)],false);
-                                                 // context.Trend.get("mass"+tanknum).addPoint([Number(data[1].utc),Number(data[1].mass)],false);
-                                                 //
-                                                 // context.Trend.get("volume"+tanknum).addPoint([Number(data[0].utc),Number(data[0].volume)],false);
-                                                 // context.Trend.get("volume"+tanknum).addPoint([Number(data[1].utc),Number(data[1].volume)],false);
-                                                 //
-                                                 // context.Trend.get("temperature"+tanknum).addPoint([Number(data[0].utc),Number(data[0].temperature)],false);
-                                                 // context.Trend.get("temperature"+tanknum).addPoint([Number(data[1].utc),Number(data[1].temperature)],false);
-                                                 //
-                                                 // context.Trend.get("tempvapor"+tanknum).addPoint([Number(data[0].utc),Number(data[0].vapor_temperature)],false);
-                                                 // context.Trend.get("tempvapor"+tanknum).addPoint([Number(data[1].utc),Number(data[1].vapor_temperature)],false);
-                                                 //
-                                                 // context.Trend.get("plot"+tanknum).addPoint([Number(data[0].utc),Number(data[0].plot)],false);
-                                                 // context.Trend.get("plot"+tanknum).addPoint([Number(data[1].utc),Number(data[1].plot)],false);
+                                                 context.Trend.get("mass"+tanknum).addPoint([Number(data[0].utc),Number(data[0].mass)],false);
+                                                 context.Trend.get("mass"+tanknum).addPoint([Number(data[1].utc),Number(data[1].mass)],false);
 
-                                                 context.Trend.redraw();
+                                                 context.Trend.get("volume"+tanknum).addPoint([Number(data[0].utc),Number(data[0].volume)],false);
+                                                 context.Trend.get("volume"+tanknum).addPoint([Number(data[1].utc),Number(data[1].volume)],false);
+
+                                                 context.Trend.get("temperature"+tanknum).addPoint([Number(data[0].utc),Number(data[0].temperature)],false);
+                                                 context.Trend.get("temperature"+tanknum).addPoint([Number(data[1].utc),Number(data[1].temperature)],false);
+
+                                                 context.Trend.get("tempvapor"+tanknum).addPoint([Number(data[0].utc),Number(data[0].vapor_temperature)],false);
+                                                 context.Trend.get("tempvapor"+tanknum).addPoint([Number(data[1].utc),Number(data[1].vapor_temperature)],false);
+
+                                                 context.Trend.get("plot"+tanknum).addPoint([Number(data[0].utc),Number(data[0].plot)],false);
+                                                 context.Trend.get("plot"+tanknum).addPoint([Number(data[1].utc),Number(data[1].plot)],false);
+
+
                                                  context.Trend.get("timeline").setExtremes(tmpExtr.dataMin,tmpExtr.dataMax);
-
+                                                 context.Trend.redraw();
                                              }
                                          }
                                      },
@@ -548,12 +627,25 @@ class TrendEngine{
                 }
             }else {
                 if(tank){
-                    data = {"trend":true,"coldtrend":true,"tank":tank};
-                    upload.call(this);
+                    if(this.selectedTanks.length>1) {
+                        let tmpExtr = this.Trend.get("timeline").getExtremes();
+                        var tmpInterval = tmpExtr.dataMax - tmpExtr.dataMin;
+                        if(tmpInterval < 10*24*3600*1000){
+                            data = {"trend":true,"tank":tank,"interval":1,"trendmin":tmpExtr.dataMin,"trendmax":tmpExtr.dataMax};
+                            upload.call(this);
+                        }else {
+                            data = {"trend":true,"tank":tank,"interval":0,"trendmin":tmpExtr.dataMin,"trendmax":tmpExtr.dataMax};
+                            upload.call(this);
+                        }
+
+                    }else {
+                        data = {"trend":true,"coldtrend":true,"tank":tank};
+                        upload.call(this);
+                    }
                 }
             }
         };
-    }
+    };
     //Prototype context
     OpenTank(numTank) {
         //проверяем наличие
@@ -633,11 +725,11 @@ class TrendEngine{
 
             //add series for tank
             this.Trend.addSeries(levelPlot);
-            // this.Trend.addSeries(massPlot);
-            // this.Trend.addSeries(volumePlot);
-            // this.Trend.addSeries(temperaturePlot);
-            // this.Trend.addSeries(tempvaporPlot);
-            // this.Trend.addSeries(plotPlot);
+            this.Trend.addSeries(massPlot);
+            this.Trend.addSeries(volumePlot);
+            this.Trend.addSeries(temperaturePlot);
+            this.Trend.addSeries(tempvaporPlot);
+            this.Trend.addSeries(plotPlot);
 
             //init Loading tank on trend
             this.Uploader(false,numTank);
@@ -646,7 +738,17 @@ class TrendEngine{
     CloseTank(numTank) {
         let index = this.selectedTanks.indexOf(numTank);
         if(index > -1){
-            this.selectedTanks.slice(index,1);
+            this.selectedTanks.splice(index,1);
+            this.Trend.get("level"+numTank).remove();
+            this.Trend.get("mass"+numTank).remove();
+            this.Trend.get("volume"+numTank).remove();
+            this.Trend.get("temperature"+numTank).remove();
+            this.Trend.get("tempvapor"+numTank).remove();
+            this.Trend.get("plot"+numTank).remove();
+
+            if(this.selectedTanks.length == 0){
+                this.Trend.showLoading("Нет данных для отображения");
+            }
         }
     };
 }
