@@ -223,6 +223,7 @@ class TrendEngine{
                 ordinal:false,
                 events:{
                     setExtremes:function (e) {
+                        console.log(e);
                         this.chart.context.Uploader(e);
                     }
                 }
@@ -606,7 +607,17 @@ class TrendEngine{
                                 upload.call(this,minmaxflag);
                             }
                         }
-                        if(e.triggerOp){
+                        if(e.trigger == "navigator"){
+                            var tmpInterval = e.max - e.min;
+                            if(tmpInterval < 10*24*3600*1000){
+                                data = {"trend":true,"tank":element,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                                upload.call(this,minmaxflag);
+                            }else {
+                                data = {"trend":true,"tank":element,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                                upload.call(this,minmaxflag);
+                            }
+                        }
+                        /*if(e.triggerOp){
                             if(e.triggerOp == "navigator-drag"){
                                 if(e.DOMEvent){
                                     if(e.DOMEvent.type == "mouseup"){
@@ -621,7 +632,7 @@ class TrendEngine{
                                     }
                                 }
                             }
-                        }
+                        }*/
                     },this);
 
                 }

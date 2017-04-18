@@ -3,13 +3,33 @@
  */
 class port{
     startNode() {
-        $('#btnport').on("click",function () {
-            alert("Модуль находится в разработке");
-            // let win = window.open("trends/","_blank");
-            // win.focus();
+        var autostart = this.showNode.bind(this);
+        var resparkbodyPromise = fetch("nodes/templates/port.html").then(function (response) {
+            return response.text();
+        }).then(function (text) {
+            $('#portview').html(text);
+            autostart();
+            //var wrapperStartOPC = this.startOPC.bind(this);
+            //reloadProgressBar();
+            //wrapperStartOPC();
         });
     }
     stopNode() {
 
+    }
+    showNode(){
+        Global.nodes.map(function (elem) {
+            if(elem.nodeObj){
+                if(elem.nodeObj.hideNode){
+                    elem.nodeObj.hideNode();
+                }
+            }
+        });
+        $("#portview").show();
+        this.led("select");
+    }
+    hideNode(){
+        $("#portview").hide();
+        this.led("unselect");
     }
 }

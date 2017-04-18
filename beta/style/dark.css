@@ -820,3 +820,14 @@ a:hover{
     animation-name: blink;
     animation-iteration-count: infinite;
 }
+#minview,#portview{
+    display: none;
+}
+.ship{
+    height: 130px;
+    background-position-x: 60px;
+    background-position-y: 6px;
+    background-size: 65% 98%;
+    background-repeat: no-repeat;
+    background-image: url("../nodes/templates/scheme/tanker.png");
+}

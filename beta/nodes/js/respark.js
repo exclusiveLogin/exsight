@@ -275,7 +275,7 @@ class respark{
                     this.tendsStart(data);
                 }
 
-                $("#btnrespark .led").removeClass("error warn");
+                this.led("ok");
 
                 for(var elem in data){
                     elem = Number(elem);
@@ -285,7 +285,7 @@ class respark{
                                 $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
                                 $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-remove-circle'></i>");
 
-                                $("#btnrespark .led").addClass("error");
+                                this.led("error");
                             }
 
                             $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.6);
@@ -328,7 +328,7 @@ class respark{
                             //console.log("pereliv:"+Number(data[elem].pereliv));
                             if(Number(data[elem].pereliv)){
                                 $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").removeClass("transparent");
-                                $("#btnrespark .led").addClass("warn");
+                                this.led("warning");
                             }else {
                                 $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").addClass("transparent");
                             }
@@ -390,13 +390,13 @@ class respark{
                                 if(compare_t > 3*60*1000){
                                     $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-warning-sign'></i>");
                                     $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.2);
-                                    $("#btnrespark .led").addClass("error");
+                                    this.led("error");
                                 }
                             }
                         }
                     }else {
                         Global.pr_tank[data[elem].num].animate(0,pr_opt);
-                        $("#btnrespark .led").addClass("error");
+                        this.led("error");
                     }
                     //Если резервуар в ремонте
                     if(data[elem].service){//если в ремонте то ВСЕГДА
@@ -568,7 +568,6 @@ class respark{
         }
     }
     startNode() {
-        $("#btnrespark").addClass("nodeselected");
         var resparkbodyPromise = fetch("nodes/templates/respark.html").then(function (response) {
             return response.text();
         }).then(function (text) {
@@ -615,7 +614,7 @@ class respark{
         if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
         if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
         $('#minview').empty();
-        $("#btnrespark").removeClass("nodeselected");
+        this.led("unselect");
 
     }
     startOPC(){
@@ -630,7 +629,22 @@ class respark{
         };
 
         start();
-        $("#btnrespark .led").addClass("ok");
+        this.led("ok");
+    }
+    showNode(){
+        Global.nodes.map(function (elem) {
+            if(elem.nodeObj){
+                if(elem.nodeObj.hideNode){
+                    elem.nodeObj.hideNode();
+                }
+            }
+        });
+        $("#minview").show();
+        this.led("select");
+    }
+    hideNode(){
+        $("#minview").hide();
+        this.led("unselect");
     }
     summaryBalance(data){
         if(data){
