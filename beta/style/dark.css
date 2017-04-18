@@ -831,3 +831,17 @@ a:hover{
     background-repeat: no-repeat;
     background-image: url("../nodes/templates/scheme/tanker.png");
 }
+#tankdt{
+
+}
+#tankoil{
+    width: 150px;
+    height: 150px;
+    border: 1px solid red;
+    display: inline-block;
+    position: relative;
+    left: 150px;
+}
+#tanksmt{
+
+}
