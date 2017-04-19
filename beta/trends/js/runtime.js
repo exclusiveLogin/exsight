@@ -26,9 +26,7 @@ function visit() {
 $(document).ready(function(){
     //visit();
 
-    $(document).on("keydown",function (e) {
-        console.log("key down:",e);
-    });
+
 
     $.ajaxSetup({
         cache:false

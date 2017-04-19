@@ -607,6 +607,33 @@ class TrendEngine{
                                 upload.call(this,minmaxflag);
                             }
                         }
+                        if(e.trigger == "keydown"){
+                            let tmpExtr = this.Trend.get("timeline").getExtremes();
+                            var tmpInterval = tmpExtr.userMax - tmpExtr.userMin;
+                            var step = tmpInterval/2;
+
+                            if(e.front){
+                                if(!e.ctrl){//simple key
+                                    data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin+step,"trendmax":tmpExtr.userMax+step};
+                                }else {//with ctrl
+                                    data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin,"trendmax":tmpExtr.userMax+step};
+                                }
+                            }else {
+                                if(!e.ctrl){//simple key
+                                    data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin-step,"trendmax":tmpExtr.userMax-step};
+                                }else {//with ctrl
+                                    data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin-step,"trendmax":tmpExtr.userMax};
+                                }
+                            }
+
+                            if(tmpInterval < 10*24*3600*1000){
+                                data.interval=1;
+                                upload.call(this,minmaxflag);
+                            }else {
+                                data.interval=0;
+                                upload.call(this,minmaxflag);
+                            }
+                        }
                         if(e.trigger == "navigator"){
                             var tmpInterval = e.max - e.min;
                             if(tmpInterval < 10*24*3600*1000){
@@ -633,6 +660,7 @@ class TrendEngine{
                                 }
                             }
                         }*/
+
                     },this);
 
                 }
@@ -766,4 +794,24 @@ class TrendEngine{
 $(document).ready(function(){
     Global.MainTrend = new TrendEngine("maintrend");
     Global.MainTrend.Trend.showLoading("Нет данных для отображения");
+
+    $(document).on("keydown",function (e) {
+        console.log("key down:",e);
+        if(e.keyCode == 37 && !e.ctrlKey){//Left No ctrl
+            var request = {trigger:"keydown",front:false,ctrl:false};
+            Global.MainTrend.Uploader(request);
+        }
+        if(e.keyCode == 37 && e.ctrlKey){//Left with ctrl
+            var request = {trigger:"keydown",front:false,ctrl:true};
+            Global.MainTrend.Uploader(request);
+        }
+        if(e.keyCode == 39 && !e.ctrlKey){//Right No ctrl
+            var request = {trigger:"keydown",front:true,ctrl:false};
+            Global.MainTrend.Uploader(request);
+        }
+        if(e.keyCode == 39 && e.ctrlKey){//Right with ctrl
+            var request = {trigger:"keydown",front:true,ctrl:true};
+            Global.MainTrend.Uploader(request);
+        }
+    });
 });
