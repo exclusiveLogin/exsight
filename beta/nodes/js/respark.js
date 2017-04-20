@@ -568,10 +568,13 @@ class respark{
         }
     }
     startNode() {
+        console.log("start node REZPARK");
         var resparkbodyPromise = fetch("nodes/templates/respark.html").then(function (response) {
             return response.text();
         }).then(function (text) {
             $('#minview').html(text);
+
+            reloadProgressBar();
 
             $(".tank").addClass("initScroll");//Плавный старт
             $(".tank").each(function (index, elem) {
@@ -606,7 +609,7 @@ class respark{
         var wrapperStartOPC = this.startOPC.bind(this);
 
         Promise.all([resparkbodyPromise,resparkpanelPromise]).then(function () {
-            reloadProgressBar();
+            //reloadProgressBar();
             wrapperStartOPC();
         });
     }
@@ -629,9 +632,10 @@ class respark{
         };
 
         start();
-        this.led("ok");
+        this.led("error");
     }
     showNode(){
+        console.log("Show node REZPARK");
         Global.nodes.map(function (elem) {
             if(elem.nodeObj){
                 if(elem.nodeObj.hideNode){

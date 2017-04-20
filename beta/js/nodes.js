@@ -44,7 +44,7 @@ class Node extends NodeCtrl{
             let pr_node = new Promise(function (resolve,reject) {
                 let script = document.createElement("script");
                 document.body.appendChild(script);
-                script.src = "nodes/js/"+name+".js";
+                script.src = "nodes/js/"+name+".js?v=beta";
 
                 script.onerror = ()=>{
                     console.log("error load module");
@@ -61,7 +61,6 @@ class Node extends NodeCtrl{
                     if(node.nameNode==name){
                         //console.log("Есть такой узел - "+node.nameNode+"index - "+index);
                         Global.nodes[index].nodeObj = eval("new "+name+"();");
-                        Global.nodes[index].nodeObj.startNode();//temp
 
                         Global.nodes[index].nodeObj.led = function (state) {
                             if(state == "ok"){
@@ -84,6 +83,9 @@ class Node extends NodeCtrl{
                                 $("#btn"+name).removeClass("nodeselected");
                             }
                         };
+
+                        Global.nodes[index].nodeObj.startNode();//temp
+
                         $("#btn"+name).on("click",function () {
                             node.nodeObj.showNode();
                         })

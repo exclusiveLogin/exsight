@@ -32,7 +32,7 @@ html{
 }
 body{
     margin: 0;
-    height: 100%;
+    /*height: 100%;*/
     /*background-color: #777;*/
     margin-bottom: 30px;
     background: #4c4c4c; /* Old browsers */
@@ -409,6 +409,22 @@ a:hover{
     border: 2px transparent solid;
     cursor: pointer;
     /*min-width:120px;*/
+}
+.tank_port{
+    background-position: center center;
+    background-image: url("tank.png");
+    background-size: contain;
+    height: 100%;
+    background-repeat: no-repeat;
+}
+.tank_title_port{
+    font-size: 100%;
+    line-height: 30px;
+    font-weight: bold;
+    top: 50px;
+    left: 10px;
+    position: relative;
+    text-shadow: 2px 2px 5px grey;
 }
 .tank_pic {
     background-position: center center;
@@ -825,23 +841,106 @@ a:hover{
 }
 .ship{
     height: 130px;
-    background-position-x: 60px;
+    background-position-x: 100px;
     background-position-y: 6px;
     background-size: 65% 98%;
     background-repeat: no-repeat;
-    background-image: url("../nodes/templates/scheme/tanker.png");
+    background-image: url("../nodes/templates/scheme/tanker_2.png");
 }
 #tankdt{
-
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    left: 430px;
+    top: 300px;
 }
 #tankoil{
     width: 150px;
     height: 150px;
-    border: 1px solid red;
     display: inline-block;
-    position: relative;
+    position: absolute;
     left: 150px;
+    top: 450px;
 }
 #tanksmt{
-
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    left: 370px;
+    top: 450px;
+}
+.tank_port_ecu{
+    width: 150px;
+    height: 150px;
+}
+.table_port{
+    color: ghostwhite;
+    font-size: 150%;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid grey;
+    margin-top: 20px;
+}
+.table_port tr{
+    border-bottom: 1px solid grey;
+}
+.table_port_header{
+    color: ghostwhite;
+    font-size: 120%;
+    font-weight: bold;
+    text-align: center;
+    background: wheat; /* Old browsers */
+    background: -moz-linear-gradient(top, wheat 0%, orange 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, wheat 0%, orange 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, wheat 0%,orange 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */
+    border: 1px outset #919191;
+}
+.portstatus{
+    width: 100%;
+    padding-bottom: 35%;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 45%;
+    font-size: 180%;
+    color: white;
+    border-radius: 20px;
+    margin-top: 20px;
+    text-shadow: 0 0 5px rgba(255,255,255,0.5);
+}
+.portstatus.naliv{
+    background: #9b5858; /* Old browsers */
+    background: -moz-linear-gradient(top, #9b5858 0%, #540101 45%, #a30000 75%, #4c0000 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #9b5858 0%,#540101 45%,#a30000 75%,#4c0000 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #9b5858 0%,#540101 45%,#a30000 75%,#4c0000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b5858', endColorstr='#4c0000',GradientType=0 ); /* IE6-9 */
+    border: 1px outset #91151b;
+    box-shadow: 0 0 10px 0px rgba(255,0,0,0.7);
+}
+.portstatus.standby{
+    background: #6db563; /* Old browsers */
+    background: -moz-linear-gradient(top, #6db563 0%, #21680d 45%, #0f7516 64%, #3f663c 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #6db563 0%,#21680d 45%,#0f7516 64%,#3f663c 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #6db563 0%,#21680d 45%,#0f7516 64%,#3f663c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db563', endColorstr='#3f663c',GradientType=0 ); /* IE6-9 */
+    border: 1px outset darkgreen;
+    box-shadow: 0 0 10px 0px rgba(0,255,0,0.7);
+}
+.portstatus.off{
+    background: #a7cfdf; /* Old browsers */
+    background: -moz-linear-gradient(top, #a7cfdf 0%, #23538a 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #a7cfdf 0%,#23538a 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #a7cfdf 0%,#23538a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */
+    border: 1px outset #919191;
+    box-shadow: 0 0 10px 0px rgba(0,255,255,0.7);
+}
+.portstatus.reconstraction{
+    background: wheat; /* Old browsers */
+    background: -moz-linear-gradient(top, wheat 0%, orange 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, wheat 0%, orange 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, wheat 0%,orange 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */
+    border: 1px outset #919191;
+    box-shadow: 0 0 10px 0px rgba(255,255,255,0.7);
 }

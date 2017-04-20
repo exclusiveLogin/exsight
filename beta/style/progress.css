@@ -38,6 +38,13 @@
     text-align: center;
 }
 
+.progress_tank_port{
+    position: relative;
+    left: -35px;
+    top: -15px;
+    text-align: center;
+}
+
 .progress_tank_val{
     position: relative;
     top: 60px;
@@ -53,11 +60,22 @@
     font-weight: bold;
     margin-top: -31px;
     line-height: 300%;
-    left: -10px;
 	z-index: 999;
     text-shadow: 0 0 10px white;
 }
-.progress_tank > svg {
+
+.progress_tank_val_real_port{
+    position: relative;
+    top: 70px;
+    font-size: 150%;
+    font-weight: bold;
+    margin-top: -31px;
+    line-height: 300%;
+    left: -10px;
+    z-index: 999;
+    text-shadow: 0 0 10px white;
+}
+.progress_tank > svg, .progress_tank_port > svg{
     height: 45px;
     display: inline !important;
     position: relative;
