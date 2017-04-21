@@ -423,8 +423,10 @@ class TrendEngine{
         this.Trend.context = this;
         this.Uploader = function(e,tank){
             //init upload func
+			//this.Trend.showLoading("....");
             var upload = function(minmax) {
                 var context = this;
+				console.log("this:",this);
                  $.ajax({
                      sync:true,
                      url:"trendengine.php",
@@ -432,8 +434,9 @@ class TrendEngine{
                      method:'GET',
                      data:data,
                      success:function(data){
-                         context.Trend.hideLoading();
-                         if(data){
+						 
+                         
+                         if(data && data[0].num){
                              let level = [],
                              mass=[],
                              volume=[],
@@ -444,7 +447,7 @@ class TrendEngine{
                              data.map(function (elem) {
                                  let utc;
                                  if(elem.utc)utc = Number(elem.utc);
-                                 //if(elem.level && elem.mass && elem.volume && elem.temperature && elem.vapor_temperature && elem.plot){
+								 
                                  if(elem.level && context.schemeParm.level){
                                      level.push([utc,Number(elem.level)]);
                                  }
@@ -466,25 +469,27 @@ class TrendEngine{
                              });
                              //setter
                              // context.Trend.get("level"+tanknum).setData([]);
-                              context.Trend.get("level"+tanknum).setData(level);
+                              context.Trend.get("level"+tanknum).setData(level,false);
 
                              // context.Trend.get("mass"+tanknum).setData([]);
-                              context.Trend.get("mass"+tanknum).setData(mass);
+                              context.Trend.get("mass"+tanknum).setData(mass,false);
                              //
                              // context.Trend.get("volume"+tanknum).setData([]);
-                              context.Trend.get("volume"+tanknum).setData(volume);
+                              context.Trend.get("volume"+tanknum).setData(volume,false);
                              //
                              // context.Trend.get("temperature"+tanknum).setData([]);
-                              context.Trend.get("temperature"+tanknum).setData(temperature);
+                              context.Trend.get("temperature"+tanknum).setData(temperature,false);
                              //
                              // context.Trend.get("tempvapor"+tanknum).setData([]);
-                              context.Trend.get("tempvapor"+tanknum).setData(vapor_temperature);
+                              context.Trend.get("tempvapor"+tanknum).setData(vapor_temperature,false);
                              //
                              // context.Trend.get("plot"+tanknum).setData([]);
-                              context.Trend.get("plot"+tanknum).setData(plot);
+                              context.Trend.get("plot"+tanknum).setData(plot,false);
+							  
+							  context.Trend.redraw();
+							  
 
-
-                             if(minmax){
+							if(minmax){
                                  $.ajax({
                                      url:"trendengine.php",
                                      dataType:"json",
@@ -493,13 +498,14 @@ class TrendEngine{
                                      success:function(data){
                                          if(data){
                                              if(data[0] && data[1]){
-                                                 let tmpExtr = context.Trend.get("timeline").getExtremes();
-                                                 // console.log("extremes:",tmpExtr);
-                                                 // console.log("user interval:",tmpExtr.userMax - tmpExtr.userMin,"abs interval:",
+                                                 
+												 let tmpExtr = context.Trend.get("timeline").getExtremes();
+                                                 //console.log("extremes:",tmpExtr);
+                                                 //console.log("user interval:",tmpExtr.userMax - tmpExtr.userMin,"abs interval:",
                                                  //     tmpExtr.max - tmpExtr.min,"data interval:",tmpExtr.dataMax - tmpExtr.dataMin);
 
-                                                 context.Trend.get("level"+tanknum).addPoint([Number(data[0].utc),Number(data[0].level)]);
-                                                 context.Trend.get("level"+tanknum).addPoint([Number(data[1].utc),Number(data[1].level)]);
+                                                 context.Trend.get("level"+tanknum).addPoint([Number(data[0].utc),Number(data[0].level)],false);
+                                                 context.Trend.get("level"+tanknum).addPoint([Number(data[1].utc),Number(data[1].level)],false);
 
                                                  context.Trend.get("mass"+tanknum).addPoint([Number(data[0].utc),Number(data[0].mass)],false);
                                                  context.Trend.get("mass"+tanknum).addPoint([Number(data[1].utc),Number(data[1].mass)],false);
@@ -515,10 +521,12 @@ class TrendEngine{
 
                                                  context.Trend.get("plot"+tanknum).addPoint([Number(data[0].utc),Number(data[0].plot)],false);
                                                  context.Trend.get("plot"+tanknum).addPoint([Number(data[1].utc),Number(data[1].plot)],false);
-
-
-                                                 context.Trend.get("timeline").setExtremes(tmpExtr.dataMin,tmpExtr.dataMax);
+												 
+												 
                                                  context.Trend.redraw();
+                                                 context.Trend.get("timeline").setExtremes(tmpExtr.dataMin,tmpExtr.dataMax);
+												 
+												 context.Trend.hideLoading();
                                              }
                                          }
                                      },
@@ -527,8 +535,6 @@ class TrendEngine{
                                      }
                                  });
                              }
-
-
                          }
                      },
                      error:function(err){
