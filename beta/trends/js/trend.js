@@ -487,7 +487,8 @@ class TrendEngine{
                               context.Trend.get("plot"+tanknum).setData(plot,false);
 							  
 							  context.Trend.redraw();
-							  
+
+                             context.Trend.hideLoading();
 
 							if(minmax){
                                  $.ajax({
@@ -525,8 +526,7 @@ class TrendEngine{
 												 
                                                  context.Trend.redraw();
                                                  context.Trend.get("timeline").setExtremes(tmpExtr.dataMin,tmpExtr.dataMax);
-												 
-												 context.Trend.hideLoading();
+
                                              }
                                          }
                                      },

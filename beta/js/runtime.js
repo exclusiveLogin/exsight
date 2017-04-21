@@ -58,7 +58,7 @@ $(document).ready(function(){
     setTimeout(function(){
         panelStateToggle(false);
     },7000);
-    $(document).on("mouseenter","#panelstate",function () {
+    $(document).on("mouseenter",".danger_field",function () {
         Global.panelsateQ = true;
         setTimeout(function () {
             if(Global.panelsateQ)panelStateToggle(true);

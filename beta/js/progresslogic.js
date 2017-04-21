@@ -1,5 +1,5 @@
 export default function() {
-    console.log("reloadPB rezpark");
+    //console.log("reloadPB rezpark");
     Global.parmTank = new ProgressBar.Line('#progress', {
         color: '#FCB03C',
         duration: 1000,

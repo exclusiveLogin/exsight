@@ -2,6 +2,14 @@ class respark{
     constructor(){
         this.coldstart = true;
     }
+    rendermeteo(data){
+        if (data){
+            $(".wind_p .meteovalue").text(data.wind_p);
+            $(".wind_nb .meteovalue").text(data.wind_nb);
+            $(".temperature_air .meteovalue").text(data.temperature_air);
+            $(".meteoupdate .meteovalue").text(data.fixtime);
+        }
+    }
     tankparmToggle(state){
         if(state){
             $('#parm_panel').show(0,function () {
@@ -85,6 +93,8 @@ class respark{
     refreshTank(tank) {
         var wrapperRenderTank = renderTank.bind(this);
         var wrapperTrend = this.renderTrendTankParm.bind(this);
+
+        //запрос резервуара
         $.ajax({
             url:"gettank.php",
             dataType:"json",
@@ -248,6 +258,22 @@ class respark{
         var wrapperCalcArrows = this.calcArrows.bind(this);
         var wrapperSummaryBalance = this.summaryBalance.bind(this);
         var wrapperAsnBalance = this.asnLoading.bind(this);
+        var wrapperMeteo = this.rendermeteo.bind(this);
+
+        //запрос метео
+        $.ajax({
+            url:"getmeteo.php",
+            dataType:"json",
+            method:'GET',
+            success:function(data){
+                wrapperMeteo(data);
+            },
+            error:function(){
+                console.log("error to load refresh tank ajax data");
+            }
+        });
+
+        //запрос парка
         $.ajax({
             url:"gettank.php",
             dataType:"json",

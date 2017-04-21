@@ -1,9 +1,45 @@
 <?php
 $ini_tank_path = "opcdata/data_tank";
 $ini_asnload_path = "opcdata/asn_to_load.ini";
+$ini_meteo_path = "opcdata/meteodata.ini";
 
 require_once "db.php";
 require_once "db_hd.php";
+//парсинг METEO
+$f_meteo_exist = file_exists($ini_meteo_path);
+if($f_meteo_exist){
+    $meteo_ini_arr =  parse_ini_file($ini_meteo_path);
+
+    $meteo_wind_nb = null;
+    $meteo_wind_p = null;
+    $meteo_temperature_air = null;
+    $fixtime = null;
+
+    if (isset($meteo_ini_arr['meteo_temperature_air'])) {
+        $meteo_temperature_air = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_temperature_air'])), 1);
+        //echo "temp:".$meteo_temperature_air."<br>";
+    }
+    if (isset($meteo_ini_arr['meteo_windforce_nb'])) {
+        $meteo_wind_nb = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_windforce_nb'])), 1);
+        //echo "wind_nb:".$meteo_wind_nb."<br>";
+    }
+    if (isset($meteo_ini_arr['meteo_windforce_p'])) {
+        $meteo_wind_p = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_windforce_p'])), 1);
+        //echo "wind_p:".$meteo_wind_p."<br>";
+    }
+    if (isset($meteo_ini_arr['fixtime'])) {
+        $fixtime = $meteo_ini_arr['fixtime'];
+        //echo "wind_p:".$meteo_wind_p."<br>";
+    }
+    $q = "INSERT INTO `meteo` (`wind_p`,`wind_nb`,`temperature_air`,`fixtime`) VALUES (" . $meteo_wind_p . "," . $meteo_wind_nb . ",
+        ".$meteo_temperature_air.",\"".$fixtime."\") ON DUPLICATE KEY UPDATE `wind_p` = " . $meteo_wind_p . ",`wind_nb`=".$meteo_wind_nb.",
+        `temperature_air`=".$meteo_temperature_air.",
+        `fixtime`=\"".$fixtime."\";";
+    $mysql->query($q);
+    //echo "q:".$q."<br>";
+}
+
+
 
 //парсинг ASNLOAD
 $f_asn_exist = file_exists($ini_asnload_path);

@@ -1,5 +1,5 @@
 export default function() {
-    console.log("reloadPB port");
+    //console.log("reloadPB port");
     $('#portview .progress_tank_port').find("svg").remove();
     Global.pr_tank_port[0] = new ProgressBar.Line('#progress_tank_port_oil', {
         color: '#FCB03C',

@@ -1,17 +1,14 @@
-/**
- * Created by KotovVM on 28.03.2017.
- */
 class port{
     startNode() {
         this.led("error");
         var autostart = this.showNode.bind(this);
-        console.log("start node PORT");
+        //console.log("start node PORT");
         var resparkbodyPromise = fetch("nodes/templates/port.html").then(function (response) {
             return response.text();
         }).then(function (text) {
-            console.log("include asserts PORT");
+            //console.log("include asserts PORT");
             $('#portview').html(text);
-            console.log("after include asserts PORT");
+            //console.log("after include asserts PORT");
             reloadProgressBarPort();
 
 
@@ -26,7 +23,7 @@ class port{
 
     }
     showNode(){
-        console.log("show node PORT");
+        //console.log("show node PORT");
         Global.nodes.map(function (elem) {
             if(elem.nodeObj){
                 if(elem.nodeObj.hideNode){
