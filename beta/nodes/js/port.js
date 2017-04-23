@@ -11,7 +11,11 @@ class port{
             //console.log("after include asserts PORT");
             reloadProgressBarPort();
 
+            $(".tank_pereliv").addClass("transparent");
+            $(".tank_service").addClass("transparent");
+            $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
 
+            $(".pereliv,.errortank,.blink,.glyphicon-warning-sign,.glyphicon-remove-circle").addClass("blinkClass");
 
             autostart();
             //var wrapperStartOPC = this.startOPC.bind(this);

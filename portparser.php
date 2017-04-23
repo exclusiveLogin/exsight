@@ -11,9 +11,107 @@ $ini_select = "opcdata/portselect.ini";
 $ini_valve = "opcdata/portvalve.ini";
 
 require_once "db.php";
-
 //require_once "db_hd.php";
+//парсинг Valve
+$f_valve = file_exists($ini_valve);
+if($f_valve){
+	$select_arr = parse_ini_file($ini_valve);
+	
+	$valve_smt1 = 0;
+	$valve_smt2 = 0;
+	$valve_smt3 = 0;
+	$valve_smt4 = 0;
+	$valve_smt5 = 0;
+	$valve_smt6 = 0;
+	$fixtime = 0;
+	
+	if (isset($select_arr['port_zadvsmt1'])) {
+        $valve_smt1 = $select_arr['port_zadvsmt1'];
+        //echo "t1:".$port_plot_t1."<br>";
+    }
+	if (isset($select_arr['port_zadvsmt2'])) {
+        $valve_smt2 = $select_arr['port_zadvsmt2'];
+        //echo "t1:".$port_plot_t1."<br>";
+    }
+	if (isset($select_arr['port_zadvdt1'])) {
+        $valve_dt1 = $select_arr['port_zadvdt1'];
+        //echo "t1:".$port_plot_t1."<br>";
+    }
+	if (isset($select_arr['port_zadvdt2'])) {
+        $valve_dt2 = $select_arr['port_zadvdt2'];
+        //echo "t1:".$port_plot_t1."<br>";
+    }
+	if (isset($select_arr['port_zadvoil1'])) {
+        $valve_oil1 = $select_arr['port_zadvoil1'];
+        //echo "t1:".$port_plot_t1."<br>";
+    }
+	if (isset($select_arr['port_zadvoil2'])) {
+        $valve_oil2 = $select_arr['port_zadvoil2'];
+        //echo "t1:".$port_plot_t1."<br>";
+    }
+		
+	if (isset($select_arr['fixtime'])) {
+        $fixtime = $select_arr['fixtime'];
+        //echo "plotfixtime2 :".$plotfixtime2."<br>";
+    }
+	
+	$q = "INSERT INTO `port_valve (`id`,`valve_smt1`,`valve_smt2`,`valve_dt1`,`valve_dt2`,`valve_oil1`,`valve_oil2`,`fixtime`)
+        VALUES (1,".$valve_smt1.",".$valve_smt2.",".$valve_dt1.",".$valve_dt2.",".$valve_oil1.",".$valve_oil2.",\"".$fixtime."\")
+         ON DUPLICATE KEY UPDATE 
+         `valve_smt1` = ".$valve_smt1.",
+         `valve_smt2`=".$valve_smt2.",
+        `valve_dt1`=".$valve_dt1.",
+		`valve_dt2` = ".$valve_dt2.",
+         `valve_oil1`=".$valve_oil1.",
+        `valve_oil2`=".$valve_oil2.",
+        `fixtime`=\"".$fixtime."\";";
 
+    ////echo "<p>Q1:$q</p>";
+
+    $mysql->query($q);
+	
+}
+//парсинг UserSelect
+$f_select = file_exists($ini_select);
+if($f_select){
+	$select_arr = parse_ini_file($ini_select);
+	
+	$numbrezsmt = 0;
+	$numbrezdt = 0;
+	$numbrezoil = 0;
+	$fixtime = 0;
+	
+	if (isset($select_arr['numbrezsmt'])) {
+        $numbrezsmt = $select_arr['numbrezsmt'];
+        //echo "t1:".$port_plot_t1."<br>";
+    }
+	if (isset($select_arr['numbrezoil'])) {
+        $numbrezoil = $select_arr['numbrezoil'];
+        //echo "t1:".$port_plot_t1."<br>";
+    }
+	if (isset($select_arr['numbrezdt'])) {
+        $numbrezdt = $select_arr['numbrezdt'];
+        //echo "t1:".$port_plot_t1."<br>";
+    }
+	
+	if (isset($select_arr['fixtime'])) {
+        $fixtime = $select_arr['fixtime'];
+        //echo "plotfixtime2 :".$plotfixtime2."<br>";
+    }
+	
+	$q = "INSERT INTO `port_tankselect` (`id`,`tanksmt`,`tankdt`,`tankoil`,`fixtime`)
+        VALUES (1,".$numbrezsmt.",".$numbrezdt.",".$numbrezoil.",\"".$fixtime."\")
+         ON DUPLICATE KEY UPDATE 
+         `tanksmt` = ".$numbrezsmt.",
+         `tankdt`=".$numbrezdt.",
+        `tankoil`=".$numbrezoil.",
+        `fixtime`=\"".$fixtime."\";";
+
+    ////echo "<p>Q1:$q</p>";
+
+    $mysql->query($q);
+	
+}
 //парсинг Плотномеров
 $f_plot1 = file_exists($ini_plot1);
 $f_plot2 = file_exists($ini_plot2);
