@@ -4,15 +4,13 @@ Global.loginData={
     "password":""
 };
 Global.version = {};
-Global.version.v = "0.9.7b";
-Global.version.build = "97100";
-Global.version.desc = "<li>Добавлен режим [В ремонте] для резервуаров</li>" +
+Global.version.v = "0.9.8b";
+Global.version.build = "98100";
+Global.version.desc = "<li>Добавлен компонент Причал[new]</li>" +
     "<li>Исправлен алгоритм расчета баланса парка[new]</li>" +
-    "<li>Добавлен алгоритм потокового слежение</li>" +
-    "<li>Добавлен дампер базы данных</li>" +
-    "<li>Добавлен модуль отгрузки АСН</li>" +
-    "<li>Добавлено отслеживание колебаний уровня в резервуарах</li>" +
-    "<li>Исправлены мелкие недочеты</li>";
+    "<li>Добавлен компонент трендов[new]</li>" +
+    "<li>Исправлены мелкие недочеты</li>" +
+    "<li>Произведен рефакторинг кода</li>";
 function visit() {
     let req = {version:Global.version.v,build:Global.version.build};
     console.log("req:",req);

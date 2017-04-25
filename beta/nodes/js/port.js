@@ -146,14 +146,63 @@ class port{
                     $("#tankdt .tank_title_port").text(data.tankdt);
                     $("#tankoil .tank_title_port").text(data.tankoil);
                     $("#tanksmt .tank_title_port").text(data.tanksmt);
+                    let renderSelectedTanks = function () {
+                        var tmpRealOil = $("#minview .tank[data-num="+(data.tankoil)+"]")
+                            .find(".progress_tank_val_real").text();
+                        var tmpRealDt = $("#minview .tank[data-num="+(data.tankdt)+"]")
+                            .find(".progress_tank_val_real").text();
+                        var tmpRealSmt = $("#minview .tank[data-num="+(data.tanksmt)+"]")
+                            .find(".progress_tank_val_real").text();
 
-                    var tmpRealOil = $("#minview .tank[data-num="+(data.tankoil)+"]").find(".progress_tank_val_real").text();
-                    var tmpRealDt = $("#minview .tank[data-num="+(data.tankdt)+"]").find(".progress_tank_val_real").text();
-                    var tmpRealSmt = $("#minview .tank[data-num="+(data.tanksmt)+"]").find(".progress_tank_val_real").text();
+                        $("#tankdt .progress_tank_val_real").text(tmpRealDt);
+                        $("#tankoil .progress_tank_val_real").text(tmpRealOil);
+                        $("#tanksmt .progress_tank_val_real").text(tmpRealSmt);
 
-                    $("#tankdt .progress_tank_val_real").text(tmpRealDt);
-                    $("#tankoil .progress_tank_val_real").text(tmpRealOil);
-                    $("#tanksmt .progress_tank_val_real").text(tmpRealSmt);
+                        $("#tankoil .prod_cont").html($(".tank[data-num="+(data.tankoil)+"]").find(".prod_cont").html());
+                        $("#tankdt .prod_cont").html($(".tank[data-num="+(data.tankdt)+"]").find(".prod_cont").html());
+                        $("#tanksmt .prod_cont").html($(".tank[data-num="+(data.tanksmt)+"]").find(".prod_cont").html());
+
+                        $("#tankoil .pereliv").html($(".tank[data-num="+(data.tankoil)+"]").find(".pereliv").html());
+                        $("#tankdt .pereliv").html($(".tank[data-num="+(data.tankdt)+"]").find(".pereliv").html());
+                        $("#tanksmt .pereliv").html($(".tank[data-num="+(data.tanksmt)+"]").find(".pereliv").html());
+
+                        $("#tankoil .errortank").html($(".tank[data-num="+(data.tankoil)+"]").find(".errortank").html());
+                        $("#tankdt .errortank").html($(".tank[data-num="+(data.tankdt)+"]").find(".errortank").html());
+                        $("#tanksmt .errortank").html($(".tank[data-num="+(data.tanksmt)+"]").find(".errortank").html());
+
+                        $("#tankoil .service").html($(".tank[data-num="+(data.tankoil)+"]").find(".service").html());
+                        $("#tankdt .service").html($(".tank[data-num="+(data.tankdt)+"]").find(".service").html());
+                        $("#tanksmt .service").html($(".tank[data-num="+(data.tanksmt)+"]").find(".service").html());
+
+                        setTimeout(function () {
+                            var pr_color_oil = {
+                                from:{color:Global.pr_tank_port[0].path.getAttribute("stroke")},
+                                to:{color:Global.pr_tank[data.tankoil].path.getAttribute("stroke")}
+                            };
+                            var pr_color_dt = {
+                                from:{color:Global.pr_tank_port[1].path.getAttribute("stroke")},
+                                to:{color:Global.pr_tank[data.tankdt].path.getAttribute("stroke")}
+                            };
+                            var pr_color_smt = {
+                                from:{color:Global.pr_tank_port[2].path.getAttribute("stroke")},
+                                to:{color:Global.pr_tank[data.tanksmt].path.getAttribute("stroke")}
+                            };
+                            var pr_val_oil = Global.pr_tank[data.tankoil].value();
+                            var pr_val_dt = Global.pr_tank[data.tankdt].value();
+                            var pr_val_smt = Global.pr_tank[data.tanksmt].value();
+                            Global.pr_tank_port[0].animate(pr_val_oil,pr_color_oil);
+                            Global.pr_tank_port[1].animate(pr_val_dt,pr_color_dt);
+                            Global.pr_tank_port[2].animate(pr_val_smt,pr_color_smt);
+                            console.log("rendering...oil:",pr_val_oil,"dt:",pr_val_dt,"smt:",pr_val_smt);
+                            console.log("color oil:",pr_color_oil,"dt:",pr_color_dt,"smt:",pr_color_smt);
+                        },Global.pr_tank[1]._opts.duration);
+                    };
+                    Global.nodes[getNode("respark")].nodeObj.startedAndRefreshed.then(
+                        function () {
+                            //console.log("Отследили");
+                            renderSelectedTanks();
+                        }
+                    );
                 }
                 if(label == "valve"){
                     if(data.valve_smt1 == "0"){
@@ -193,8 +242,16 @@ class port{
                     }
                 }
                 if(label == "plotnomer"){
+                    $(".portstatus").removeClass("off naliv reconstuction");
+                    $(".portstatus").text("Простой");
                     for(var elem in data){
                         if(data[elem].num == "1"){
+
+                            if(Number(data[elem].f1)>0 || Number(data[elem].f2)>0){
+                                $(".portstatus").addClass("naliv");
+                                $(".portstatus").text("Идет налив");
+                            }
+
                             $(".table_port .port_plot_t_dt").text(data[elem].t);
                             $(".table_port .port_plot_p_dt").text(data[elem].p);
                             $(".table_port .port_plot_p1_dt").text(data[elem].p1);
@@ -219,6 +276,12 @@ class port{
 
                         }
                         if(data[elem].num == "2"){
+
+                            if(Number(data[elem].f1)>0 || Number(data[elem].f2)>0){
+                                $(".portstatus").addClass("naliv");
+                                $(".portstatus").text("Идет налив");
+                            }
+
                             $(".table_port .port_plot_t_smt").text(data[elem].t);
                             $(".table_port .port_plot_p_smt").text(data[elem].p);
                             $(".table_port .port_plot_p1_smt").text(data[elem].p1);

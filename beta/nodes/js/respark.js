@@ -441,7 +441,9 @@ class respark{
             if(Global.tankselect){
                 this.refreshTank(Global.tankselect);
             }
-            
+
+            this.startedAndRefreshed.resolve();
+            //console.log("Refreshed:",this.startedAndRefreshed);
         }
     }
     calcArrows(data) {
@@ -594,7 +596,9 @@ class respark{
         }
     }
     startNode() {
-        console.log("start node REZPARK");
+        this.startedAndRefreshed = $.Deferred();
+
+        //console.log("start node REZPARK",this.startedAndRefreshed);
         var resparkbodyPromise = fetch("nodes/templates/respark.html").then(function (response) {
             return response.text();
         }).then(function (text) {
