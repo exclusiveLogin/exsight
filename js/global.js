@@ -1,5 +1,5 @@
 let Global = {
-    demo:true,
+    demo:false,
     pr_tank:[],
     jqready:false,
     swready:false,

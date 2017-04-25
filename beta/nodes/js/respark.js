@@ -265,6 +265,7 @@ class respark{
             url:"getmeteo.php",
             dataType:"json",
             method:'GET',
+            data:{meteo:true},
             success:function(data){
                 wrapperMeteo(data);
             },
@@ -272,7 +273,6 @@ class respark{
                 console.log("error to load refresh tank ajax data");
             }
         });
-
         //запрос парка
         $.ajax({
             url:"gettank.php",
@@ -441,7 +441,7 @@ class respark{
             if(Global.tankselect){
                 this.refreshTank(Global.tankselect);
             }
-
+            
         }
     }
     calcArrows(data) {
@@ -635,7 +635,6 @@ class respark{
         var wrapperStartOPC = this.startOPC.bind(this);
 
         Promise.all([resparkbodyPromise,resparkpanelPromise]).then(function () {
-            //reloadProgressBar();
             wrapperStartOPC();
         });
     }

@@ -22,6 +22,7 @@ window.connectionState = window.Utility.connectionState;
 window.renderFancy = window.Utility.renderFancy;
 window.toggleFancy = window.Utility.toggleFancy;
 window.refreshTooltips = window.Utility.refreshTooltips;
+window.nativeTooltipHandler = window.Utility.nativeTooltipHandler;
 
 window.userEnter = window.Utility.userEnter;
 window.showSysMsg = window.Utility.showSysMsg;

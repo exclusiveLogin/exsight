@@ -15,47 +15,47 @@ require_once "db.php";
 //парсинг Valve
 $f_valve = file_exists($ini_valve);
 if($f_valve){
-	$select_arr = parse_ini_file($ini_valve);
-	
-	$valve_smt1 = 0;
-	$valve_smt2 = 0;
-	$valve_smt3 = 0;
-	$valve_smt4 = 0;
-	$valve_smt5 = 0;
-	$valve_smt6 = 0;
-	$fixtime = 0;
-	
-	if (isset($select_arr['port_zadvsmt1'])) {
+    $select_arr = parse_ini_file($ini_valve);
+
+    $valve_smt1 = 0;
+    $valve_smt2 = 0;
+    $valve_smt3 = 0;
+    $valve_smt4 = 0;
+    $valve_smt5 = 0;
+    $valve_smt6 = 0;
+    $fixtime = 0;
+
+    if (isset($select_arr['port_zadvsmt1'])) {
         $valve_smt1 = $select_arr['port_zadvsmt1'];
         //echo "t1:".$port_plot_t1."<br>";
     }
-	if (isset($select_arr['port_zadvsmt2'])) {
+    if (isset($select_arr['port_zadvsmt2'])) {
         $valve_smt2 = $select_arr['port_zadvsmt2'];
         //echo "t1:".$port_plot_t1."<br>";
     }
-	if (isset($select_arr['port_zadvdt1'])) {
+    if (isset($select_arr['port_zadvdt1'])) {
         $valve_dt1 = $select_arr['port_zadvdt1'];
         //echo "t1:".$port_plot_t1."<br>";
     }
-	if (isset($select_arr['port_zadvdt2'])) {
+    if (isset($select_arr['port_zadvdt2'])) {
         $valve_dt2 = $select_arr['port_zadvdt2'];
         //echo "t1:".$port_plot_t1."<br>";
     }
-	if (isset($select_arr['port_zadvoil1'])) {
+    if (isset($select_arr['port_zadvoil1'])) {
         $valve_oil1 = $select_arr['port_zadvoil1'];
         //echo "t1:".$port_plot_t1."<br>";
     }
-	if (isset($select_arr['port_zadvoil2'])) {
+    if (isset($select_arr['port_zadvoil2'])) {
         $valve_oil2 = $select_arr['port_zadvoil2'];
         //echo "t1:".$port_plot_t1."<br>";
     }
-		
-	if (isset($select_arr['fixtime'])) {
+
+    if (isset($select_arr['fixtime'])) {
         $fixtime = $select_arr['fixtime'];
         //echo "plotfixtime2 :".$plotfixtime2."<br>";
     }
-	
-	$q = "INSERT INTO `port_valve (`id`,`valve_smt1`,`valve_smt2`,`valve_dt1`,`valve_dt2`,`valve_oil1`,`valve_oil2`,`fixtime`)
+
+    $q = "INSERT INTO `port_valve` (`id`,`valve_smt1`,`valve_smt2`,`valve_dt1`,`valve_dt2`,`valve_oil1`,`valve_oil2`,`fixtime`)
         VALUES (1,".$valve_smt1.",".$valve_smt2.",".$valve_dt1.",".$valve_dt2.",".$valve_oil1.",".$valve_oil2.",\"".$fixtime."\")
          ON DUPLICATE KEY UPDATE 
          `valve_smt1` = ".$valve_smt1.",
@@ -66,40 +66,40 @@ if($f_valve){
         `valve_oil2`=".$valve_oil2.",
         `fixtime`=\"".$fixtime."\";";
 
-    ////echo "<p>Q1:$q</p>";
+    echo "<p>Q valve:$q</p>";
 
     $mysql->query($q);
-	
+
 }
 //парсинг UserSelect
 $f_select = file_exists($ini_select);
 if($f_select){
-	$select_arr = parse_ini_file($ini_select);
-	
-	$numbrezsmt = 0;
-	$numbrezdt = 0;
-	$numbrezoil = 0;
-	$fixtime = 0;
-	
-	if (isset($select_arr['numbrezsmt'])) {
+    $select_arr = parse_ini_file($ini_select);
+
+    $numbrezsmt = 0;
+    $numbrezdt = 0;
+    $numbrezoil = 0;
+    $fixtime = 0;
+
+    if (isset($select_arr['numbrezsmt'])) {
         $numbrezsmt = $select_arr['numbrezsmt'];
         //echo "t1:".$port_plot_t1."<br>";
     }
-	if (isset($select_arr['numbrezoil'])) {
+    if (isset($select_arr['numbrezoil'])) {
         $numbrezoil = $select_arr['numbrezoil'];
         //echo "t1:".$port_plot_t1."<br>";
     }
-	if (isset($select_arr['numbrezdt'])) {
+    if (isset($select_arr['numbrezdt'])) {
         $numbrezdt = $select_arr['numbrezdt'];
         //echo "t1:".$port_plot_t1."<br>";
     }
-	
-	if (isset($select_arr['fixtime'])) {
+
+    if (isset($select_arr['fixtime'])) {
         $fixtime = $select_arr['fixtime'];
         //echo "plotfixtime2 :".$plotfixtime2."<br>";
     }
-	
-	$q = "INSERT INTO `port_tankselect` (`id`,`tanksmt`,`tankdt`,`tankoil`,`fixtime`)
+
+    $q = "INSERT INTO `port_tankselect` (`id`,`tanksmt`,`tankdt`,`tankoil`,`fixtime`)
         VALUES (1,".$numbrezsmt.",".$numbrezdt.",".$numbrezoil.",\"".$fixtime."\")
          ON DUPLICATE KEY UPDATE 
          `tanksmt` = ".$numbrezsmt.",
@@ -110,7 +110,7 @@ if($f_select){
     ////echo "<p>Q1:$q</p>";
 
     $mysql->query($q);
-	
+
 }
 //парсинг Плотномеров
 $f_plot1 = file_exists($ini_plot1);
@@ -230,20 +230,36 @@ if($f_plot1 && $f_plot2){
 
     //m
     if (isset($plot1_arr['port_plotnomer_m11'])) {
-        $port_plot_m11 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_m11'])), 1);
-        //echo "m11:".$port_plot_m11."<br>";
+        $tmp = $plot1_arr['port_plotnomer_m11'];
+        $tmp = mb_convert_encoding($tmp,"UTF-8");
+        $tmp = str_replace("?", "", $tmp);
+        echo "tmp_r:".$tmp."<br>";
+        $port_plot_m11 = round(((float)str_replace(",", ".", $tmp)), 1);
+        echo "m11:".$port_plot_m11."<br>";
     }
     if (isset($plot2_arr['port_plotnomer_m21'])) {
-        $port_plot_m21 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_m21'])), 1);
-        //echo "m21:".$port_plot_m21."<br>";
+        $tmp = $plot1_arr['port_plotnomer_m21'];
+        $tmp = mb_convert_encoding($tmp,"UTF-8");
+        $tmp = str_replace("?", "", $tmp);
+        echo "tmp_r:".$tmp."<br>";
+        $port_plot_m21 = round(((float)str_replace(",", ".", $tmp)), 1);
+        echo "m21:".$port_plot_m21."<br>";
     }
     if (isset($plot1_arr['port_plotnomer_m12'])) {
-        $port_plot_m12 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_m12'])), 1);
-        //echo "m12:".$port_plot_m12."<br>";
+        $tmp = $plot1_arr['port_plotnomer_m12'];
+        $tmp = mb_convert_encoding($tmp,"UTF-8");
+        $tmp = str_replace("?", "", $tmp);
+        echo "tmp:".$tmp."<br>";
+        $port_plot_m12 = round(((float)str_replace(",", ".", $tmp)), 1);
+        echo "m12:".$port_plot_m12."<br>";
     }
     if (isset($plot2_arr['port_plotnomer_m22'])) {
-        $port_plot_m22 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_m22'])), 1);
-        //echo "m22:".$port_plot_m22."<br>";
+        $tmp = $plot1_arr['port_plotnomer_m22'];
+        $tmp = mb_convert_encoding($tmp,"UTF-8");
+        $tmp = str_replace("?", "", $tmp);
+        echo "tmp_r:".$tmp."<br>";
+        $port_plot_m22 = round(((float)str_replace(",", ".", $tmp)), 1);
+        echo "m22:".$port_plot_m22."<br>";
     }
 
     //ms
@@ -292,7 +308,7 @@ if($f_plot1 && $f_plot2){
          `ms1`=".$port_plot_ms11.",
         `ms2`=".$port_plot_ms12.",
         `fixtime`=\"".$plotfixtime1."\";";
-
+    echo "q:".$q."<br>";
     $mysql->query($q);
 
     $q = "INSERT INTO `port_plotnomer` (`num`,`t`,`t1`,`t2`,`p`,`p1`,`p2`,`f1`,`f2`,`m1`,`m2`,`ms1`,`ms2`,`fixtime`) 
@@ -312,10 +328,10 @@ if($f_plot1 && $f_plot2){
          `ms1`=".$port_plot_ms21.",
         `ms2`=".$port_plot_ms22.",
         `fixtime`=\"".$plotfixtime2."\";";
-
+    echo "q:".$q."<br>";
     $mysql->query($q);
 
-    ////echo "q:".$q."<br>";
+
 }
 
 //парсинг Емкостей
@@ -405,8 +421,8 @@ if($f_ecu1 && $f_ecu2){
         ////echo "plotfixtime2 :".$ecufixtime2."<br>";
     }
 
-   // print_r($ecu1_arr);
-   // print_r($ecu2_arr);
+    // print_r($ecu1_arr);
+    // print_r($ecu2_arr);
 
     $q = "INSERT INTO `port_ecu` (`num`,`level1`,`level2`,`level3`,`level4`,`level5`,`level6`,`fixtime`)
         VALUES (1,".$ecu1_level1.",".$ecu1_level2.",".$ecu1_level3.",".$ecu1_level4.",".$ecu1_level5.",".$ecu1_level6.",\"".$ecufixtime1."\")

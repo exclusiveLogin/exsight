@@ -845,14 +845,14 @@ a:hover{
     background-repeat: no-repeat;
     background-image: url("../nodes/templates/scheme/tanker_2.png");
 }
-#tankdt{
+#tankoil{
     width: 150px;
     height: 150px;
     position: absolute;
     left: 430px;
     top: 300px;
 }
-#tankoil{
+#tankdt{
     width: 150px;
     height: 150px;
     display: inline-block;
@@ -887,61 +887,89 @@ a:hover{
     font-size: 120%;
     font-weight: bold;
     text-align: center;
-    background: wheat; /* Old browsers */
-    background: -moz-linear-gradient(top, wheat 0%, orange 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, wheat 0%, orange 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, wheat 0%,orange 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background: orange; /* Old browsers */
+    background: -moz-linear-gradient(top, #f5a640 0%, #ff710a 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #f5a640 0%, #ff710a 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #f5a640 0%, #ff710a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */
     border: 1px outset #919191;
 }
 .portstatus{
     width: 100%;
-    padding-bottom: 35%;
+    padding-bottom: 10%;
     text-align: center;
     vertical-align: middle;
-    padding-top: 45%;
+    padding-top: 10%;
     font-size: 120%;
     color: white;
     border-radius: 20px;
     margin-top: 20px;
-    text-shadow: 0 0 5px rgba(255,255,255,0.5);
+    text-shadow: 0 0 5px rgba(255,255,255,0.7);
 }
 .portstatus.naliv{
-    background: #9b5858; /* Old browsers */
+    background: orangered; /* Old browsers */
     background: -moz-linear-gradient(top, #9b5858 0%, #540101 45%, #a30000 75%, #4c0000 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(top, #9b5858 0%,#540101 45%,#a30000 75%,#4c0000 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom, #9b5858 0%,#540101 45%,#a30000 75%,#4c0000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b5858', endColorstr='#4c0000',GradientType=0 ); /* IE6-9 */
     border: 1px outset #91151b;
     box-shadow: 0 0 10px 0px rgba(255,0,0,0.7);
+    text-shadow: 0 0 10px rgba(255,255,255,0.7);
 }
 .portstatus.standby{
-    background: #6db563; /* Old browsers */
+    background: darkgreen; /* Old browsers */
     background: -moz-linear-gradient(top, #6db563 0%, #21680d 45%, #0f7516 64%, #3f663c 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(top, #6db563 0%,#21680d 45%,#0f7516 64%,#3f663c 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom, #6db563 0%,#21680d 45%,#0f7516 64%,#3f663c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db563', endColorstr='#3f663c',GradientType=0 ); /* IE6-9 */
     border: 1px outset darkgreen;
     box-shadow: 0 0 10px 0px rgba(0,255,0,0.7);
+    text-shadow: 0 0 10px rgba(255,255,255,0.7);
 }
 .portstatus.off{
-    background: #a7cfdf; /* Old browsers */
-    background: -moz-linear-gradient(top, #a7cfdf 0%, #23538a 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, #a7cfdf 0%,#23538a 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, #a7cfdf 0%,#23538a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background: darkblue; /* Old browsers */
+    background: -moz-linear-gradient(top, #1054a1 0%, #23538a 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #1054a1 0%, #23538a 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #1054a1 0%, #23538a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */
     border: 1px outset #919191;
     box-shadow: 0 0 10px 0px rgba(0,255,255,0.7);
+    text-shadow: 0 0 10px rgba(255,255,255,0.7);
 }
 .portstatus.reconstraction{
-    background: wheat; /* Old browsers */
-    background: -moz-linear-gradient(top, wheat 0%, orange 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, wheat 0%, orange 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, wheat 0%,orange 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background: darkorange; /* Old browsers */
+    background: -moz-linear-gradient(top, #a93627 0%, orange 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #a93627 0%, orange 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #a93627 0%, orange 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */
     border: 1px outset #919191;
     box-shadow: 0 0 10px 0px rgba(255,255,255,0.7);
 }
 .meteo{
     line-height: 32px;
+}
+.timestamp_port_valve{
+    position: absolute;
+    margin-left: 100px;
+    margin-top: -100px;
+}
+.timestamp_port_ecu1{
+    position: absolute;
+}
+.timestamp_port_ecu2{
+    position: absolute;
+}
+.table_port .plotOne{
+    background-color: rgba(0, 12, 28, 0.5);
+    text-shadow: 0 0 10px rgba(0,200,255,0.7);
+}
+.table_port .plotTwo{
+    background-color: rgba(0, 28, 12, 0.5);
+    text-shadow: 0 0 10px rgba(0,255,200,0.7);
+}
+#progress_tank_port_ecu1 .progress_tank_val_real{
+    opacity: 0;
+}
+#progress_tank_port_ecu2 .progress_tank_val_real{
+    opacity: 0;
 }

@@ -6,75 +6,93 @@
         <table border="0" class="table table-hover table_port">
             <tr class="table_port_header">
                 <td align="center">ПАРАМЕТРЫ</td>
-                <td align="center">ДТ</td>
-                <td align="center">СМТ</td>
+                <td align="center">ДТ
+                    <div class="label-danger label timestamp_port_dt" data-tooltip="Данные не получены">
+                        <i class="fa fa-clock-o"></i>
+                    </div>
+                </td>
+                <td align="center">СМТ
+                    <div class="label-danger label timestamp_port_smt" data-tooltip="Данные не получены">
+                        <i class="fa fa-clock-o"></i>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Температура град.С.</td>
+                <td class="port_plot_t_dt">----</td>
+                <td class="port_plot_t_smt">----</td>
             </tr>
             <tr>
                 <td>Давление кг/см.</td>
-                <td>----</td>
-                <td>----</td>
+                <td class="port_plot_p_dt">----</td>
+                <td class="port_plot_p_smt">----</td>
             </tr>
-            <tr>
+            <tr class="plotOne">
                 <td>(P1) Плотность 1 кг/м3</td>
-                <td>----</td>
-                <td>----</td>
+                <td class="port_plot_p1_dt">----</td>
+                <td class="port_plot_p1_smt">----</td>
             </tr>
-            <tr>
+            <tr class="plotOne">
                 <td>(T1) Температура 1 град.С.</td>
-                <td>----</td>
-                <td>----</td>
+                <td class="port_plot_t1_dt">----</td>
+                <td class="port_plot_t1_smt">----</td>
             </tr>
-            <tr>
+            <tr class="plotOne">
                 <td>(Q1) Расход 1 кг/ч.</td>
-                <td>----</td>
-                <td>----</td>
+                <td class="port_plot_f1_dt">----</td>
+                <td class="port_plot_f1_smt">----</td>
             </tr>
-            <tr>
+            <tr class="plotOne">
                 <td>(F1) Тек. счетчик 1 кг.</td>
-                <td>----</td>
-                <td>----</td>
+                <td class="port_plot_m1_dt">----</td>
+                <td class="port_plot_m1_smt">----</td>
             </tr>
-            <tr>
+            <tr class="plotOne">
                 <td>(FF1) Сумм. счетчик 1 кг.</td>
-                <td>----</td>
-                <td>----</td>
+                <td class="port_plot_ms1_dt">----</td>
+                <td class="port_plot_ms1_smt">----</td>
             </tr>
-            <tr>
+            <tr class="plotTwo">
                 <td>(P2) Плотность 2 кг/м3</td>
-                <td>----</td>
-                <td>----</td>
+                <td class="port_plot_p2_dt">----</td>
+                <td class="port_plot_p2_smt">----</td>
             </tr>
-            <tr>
+            <tr class="plotTwo">
                 <td>(T2) Температура 2 град.С.</td>
-                <td>----</td>
-                <td>----</td>
+                <td class="port_plot_t2_dt">----</td>
+                <td class="port_plot_t2_smt">----</td>
             </tr>
-            <tr>
+            <tr class="plotTwo">
                 <td>(Q2) Расход 2 кг/ч.</td>
-                <td>----</td>
-                <td>----</td>
+                <td class="port_plot_f2_dt">----</td>
+                <td class="port_plot_f2_smt">----</td>
             </tr>
-            <tr>
+            <tr class="plotTwo">
                 <td>(F2) Тек. счетчик 2 кг.</td>
-                <td>----</td>
-                <td>----</td>
+                <td class="port_plot_m2_dt">----</td>
+                <td class="port_plot_m2_smt">----</td>
             </tr>
-            <tr>
+            <tr class="plotTwo">
                 <td>(FF2) Сумм. счетчик 2 кг.</td>
-                <td>----</td>
-                <td>----</td>
+                <td class="port_plot_ms2_dt">----</td>
+                <td class="port_plot_ms2_smt">----</td>
             </tr>
         </table>
     </div>
     <div class="col-md-1">
-        <div class="park_name" style="margin-top: 15px;">Сливные ёмкости</div>
+        <div class="park_name" style="margin-top: 15px;">
+            <span>Сливные ёмкости</span>
+        </div>
         <div class="tank_port_ecu">
+            <div class="label-danger label timestamp_port_ecu1" data-tooltip="Данные не получены">
+                <i class="fa fa-clock-o"></i>
+            </div>
             <div class="tank_port" data-product="ecu1">
                 <span class="tank_title_port">ЕСУ1</span>
                 <div class="tends"></div>
                 <div class="progress_tank_port" id="progress_tank_port_ecu1">
                     <div class="glyphicon glyphicon-chevron-up tank_arrow_top _neutral"></div>
-                    <p class="progress_tank_val_real">----</p>
+                    <p class="progress_tank_val_real">-</p>
                     <p class="progress_tank_val" style="color: darkgreen">0%</p>
                     <div class="glyphicon glyphicon-chevron-down tank_arrow_bottom _neutral"></div>
                 </div>
@@ -90,20 +108,23 @@
                 </div>
                 <div class="row service">
                     <div class="col-md-12">
-            <span class="tank_service label label-default">
-                <i class="fa fa-wrench" aria-hidden="true"> </i> В ремонте
-            </span>
+                        <span class="tank_service label label-default">
+                            <i class="fa fa-wrench" aria-hidden="true"> </i> В ремонте
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="tank_port_ecu">
+            <div class="label-danger label timestamp_port_ecu2" data-tooltip="Данные не получены">
+                <i class="fa fa-clock-o"></i>
+            </div>
             <div class="tank_port" data-product="ecu2">
                 <span class="tank_title_port">ЕСУ2</span>
                 <div class="tends"></div>
                 <div class="progress_tank_port" id="progress_tank_port_ecu2">
                     <div class="glyphicon glyphicon-chevron-up tank_arrow_top _neutral"></div>
-                    <p class="progress_tank_val_real_port">----</p>
+                    <p class="progress_tank_val_real">-</p>
                     <p class="progress_tank_val" style="color: darkgreen">0%</p>
                     <div class="glyphicon glyphicon-chevron-down tank_arrow_bottom _neutral"></div>
                 </div>
@@ -138,6 +159,9 @@
         <div class="port_scheme">
             <div class="row">
                 <div class="ship"></div>
+                <div class="label-danger label timestamp_port_valve" data-tooltip="Данные не получены">
+                    <i class="fa fa-clock-o"></i>
+                </div>
             </div>
             <div class="row">
                 <svg width="800" height="360"  xmlns="http://www.w3.org/2000/svg">
@@ -355,7 +379,7 @@
                         <line fill="none" stroke-width="3" x1="293.27539" y1="352.64999" x2="293.27539" y2="364.0748" stroke="#00ffe9" id="svg_206" transform="rotate(-90 293.27539062500006,358.3623962402344) "/>
                     </g>
                 </svg>
-                <div id="tankoil">
+                <div id="tankdt">
                     <div href="#fancycontainer" class="tank_port" data-product="oil">
                         <span class="tank_title_port">*</span>
                         <div class="tends"></div>
@@ -389,13 +413,13 @@
                         </div>
                     </div>
                 </div>
-                <div id="tankdt">
+                <div id="tankoil">
                     <div href="#fancycontainer" class="tank_port" data-product="dt">
                         <span class="tank_title_port">*</span>
                         <div class="tends"></div>
                         <div class="progress_tank_port" id="progress_tank_port_dt">
                             <div class="glyphicon glyphicon-chevron-up tank_arrow_top _neutral"></div>
-                            <p class="progress_tank_val_real_port">----</p>
+                            <p class="progress_tank_val_real">----</p>
                             <p class="progress_tank_val" style="color: darkgreen">0%</p>
                             <div class="glyphicon glyphicon-chevron-down tank_arrow_bottom _neutral"></div>
                         </div>
@@ -429,7 +453,7 @@
                         <div class="tends"></div>
                         <div class="progress_tank_port" id="progress_tank_port_smt">
                             <div class="glyphicon glyphicon-chevron-up tank_arrow_top _neutral"></div>
-                            <p class="progress_tank_val_real_port">----</p>
+                            <p class="progress_tank_val_real">----</p>
                             <p class="progress_tank_val" style="color: darkgreen">0%</p>
                             <div class="glyphicon glyphicon-chevron-down tank_arrow_bottom _neutral"></div>
                         </div>
