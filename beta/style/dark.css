@@ -973,3 +973,20 @@ a:hover{
 #progress_tank_port_ecu2 .progress_tank_val_real{
     opacity: 0;
 }
+.port_wind_arrow{
+    background-image: url("wind_arrow_w.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 150px;
+    height: 150px;
+    transform: rotateZ(0deg);
+    transition: transform 1s ease;
+}
+.port_winddirection_val{
+    color: #FFF;
+    font-size: 3.5rem;
+    text-align: center;
+    margin-top: -79%;
+    width: 150px;
+}

@@ -13,6 +13,7 @@ if($f_meteo_exist){
     $meteo_wind_nb = null;
     $meteo_wind_p = null;
     $meteo_temperature_air = null;
+    $meteo_wind_direction = null;
     $fixtime = null;
 
     if (isset($meteo_ini_arr['meteo_temperature_air'])) {
@@ -27,12 +28,19 @@ if($f_meteo_exist){
         $meteo_wind_p = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_windforce_p'])), 1);
         //echo "wind_p:".$meteo_wind_p."<br>";
     }
+    if (isset($meteo_ini_arr['meteo_winddirection_p'])) {
+        $meteo_wind_direction = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_winddirection_p'])), 1);
+        //echo "wind_p:".$meteo_wind_p."<br>";
+    }
     if (isset($meteo_ini_arr['fixtime'])) {
         $fixtime = $meteo_ini_arr['fixtime'];
         //echo "wind_p:".$meteo_wind_p."<br>";
     }
-    $q = "INSERT INTO `meteo` (`wind_p`,`wind_nb`,`temperature_air`,`fixtime`) VALUES (" . $meteo_wind_p . "," . $meteo_wind_nb . ",
-        ".$meteo_temperature_air.",\"".$fixtime."\") ON DUPLICATE KEY UPDATE `wind_p` = " . $meteo_wind_p . ",`wind_nb`=".$meteo_wind_nb.",
+    $q = "INSERT INTO `meteo` (`wind_p`,`wind_nb`,`temperature_air`,`wind_direction`,`fixtime`) VALUES (" . $meteo_wind_p . "," . $meteo_wind_nb . ",
+        ".$meteo_temperature_air.",".$meteo_wind_direction.",\"".$fixtime."\") ON DUPLICATE KEY UPDATE 
+        `wind_p` = " . $meteo_wind_p . ",
+        `wind_nb`=".$meteo_wind_nb.",
+        `wind_direction`=".$meteo_wind_direction.",
         `temperature_air`=".$meteo_temperature_air.",
         `fixtime`=\"".$fixtime."\";";
     $mysql->query($q);

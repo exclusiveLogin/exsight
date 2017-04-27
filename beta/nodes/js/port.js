@@ -118,7 +118,7 @@ class port{
             data:{plotnomer:true},
             success:function(data){
                 let label = "plotnomer";
-                console.log("PLOTNOMER:",data);
+                //console.log("PLOTNOMER:",data);
                 renderPort(data,label);
             },
             error:function(){
@@ -193,16 +193,30 @@ class port{
                             Global.pr_tank_port[0].animate(pr_val_oil,pr_color_oil);
                             Global.pr_tank_port[1].animate(pr_val_dt,pr_color_dt);
                             Global.pr_tank_port[2].animate(pr_val_smt,pr_color_smt);
-                            console.log("rendering...oil:",pr_val_oil,"dt:",pr_val_dt,"smt:",pr_val_smt);
-                            console.log("color oil:",pr_color_oil,"dt:",pr_color_dt,"smt:",pr_color_smt);
+                            // console.log("rendering...oil:",pr_val_oil,"dt:",pr_val_dt,"smt:",pr_val_smt);
+                            // console.log("color oil:",pr_color_oil,"dt:",pr_color_dt,"smt:",pr_color_smt);
                         },Global.pr_tank[1]._opts.duration);
                     };
-                    Global.nodes[getNode("respark")].nodeObj.startedAndRefreshed.then(
-                        function () {
-                            //console.log("Отследили");
-                            renderSelectedTanks();
+                    let renderPortWind = function(){
+                        if(Global.meteo){
+                            if(Global.meteo.wind_direction){
+                                let winddirection = Number(Global.meteo.wind_direction);
+                                $(".port_wind_arrow").css({"transform":"rotateZ("+winddirection+"deg)"});
+                                $(".port_winddirection_val").html(winddirection+"&deg;");
+                            }
                         }
-                    );
+                    };
+                    if(Global.nodes[getNode("respark")].nodeObj.startedAndRefreshed.state() != "resolved"){
+                        Global.nodes[getNode("respark")].nodeObj.startedAndRefreshed.then(
+                            function () {
+                                renderSelectedTanks();
+                                renderPortWind();
+                            }
+                        );
+                    }else {
+                        renderSelectedTanks();
+                        renderPortWind();
+                    }
                 }
                 if(label == "valve"){
                     if(data.valve_smt1 == "0"){

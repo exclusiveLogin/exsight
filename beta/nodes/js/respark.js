@@ -8,6 +8,7 @@ class respark{
             $(".wind_nb .meteovalue").text(data.wind_nb);
             $(".temperature_air .meteovalue").text(data.temperature_air);
             $(".meteoupdate .meteovalue").text(data.fixtime);
+            Global.meteo = data;
         }
     }
     tankparmToggle(state){
