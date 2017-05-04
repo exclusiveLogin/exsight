@@ -392,3 +392,33 @@ a:hover{
     color: #ffd100;
     box-shadow: 0 0 10px 2px #ffd100;
 }
+/*кнопки выбора продукта*/
+.btn_portproduct{
+    display: block;
+    background: url(bg2.png);
+    transition: all 0.5s ease;
+    padding-right: 9px;
+    font-size: 130%;
+    font-weight: bold;
+    border: 2px outset rgba(200,200,200,0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    line-height: 5.5rem;
+    color: #FFD100;
+}
+.btn_portproduct:hover{
+    border: 2px #FFD100 solid;
+    color: #FFD100;
+    text-shadow: 0 0 10px #FFD100;
+}
+.btn_portproduct:active{
+    border: 2px orangered solid;
+    color: orangered;
+}
+.btn_portproduct.portproduct_actived{
+    border: 2px orange solid;
+    color: orange;
+    box-shadow: 0 0 10px 2px orange;
+}

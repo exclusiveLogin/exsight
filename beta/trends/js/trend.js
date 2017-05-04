@@ -1,15 +1,16 @@
 class TrendEngine{
     constructor(domid){
         this.selectedTanks = [];
+        this.selectedProductPort = [];
         this.schemeParm = {
             level:true,
             mass:false,
             volume:false,
             temperature:false,
             vapor_temperature:false,
-            plot:false
+            plot:false,
+            flow:false
         };
-        //console.log("constructor this:",this);
         Highcharts.theme = {
             colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
                 "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
@@ -235,12 +236,38 @@ class TrendEngine{
                 id:"level",
                 title: {
                     text: 'Уровень'
-                }
+                },
+                visible:false
             },{
                 id:"temper",
                 title: {
                     text: 'Температура'
-                }
+                },
+                visible:false
+            },{
+                id:"mass",
+                title: {
+                    text: 'Масса'
+                },
+                visible:false
+            },{
+                id:"volume",
+                title: {
+                    text: 'Объем'
+                },
+                visible:false
+            },{
+                id:"plot",
+                title: {
+                    text: 'Плотность'
+                },
+                visible:false
+            },{
+                id:"flow",
+                title: {
+                    text: 'Расход'
+                },
+                visible:false
             }],
             rangeSelector:{
                 buttonTheme: {
@@ -301,123 +328,7 @@ class TrendEngine{
                     },
                 },
             },
-            series:[
-                {
-                    id:"levelroot",
-                    type: 'line',
-                    name: 'Уровень',
-                    tooltip: {
-                        valueDecimals: 2,
-                        valueSuffix:' мм.'
-                    },
-                     color:"orange",
-                    events:{
-                        hide:function (event) {
-                            event.target.chart.context.schemeParm.level = false;
-                        },
-                        show:function (event) {
-                            event.target.chart.context.schemeParm.level = true;
-                        }
-                    },
-                    visible:true,
-                    showInNavigator:false,
-                },{
-                    id:"massroot",
-                    type: 'line',
-                    name: 'Масса',
-                    tooltip: {
-                        valueDecimals: 2,
-                        valueSuffix:' т.'
-                    },
-                    color:"lightgreen",
-                    events:{
-                        hide:function (event) {
-                            event.target.chart.context.schemeParm.mass = false;
-                        },
-                        show:function (event) {
-                            event.target.chart.context.schemeParm.mass = true;
-                        }
-                    },
-                    visible:false,
-                    showInNavigator:false,
-                },{
-                    id:"volumeroot",
-                    type: 'line',
-                    name: 'Объем',
-                    tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix:' см3'
-                    },
-                    color:"blue",
-                    events:{
-                        hide:function (event) {
-                            event.target.chart.context.schemeParm.volume = false;
-                        },
-                        show:function (event) {
-                            event.target.chart.context.schemeParm.volume = true;
-                        }
-                    },
-                    visible:false,
-                    showInNavigator:false,
-                },{
-                    id:"temperatureroot",
-                    type: 'line',
-                    name: 'Температура',
-                    tooltip: {
-                     valueDecimals: 2,
-                     valueSuffix:' град. С.'
-                    },
-                    color:"red",
-                    events:{
-                        hide:function (event) {
-                            event.target.chart.context.schemeParm.temperature = false;
-                        },
-                        show:function (event) {
-                            event.target.chart.context.schemeParm.temperature = true;
-                        }
-                    },
-                    visible:false,
-                    showInNavigator:false,
-                },{
-                    id:"vaportemperatureroot",
-                    type: 'line',
-                    name: 'Т. паров',
-                    tooltip: {
-                     valueDecimals: 2,
-                     valueSuffix:' град. С.'
-                    },
-                    color:"yellow",
-                    events:{
-                        hide:function (event) {
-                            event.target.chart.context.schemeParm.vapor_temperature = false;
-                        },
-                        show:function (event) {
-                            event.target.chart.context.schemeParm.vapor_temperature = true;
-                        }
-                    },
-                    visible:false,
-                    showInNavigator:false,
-                },{
-                    id:"plotroot",
-                    type: 'line',
-                    name: 'Плотность',
-                    tooltip: {
-                     valueDecimals: 2,
-                     valueSuffix:' кг/м3'
-                    },
-                    color:"grey",
-                    events:{
-                        hide:function (event) {
-                            event.target.chart.context.schemeParm.plot = false;
-                        },
-                        show:function (event) {
-                            event.target.chart.context.schemeParm.plot = true;
-                        }
-                    },
-                    visible:false,
-                    showInNavigator:false,
-                }
-            ]
+            series:[]
         };
         this.Trend = new Highcharts.stockChart(MainTrend_setting);
         this.Trend.context = this;
@@ -426,16 +337,13 @@ class TrendEngine{
 			//this.Trend.showLoading("....");
             var upload = function(minmax) {
                 var context = this;
-				console.log("this:",this);
-                 $.ajax({
+                $.ajax({
                      sync:true,
                      url:"trendengine.php",
                      dataType:"json",
                      method:'GET',
                      data:data,
                      success:function(data){
-						 
-                         
                          if(data && data[0].num){
                              let level = [],
                              mass=[],
@@ -447,11 +355,11 @@ class TrendEngine{
                              data.map(function (elem) {
                                  let utc;
                                  if(elem.utc)utc = Number(elem.utc);
-								 
+
                                  if(elem.level && context.schemeParm.level){
                                      level.push([utc,Number(elem.level)]);
                                  }
-                                 if (elem.mass && context.schemeParm.mass){
+                                 if(elem.mass && context.schemeParm.mass){
                                      mass.push([utc,Number(elem.mass)]);
                                  }
                                  if(elem.volume && context.schemeParm.volume){
@@ -485,12 +393,12 @@ class TrendEngine{
                              //
                              // context.Trend.get("plot"+tanknum).setData([]);
                               context.Trend.get("plot"+tanknum).setData(plot,false);
-							  
-							  context.Trend.redraw();
+
+                              context.Trend.redraw();
 
                              context.Trend.hideLoading();
 
-							if(minmax){
+                            if(minmax){
                                  $.ajax({
                                      url:"trendengine.php",
                                      dataType:"json",
@@ -499,8 +407,8 @@ class TrendEngine{
                                      success:function(data){
                                          if(data){
                                              if(data[0] && data[1]){
-                                                 
-												 let tmpExtr = context.Trend.get("timeline").getExtremes();
+
+                                                 let tmpExtr = context.Trend.get("timeline").getExtremes();
                                                  //console.log("extremes:",tmpExtr);
                                                  //console.log("user interval:",tmpExtr.userMax - tmpExtr.userMin,"abs interval:",
                                                  //     tmpExtr.max - tmpExtr.min,"data interval:",tmpExtr.dataMax - tmpExtr.dataMin);
@@ -522,8 +430,8 @@ class TrendEngine{
 
                                                  context.Trend.get("plot"+tanknum).addPoint([Number(data[0].utc),Number(data[0].plot)],false);
                                                  context.Trend.get("plot"+tanknum).addPoint([Number(data[1].utc),Number(data[1].plot)],false);
-												 
-												 
+
+
                                                  context.Trend.redraw();
                                                  context.Trend.get("timeline").setExtremes(tmpExtr.dataMin,tmpExtr.dataMax);
 
@@ -547,146 +455,213 @@ class TrendEngine{
             var data = {};
 
             //logic upload requests
-            if(e){
-                if(tank){//now ver no uses
-                    // console.log("with tanks");
-                    // data = {"trend":true,"coldtrend":true,"tank":tank};
-                    // if(e.rangeSelectorButton){
-                    //     if(e.rangeSelectorButton._range){
-                    //         if(e.rangeSelectorButton._range<10*24*3600*1000){
-                    //             data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
-                    //         }else {
-                    //             data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
-                    //         }
-                    //     }else {
-                    //         data = {"trend":true,"tank":tank,"trendall":true};
-                    //     }
-                    // }
-                    // if(e.trigger == "zoom"){
-                    //     var tmpInterval = e.max - e.min;
-                    //     if(tmpInterval < 10*24*3600*1000){
-                    //         data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
-                    //     }else {
-                    //         data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
-                    //     }
-                    // }
-                    // if(e.triggerOp){
-                    //     if(e.triggerOp == "navigator-drag"){
-                    //         if(e.DOMEvent){
-                    //             if(e.DOMEvent.type == "mouseup"){
-                    //                 var tmpInterval = e.max - e.min;
-                    //                 if(tmpInterval < 10*24*3600*1000){
-                    //                     data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
-                    //                 }else {
-                    //                     data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
-                    //                 }
-                    //             }
-                    //         }
-                    //     }
-                    // }
-                    // upload.apply(this);
-                }else {
-                    this.selectedTanks.map(function (element,idx,tanks) {
-                        let minmaxflag = false;
-                        if(idx == tanks.length-1)minmaxflag = true;
-                        if(e.rangeSelectorButton){
-                            if(e.rangeSelectorButton._range){
-                                if(e.rangeSelectorButton._range<10*24*3600*1000){
+            if(Global.MainTrend.selectedNode == "respark"){
+                if(e){
+                    if(tank){//now ver no uses
+                        // console.log("with tanks");
+                        // data = {"trend":true,"coldtrend":true,"tank":tank};
+                        // if(e.rangeSelectorButton){
+                        //     if(e.rangeSelectorButton._range){
+                        //         if(e.rangeSelectorButton._range<10*24*3600*1000){
+                        //             data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                        //         }else {
+                        //             data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                        //         }
+                        //     }else {
+                        //         data = {"trend":true,"tank":tank,"trendall":true};
+                        //     }
+                        // }
+                        // if(e.trigger == "zoom"){
+                        //     var tmpInterval = e.max - e.min;
+                        //     if(tmpInterval < 10*24*3600*1000){
+                        //         data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                        //     }else {
+                        //         data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                        //     }
+                        // }
+                        // if(e.triggerOp){
+                        //     if(e.triggerOp == "navigator-drag"){
+                        //         if(e.DOMEvent){
+                        //             if(e.DOMEvent.type == "mouseup"){
+                        //                 var tmpInterval = e.max - e.min;
+                        //                 if(tmpInterval < 10*24*3600*1000){
+                        //                     data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                        //                 }else {
+                        //                     data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        // }
+                        // upload.apply(this);
+                    }else {
+                        this.selectedTanks.map(function (element,idx,tanks) {
+                            let minmaxflag = false;
+                            if(idx == tanks.length-1)minmaxflag = true;
+                            if(e.rangeSelectorButton){
+                                if(e.rangeSelectorButton._range){
+                                    if(e.rangeSelectorButton._range<10*24*3600*1000){
+                                        data = {"trend":true,"tank":element,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                                        upload.call(this,minmaxflag);
+                                    }else {
+                                        data = {"trend":true,"tank":element,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                                        upload.call(this,minmaxflag);
+                                    }
+                                }else {
+                                    data = {"trend":true,"tank":element,"trendall":true};
+                                    upload.call(this,minmaxflag);
+                                }
+                            }
+                            if(e.trigger == "zoom"){
+                                var tmpInterval = e.max - e.min;
+                                if(tmpInterval < 10*24*3600*1000){
                                     data = {"trend":true,"tank":element,"interval":1,"trendmin":e.min,"trendmax":e.max};
                                     upload.call(this,minmaxflag);
                                 }else {
                                     data = {"trend":true,"tank":element,"interval":0,"trendmin":e.min,"trendmax":e.max};
                                     upload.call(this,minmaxflag);
                                 }
-                            }else {
-                                data = {"trend":true,"tank":element,"trendall":true};
-                                upload.call(this,minmaxflag);
                             }
-                        }
-                        if(e.trigger == "zoom"){
-                            var tmpInterval = e.max - e.min;
-                            if(tmpInterval < 10*24*3600*1000){
-                                data = {"trend":true,"tank":element,"interval":1,"trendmin":e.min,"trendmax":e.max};
-                                upload.call(this,minmaxflag);
-                            }else {
-                                data = {"trend":true,"tank":element,"interval":0,"trendmin":e.min,"trendmax":e.max};
-                                upload.call(this,minmaxflag);
-                            }
-                        }
-                        if(e.trigger == "keydown"){
-                            let tmpExtr = this.Trend.get("timeline").getExtremes();
-                            var tmpInterval = tmpExtr.userMax - tmpExtr.userMin;
-                            var step = tmpInterval/2;
+                            if(e.trigger == "keydown"){
+                                let tmpExtr = this.Trend.get("timeline").getExtremes();
+                                var tmpInterval = tmpExtr.userMax - tmpExtr.userMin;
+                                var step = tmpInterval/2;
 
-                            if(e.front){
-                                if(!e.ctrl){//simple key
-                                    data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin+step,"trendmax":tmpExtr.userMax+step};
-                                }else {//with ctrl
-                                    data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin,"trendmax":tmpExtr.userMax+step};
-                                }
-                            }else {
-                                if(!e.ctrl){//simple key
-                                    data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin-step,"trendmax":tmpExtr.userMax-step};
-                                }else {//with ctrl
-                                    data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin-step,"trendmax":tmpExtr.userMax};
-                                }
-                            }
-
-                            if(tmpInterval < 10*24*3600*1000){
-                                data.interval=1;
-                                upload.call(this,minmaxflag);
-                            }else {
-                                data.interval=0;
-                                upload.call(this,minmaxflag);
-                            }
-                        }
-                        if(e.trigger == "navigator"){
-                            var tmpInterval = e.max - e.min;
-                            if(tmpInterval < 10*24*3600*1000){
-                                data = {"trend":true,"tank":element,"interval":1,"trendmin":e.min,"trendmax":e.max};
-                                upload.call(this,minmaxflag);
-                            }else {
-                                data = {"trend":true,"tank":element,"interval":0,"trendmin":e.min,"trendmax":e.max};
-                                upload.call(this,minmaxflag);
-                            }
-                        }
-                        /*if(e.triggerOp){
-                            if(e.triggerOp == "navigator-drag"){
-                                if(e.DOMEvent){
-                                    if(e.DOMEvent.type == "mouseup"){
-                                        var tmpInterval = e.max - e.min;
-                                        if(tmpInterval < 10*24*3600*1000){
-                                            data = {"trend":true,"tank":element,"interval":1,"trendmin":e.min,"trendmax":e.max};
-                                            upload.call(this,minmaxflag);
-                                        }else {
-                                            data = {"trend":true,"tank":element,"interval":0,"trendmin":e.min,"trendmax":e.max};
-                                            upload.call(this,minmaxflag);
-                                        }
+                                if(e.front){
+                                    if(!e.ctrl){//simple key
+                                        data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin+step,"trendmax":tmpExtr.userMax+step};
+                                    }else {//with ctrl
+                                        data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin,"trendmax":tmpExtr.userMax+step};
+                                    }
+                                }else {
+                                    if(!e.ctrl){//simple key
+                                        data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin-step,"trendmax":tmpExtr.userMax-step};
+                                    }else {//with ctrl
+                                        data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin-step,"trendmax":tmpExtr.userMax};
                                     }
                                 }
+
+                                if(tmpInterval < 10*24*3600*1000){
+                                    data.interval=1;
+                                    upload.call(this,minmaxflag);
+                                }else {
+                                    data.interval=0;
+                                    upload.call(this,minmaxflag);
+                                }
                             }
-                        }*/
-
-                    },this);
-
-                }
-            }else {
-                if(tank){
-                    if(this.selectedTanks.length>1) {
-                        let tmpExtr = this.Trend.get("timeline").getExtremes();
-                        var tmpInterval = tmpExtr.dataMax - tmpExtr.dataMin;
-                        if(tmpInterval < 10*24*3600*1000){
-                            data = {"trend":true,"tank":tank,"interval":1,"trendmin":tmpExtr.dataMin,"trendmax":tmpExtr.dataMax};
-                            upload.call(this);
+                            if(e.trigger == "navigator"){
+                                var tmpInterval = e.max - e.min;
+                                if(tmpInterval < 10*24*3600*1000){
+                                    data = {"trend":true,"tank":element,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                                    upload.call(this,minmaxflag);
+                                }else {
+                                    data = {"trend":true,"tank":element,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                                    upload.call(this,minmaxflag);
+                                }
+                            }
+                        },this);
+                    }
+                }else {
+                    if(tank){
+                        if(this.selectedTanks.length>1) {
+                            let tmpExtr = this.Trend.get("timeline").getExtremes();
+                            var tmpInterval = tmpExtr.dataMax - tmpExtr.dataMin;
+                            if(tmpInterval < 10*24*3600*1000){
+                                data = {"trend":true,"tank":tank,"interval":1,"trendmin":tmpExtr.dataMin,"trendmax":tmpExtr.dataMax};
+                                upload.call(this);
+                            }else {
+                                data = {"trend":true,"tank":tank,"interval":0,"trendmin":tmpExtr.dataMin,"trendmax":tmpExtr.dataMax};
+                                upload.call(this);
+                            }
                         }else {
-                            data = {"trend":true,"tank":tank,"interval":0,"trendmin":tmpExtr.dataMin,"trendmax":tmpExtr.dataMax};
+                            data = {"trend":true,"coldtrend":true,"tank":tank};
                             upload.call(this);
                         }
-
-                    }else {
-                        data = {"trend":true,"coldtrend":true,"tank":tank};
-                        upload.call(this);
                     }
+                }
+            }
+            if(Global.MainTrend.selectedNode == "port"){
+                if(e){
+                    // this.selectedTanks.map(function (element,idx,tanks) {
+                    //         let minmaxflag = false;
+                    //         if(idx == tanks.length-1)minmaxflag = true;
+                    //         if(e.rangeSelectorButton){
+                    //             if(e.rangeSelectorButton._range){
+                    //                 if(e.rangeSelectorButton._range<10*24*3600*1000){
+                    //                     data = {"trend":true,"tank":element,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                    //                     upload.call(this,minmaxflag);
+                    //                 }else {
+                    //                     data = {"trend":true,"tank":element,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                    //                     upload.call(this,minmaxflag);
+                    //                 }
+                    //             }else {
+                    //                 data = {"trend":true,"tank":element,"trendall":true};
+                    //                 upload.call(this,minmaxflag);
+                    //             }
+                    //         }
+                    //         if(e.trigger == "zoom"){
+                    //             var tmpInterval = e.max - e.min;
+                    //             if(tmpInterval < 10*24*3600*1000){
+                    //                 data = {"trend":true,"tank":element,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                    //                 upload.call(this,minmaxflag);
+                    //             }else {
+                    //                 data = {"trend":true,"tank":element,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                    //                 upload.call(this,minmaxflag);
+                    //             }
+                    //         }
+                    //         if(e.trigger == "keydown"){
+                    //             let tmpExtr = this.Trend.get("timeline").getExtremes();
+                    //             var tmpInterval = tmpExtr.userMax - tmpExtr.userMin;
+                    //             var step = tmpInterval/2;
+                    //
+                    //             if(e.front){
+                    //                 if(!e.ctrl){//simple key
+                    //                     data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin+step,"trendmax":tmpExtr.userMax+step};
+                    //                 }else {//with ctrl
+                    //                     data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin,"trendmax":tmpExtr.userMax+step};
+                    //                 }
+                    //             }else {
+                    //                 if(!e.ctrl){//simple key
+                    //                     data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin-step,"trendmax":tmpExtr.userMax-step};
+                    //                 }else {//with ctrl
+                    //                     data = {"trend":true,"tank":element,"trendmin":tmpExtr.userMin-step,"trendmax":tmpExtr.userMax};
+                    //                 }
+                    //             }
+                    //
+                    //             if(tmpInterval < 10*24*3600*1000){
+                    //                 data.interval=1;
+                    //                 upload.call(this,minmaxflag);
+                    //             }else {
+                    //                 data.interval=0;
+                    //                 upload.call(this,minmaxflag);
+                    //             }
+                    //         }
+                    //         if(e.trigger == "navigator"){
+                    //             var tmpInterval = e.max - e.min;
+                    //             if(tmpInterval < 10*24*3600*1000){
+                    //                 data = {"trend":true,"tank":element,"interval":1,"trendmin":e.min,"trendmax":e.max};
+                    //                 upload.call(this,minmaxflag);
+                    //             }else {
+                    //                 data = {"trend":true,"tank":element,"interval":0,"trendmin":e.min,"trendmax":e.max};
+                    //                 upload.call(this,minmaxflag);
+                    //             }
+                    //         }
+                    //     },this);
+                }else {
+                    // if(this.selectedTanks.length>1) {
+                    //     let tmpExtr = this.Trend.get("timeline").getExtremes();
+                    //     var tmpInterval = tmpExtr.dataMax - tmpExtr.dataMin;
+                    //     if(tmpInterval < 10*24*3600*1000){
+                    //         data = {"trend":true,"tank":tank,"interval":1,"trendmin":tmpExtr.dataMin,"trendmax":tmpExtr.dataMax};
+                    //         upload.call(this);
+                    //     }else {
+                    //         data = {"trend":true,"tank":tank,"interval":0,"trendmin":tmpExtr.dataMin,"trendmax":tmpExtr.dataMax};
+                    //         upload.call(this);
+                    //     }
+                    // }else {
+                    //     data = {"trend":true,"coldtrend":true,"tank":tank};
+                    //     upload.call(this);
+                    // }
                 }
             }
         };
@@ -719,6 +694,7 @@ class TrendEngine{
                     valueSuffix:' т.'
                 },
                 color:"lightgreen",
+                yAxis:"mass",
                 linkedTo:"massroot"
             };
             let volumePlot = {
@@ -730,6 +706,7 @@ class TrendEngine{
                     valueSuffix: ' см3'
                 },
                 color: "blue",
+                yAxis:"volume",
                 linkedTo:"volumeroot"
             };
             let temperaturePlot = {
@@ -765,6 +742,7 @@ class TrendEngine{
                     valueSuffix:' кг/м3'
                 },
                 color:"grey",
+                yAxis: "plot",
                 linkedTo:"plotroot"
             };
 
@@ -796,6 +774,22 @@ class TrendEngine{
             }
         }
     };
+    OpenPlotProduct(product){
+        console.log("Open:",product);
+        //проверяем наличие
+        if((this.selectedProductPort.indexOf(product)) == (-1)) {
+            //в массиве нет элемента
+            this.selectedProductPort.push(product);
+        }
+    }
+    ClosePlotProduct(product){
+        console.log("Close:",product);
+        let index = this.selectedProductPort.indexOf(product);
+        if(index > -1) {
+            //в массиве нет элемента
+            this.selectedProductPort.splice(index, 1);
+        }
+    }
 }
 $(document).ready(function(){
     Global.MainTrend = new TrendEngine("maintrend");

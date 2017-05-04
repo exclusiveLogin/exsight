@@ -16,6 +16,7 @@
 
     <!--Runtime-->
     <script src="js/runtime.js?v0.9.2" type="application/javascript"></script>
+    <script src="js/router.js?v0.9.2" type="application/javascript"></script>
 
     <!--temp-->
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
@@ -63,6 +64,16 @@
     </div>
     <div class="clearfix"></div>
     <div id="container" class="container-fluid">
+        <div id="portswitchnode" class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="btn_portproduct btn_trends_respark">Тренды резервуарного парка</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="btn_portproduct btn_trends_port">Тренды причала</div>
+                </div>
+            </div>
+        </div>
         <div id="minview" class="col-md-12">
             <div id="maintrend"></div>
         </div>
@@ -112,6 +123,16 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+        <div id="portswitchproduct" class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="btn_portproduct" data-num="dt">Дизельное топливо</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="btn_portproduct" data-num="smt">СМТ</div>
+                </div>
             </div>
         </div>
     </div>

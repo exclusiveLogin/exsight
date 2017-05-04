@@ -11,7 +11,8 @@ $ini_select = "opcdata/portselect.ini";
 $ini_valve = "opcdata/portvalve.ini";
 
 require_once "db.php";
-//require_once "db_hd.php";
+require_once "db_port.php";
+
 //парсинг Valve
 $f_valve = file_exists($ini_valve);
 if($f_valve){
@@ -150,6 +151,11 @@ if($f_plot1 && $f_plot2){
     $port_plot_ms12 = 0;
     $port_plot_ms21 = 0;
     $port_plot_ms22 = 0;
+
+    $port_plot_lz11 = 0;
+    $port_plot_lz12 = 0;
+    $port_plot_lz21 = 0;
+    $port_plot_lz22 = 0;
 
     $plotfixtime1 = 0;
     $plotfixtime2 = 0;
@@ -332,6 +338,17 @@ if($f_plot1 && $f_plot2){
     $mysql->query($q);
 
 
+    //insert in es_port for Trends
+    $es_q1 = "INSERT INTO `plotnomer1` (`t`,`t1`,`t2`,`p`,`p1`,`p2`,`f1`,`f2`,`m1`,`m2`,`ms1`,`ms2`,`fixtime`) 
+        VALUES (".$port_plot_t1 .",".$port_plot_t11.",".$port_plot_t12.",".$port_plot_p1.",".$port_plot_p11.",".$port_plot_p12.",
+        ".$port_plot_f11.",".$port_plot_f12.",".$port_plot_m11.",".$port_plot_m12.",".$port_plot_ms11.",".$port_plot_ms12.",\"".$plotfixtime1."\");";
+
+    $es_q2 = "INSERT INTO `plotnomer2` (`t`,`t1`,`t2`,`p`,`p1`,`p2`,`f1`,`f2`,`m1`,`m2`,`ms1`,`ms2`,`fixtime`) 
+        VALUES (".$port_plot_t2 .",".$port_plot_t21.",".$port_plot_t22.",".$port_plot_p2.",".$port_plot_p21.",".$port_plot_p22.",
+        ".$port_plot_f21.",".$port_plot_f22.",".$port_plot_m21.",".$port_plot_m22.",".$port_plot_ms21.",".$port_plot_ms22.",\"".$plotfixtime2."\");";
+
+    $mysql_port_hd->query($es_q1);
+    $mysql_port_hd->query($es_q2);
 }
 
 //парсинг Емкостей

@@ -25,9 +25,6 @@ function visit() {
 
 $(document).ready(function(){
     //visit();
-
-
-
     $.ajaxSetup({
         cache:false
     });
@@ -107,29 +104,16 @@ $(document).ready(function(){
                 Global.MainTrend.OpenTank(numTank);
             }
             //отправлем тренду нажатый резервуар
-
         }
     });
-    $('#btn_close_parm').on('click',function(){
-        if(getNode(respark)>(-1)){
-            Global.nodes[getNode(respark)].nodeObj.tankparmToggle(0);
-        }
-    });
-    $('.btn-fb').on('click',function(){
-        toggleFancy();
-    });
-    $('.fancyemiter').fancybox({
-        'scrolling':'yes',
-        'padding':10,
-        'margin':20,
-        'hideOnOverlayClick':true,
-        'hideOnContentClick':true,
-        'type':'inline',
-        afterClose:function () {
-            Global.tankselect = false;
+    $("#portswitchproduct .btn_portproduct").on("click",function () {
+        //console.log("all ok you selected:",this.dataset["num"]);
+        if($(this).hasClass("portproduct_actived")){//дизактивируем линию
+            $(this).removeClass("portproduct_actived");
+            Global.MainTrend.ClosePlotProduct(this.dataset["num"]);
+        }else{
+            $(this).addClass("portproduct_actived");//активируем линию
+            Global.MainTrend.OpenPlotProduct(this.dataset["num"]);
         }
     });
 });
-// Global.blink1 = new Blink(".pereliv,.errortank,.blink",500);
-// Global.blink1.init();
-// Global.blink1.start();
