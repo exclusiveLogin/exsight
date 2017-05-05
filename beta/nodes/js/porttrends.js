@@ -1,12 +1,9 @@
-/**
- * Created by KotovVM on 28.03.2017.
- */
 class porttrends{
     startNode() {
+        this.led("ok");
         $('#btnporttrends').on("click",function () {
-            alert("Модуль находится в разработке");
-            // let win = window.open("trends/","_blank");
-            // win.focus();
+            let win = window.open("trends/#port","_blank");
+            win.focus();
         });
     }
     stopNode() {
