@@ -4,7 +4,7 @@ Global.loginData={
     "password":""
 };
 Global.version = {};
-Global.version.v = "0.9.7t";
+Global.version.v = "0.9.8t";
 Global.version.build = "197100";
 Global.version.desc = "<li>Работа только начата...</li>";
 function visit() {
