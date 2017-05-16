@@ -152,17 +152,19 @@ Global.trendPortBlank.t_root = {
         valueDecimals: 1,
         valueSuffix:' град. С.'
     },
-    //color:"orange",
+    color:Global.colorsPortLegend[0],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.t = false;
+            console.log("ev:",event);
         },
         show:function (event) {
             event.target.chart.context.schemeParm.t = true;
         }
     },
     visible:true,
-    showInNavigator:false,
+    showInNavigator:true,
+    showInLegend:true
 };
 Global.trendPortBlank.t1_root = {
     id:"t1_root",
@@ -172,7 +174,7 @@ Global.trendPortBlank.t1_root = {
         valueDecimals: 1,
         valueSuffix:' град. С.'
     },
-    //color:"red",
+    color:Global.colorsPortLegend[1],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.t1 = false;
@@ -182,7 +184,6 @@ Global.trendPortBlank.t1_root = {
         }
     },
     visible:true,
-    showInNavigator:false,
 };
 Global.trendPortBlank.t2_root = {
     id:"t2_root",
@@ -192,7 +193,7 @@ Global.trendPortBlank.t2_root = {
         valueDecimals: 1,
         valueSuffix:' град. С.'
     },
-    //color:"yellow",
+    color:Global.colorsPortLegend[2],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.t2 = false;
@@ -202,17 +203,16 @@ Global.trendPortBlank.t2_root = {
         }
     },
     visible:true,
-    showInNavigator:false,
 };
 Global.trendPortBlank.p_root = {
     id:"p_root",
     type: 'line',
-    name: 'Плотность',
+    name: 'Давление',
     tooltip: {
         valueDecimals: 2,
-        valueSuffix:' кг/м3.'
+        valueSuffix:' кг/см2.'
     },
-    //color:"grey",
+    color:Global.colorsPortLegend[3],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.p = false;
@@ -222,7 +222,6 @@ Global.trendPortBlank.p_root = {
         }
     },
     visible:true,
-    showInNavigator:false,
 };
 Global.trendPortBlank.p1_root = {
     id:"p1_root",
@@ -232,7 +231,7 @@ Global.trendPortBlank.p1_root = {
         valueDecimals: 1,
         valueSuffix:' кг/м3.'
     },
-    //color:"grey",
+    color:Global.colorsPortLegend[4],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.p1 = false;
@@ -242,7 +241,6 @@ Global.trendPortBlank.p1_root = {
         }
     },
     visible:true,
-    showInNavigator:false,
 };
 Global.trendPortBlank.p2_root = {
     id:"p2_root",
@@ -252,7 +250,7 @@ Global.trendPortBlank.p2_root = {
         valueDecimals: 1,
         valueSuffix:' кг/м3.'
     },
-    //color:"grey",
+    color:Global.colorsPortLegend[5],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.p2 = false;
@@ -262,7 +260,6 @@ Global.trendPortBlank.p2_root = {
         }
     },
     visible:true,
-    showInNavigator:false,
 };
 Global.trendPortBlank.f1_root = {
     id:"f1_root",
@@ -272,7 +269,7 @@ Global.trendPortBlank.f1_root = {
         valueDecimals: 0,
         valueSuffix:' кг/ч.'
     },
-    //color:"lightgreen",
+    color:Global.colorsPortLegend[6],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.f1 = false;
@@ -282,7 +279,6 @@ Global.trendPortBlank.f1_root = {
         }
     },
     visible:true,
-    showInNavigator:false,
 };
 Global.trendPortBlank.f2_root = {
     id:"f2_root",
@@ -292,7 +288,7 @@ Global.trendPortBlank.f2_root = {
         valueDecimals: 0,
         valueSuffix:' кг/ч.'
     },
-    //color:"red",
+    color:Global.colorsPortLegend[7],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.f2 = false;
@@ -302,7 +298,6 @@ Global.trendPortBlank.f2_root = {
         }
     },
     visible:true,
-    showInNavigator:false,
 };
 Global.trendPortBlank.m1_root = {
     id:"m1_root",
@@ -312,7 +307,7 @@ Global.trendPortBlank.m1_root = {
         valueDecimals: 2,
         valueSuffix:' град. С.'
     },
-    //color:"yellow",
+    color:Global.colorsPortLegend[8],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.m1 = false;
@@ -322,7 +317,6 @@ Global.trendPortBlank.m1_root = {
         }
     },
     visible:true,
-    showInNavigator:false,
 };
 Global.trendPortBlank.m2_root = {
     id:"m2_root",
@@ -332,7 +326,7 @@ Global.trendPortBlank.m2_root = {
         valueDecimals: 0,
         valueSuffix:' кг.'
     },
-    //color:"grey",
+    color:Global.colorsPortLegend[9],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.m2 = false;
@@ -342,7 +336,6 @@ Global.trendPortBlank.m2_root = {
         }
     },
     visible:true,
-    showInNavigator:false,
 };
 Global.trendPortBlank.ms1_root = {
     id:"ms1_root",
@@ -352,7 +345,7 @@ Global.trendPortBlank.ms1_root = {
         valueDecimals: 0,
         valueSuffix:' кг.'
     },
-    //color:"grey",
+    color:Global.colorsPortLegend[10],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.ms1 = false;
@@ -362,7 +355,6 @@ Global.trendPortBlank.ms1_root = {
         }
     },
     visible:true,
-    showInNavigator:false,
 };
 Global.trendPortBlank.ms2_root = {
     id:"ms2_root",
@@ -372,7 +364,7 @@ Global.trendPortBlank.ms2_root = {
         valueDecimals: 0,
         valueSuffix:' кг.'
     },
-    //color:"grey",
+    color:Global.colorsPortLegend[11],
     events:{
         hide:function (event) {
             event.target.chart.context.schemeParm.ms2 = false;
@@ -382,14 +374,15 @@ Global.trendPortBlank.ms2_root = {
         }
     },
     visible:true,
-    showInNavigator:false,
 };
 
 function checkHash(){
     if(Global.MainTrend){
         if(Global.MainTrend.Trend){
             Global.MainTrend.selectedTanks = [];
+            Global.MainTrend.selectedProductPort = [];
             $(".btn_tank").removeClass("tank_actived");
+            $("#portswitchproduct .btn_portproduct").removeClass("portproduct_actived");
 
             while (Global.MainTrend.Trend.series[0]){
                 Global.MainTrend.Trend.series[0].remove(false);
@@ -415,13 +408,15 @@ function checkHash(){
                 Global.MainTrend.Trend.get("temper").update({visible:true});
                 Global.MainTrend.Trend.get("volume").update({visible:true});
                 Global.MainTrend.Trend.get("flow").update({visible:false});
+                Global.MainTrend.Trend.get("press").update({visible:false});
 
                 Global.MainTrend.Trend.addSeries(Global.trendResparkBlank.levelroot,false);
                 Global.MainTrend.Trend.addSeries(Global.trendResparkBlank.massroot,false);
                 Global.MainTrend.Trend.addSeries(Global.trendResparkBlank.volumeroot,false);
                 Global.MainTrend.Trend.addSeries(Global.trendResparkBlank.temperatureroot,false);
                 Global.MainTrend.Trend.addSeries(Global.trendResparkBlank.vaportemperatureroot,false);
-                Global.MainTrend.Trend.addSeries(Global.trendResparkBlank.plotroot);
+                Global.MainTrend.Trend.addSeries(Global.trendResparkBlank.plotroot,false);
+                Global.MainTrend.Trend.redraw();
             }
         }
     }
@@ -442,6 +437,7 @@ function checkHash(){
                 Global.MainTrend.Trend.get("temper").update({visible:true});
                 Global.MainTrend.Trend.get("volume").update({visible:false});
                 Global.MainTrend.Trend.get("flow").update({visible:true});
+                Global.MainTrend.Trend.get("press").update({visible:true});
 
                 Global.MainTrend.Trend.addSeries(Global.trendPortBlank.t_root,false);
                 Global.MainTrend.Trend.addSeries(Global.trendPortBlank.t1_root,false);
@@ -454,7 +450,8 @@ function checkHash(){
                 Global.MainTrend.Trend.addSeries(Global.trendPortBlank.m1_root,false);
                 Global.MainTrend.Trend.addSeries(Global.trendPortBlank.m2_root,false);
                 Global.MainTrend.Trend.addSeries(Global.trendPortBlank.ms1_root,false);
-                Global.MainTrend.Trend.addSeries(Global.trendPortBlank.ms2_root);
+                Global.MainTrend.Trend.addSeries(Global.trendPortBlank.ms2_root,false);
+                Global.MainTrend.Trend.redraw();
             }
         }
     }

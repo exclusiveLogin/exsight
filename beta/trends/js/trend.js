@@ -227,7 +227,7 @@ class TrendEngine{
             },
             scrollbar:{
                 liveRedraw:true,
-                enabled:false
+                enabled:true
             },
             xAxis: {
                 id:"timeline",
@@ -241,7 +241,8 @@ class TrendEngine{
                 }
             },
             navigator:{
-                adaptToUpdateData:true
+                adaptToUpdateData:false,
+                enabled:false
             },
             yAxis: [{
                 id:"level",
@@ -277,6 +278,12 @@ class TrendEngine{
                 id:"flow",
                 title: {
                     text: 'Расход'
+                },
+                visible:false
+            },{
+                id:"press",
+                title: {
+                    text: 'Давление'
                 },
                 visible:false
             }],
@@ -491,8 +498,8 @@ class TrendEngine{
                                                  if(elem.t2 && context.schemeParm.t2){
                                                      t2.push([utc,Number(elem.t2)]);
                                                  }
-                                                 if(elem.p && context.schemeParm.t){
-                                                     t.push([utc,Number(elem.p)]);
+                                                 if(elem.p && context.schemeParm.p){
+                                                     p.push([utc,Number(elem.p)]);
                                                  }
                                                  if(elem.p1 && context.schemeParm.p1){
                                                      p1.push([utc,Number(elem.p1)]);
@@ -943,8 +950,8 @@ class TrendEngine{
 
             let ser_t = {
                 id:"t_"+product,
-                showInNavigator:true,
                 type: 'line',
+                color:Global.colorsPortLegend[0],
                 name: 'Температура '+product,
                 tooltip: {
                     valueDecimals: 2,
@@ -955,7 +962,7 @@ class TrendEngine{
             };
             let ser_t1 = {
                 id:"t1_"+product,
-                showInNavigator:true,
+                color:Global.colorsPortLegend[1],
                 type: 'line',
                 name: 'Температура 1 '+product,
                 tooltip: {
@@ -967,7 +974,7 @@ class TrendEngine{
             };
             let ser_t2 = {
                 id:"t2_"+product,
-                showInNavigator:true,
+                color:Global.colorsPortLegend[2],
                 type: 'line',
                 name: 'Температура 2 '+product,
                 tooltip: {
@@ -979,19 +986,19 @@ class TrendEngine{
             };
             let ser_p = {
                 id:"p_"+product,
-                showInNavigator:true,
+                color:Global.colorsPortLegend[3],
                 type: 'line',
-                name: 'Плотность '+product,
+                name: 'Давление '+product,
                 tooltip: {
                     valueDecimals: 1,
-                    valueSuffix:' кг/м3'
+                    valueSuffix:' кг/см2'
                 },
-                yAxis:"plot",
+                yAxis:"press",
                 linkedTo:"p_root"
             };
             let ser_p1 = {
                 id:"p1_"+product,
-                showInNavigator:true,
+                color:Global.colorsPortLegend[4],
                 type: 'line',
                 name: 'Плотность 1 '+product,
                 tooltip: {
@@ -1003,7 +1010,7 @@ class TrendEngine{
             };
             let ser_p2 = {
                 id:"p2_"+product,
-                showInNavigator:true,
+                color:Global.colorsPortLegend[5],
                 type: 'line',
                 name: 'Плотность 2 '+product,
                 tooltip: {
@@ -1015,7 +1022,7 @@ class TrendEngine{
             };
             let ser_f1 = {
                 id:"f1_"+product,
-                showInNavigator:true,
+                color:Global.colorsPortLegend[6],
                 type: 'line',
                 name: 'Расход 1 '+product,
                 tooltip: {
@@ -1027,7 +1034,7 @@ class TrendEngine{
             };
             let ser_f2 = {
                 id:"f2_"+product,
-                showInNavigator:true,
+                color:Global.colorsPortLegend[7],
                 type: 'line',
                 name: 'Расход 2 '+product,
                 tooltip: {
@@ -1039,7 +1046,7 @@ class TrendEngine{
             };
             let ser_m1 = {
                 id:"m1_"+product,
-                showInNavigator:true,
+                color:Global.colorsPortLegend[8],
                 type: 'line',
                 name: 'Тек. счетчик 1 '+product,
                 tooltip: {
@@ -1051,7 +1058,7 @@ class TrendEngine{
             };
             let ser_m2 = {
                 id:"m2_"+product,
-                showInNavigator:true,
+                color:Global.colorsPortLegend[9],
                 type: 'line',
                 name: 'Тек. счетчик 2 '+product,
                 tooltip: {
@@ -1063,7 +1070,7 @@ class TrendEngine{
             };
             let ser_ms1 = {
                 id:"ms1_"+product,
-                showInNavigator:true,
+                color:Global.colorsPortLegend[10],
                 type: 'line',
                 name: 'Суммарный счетчик 1 '+product,
                 tooltip: {
@@ -1075,7 +1082,7 @@ class TrendEngine{
             };
             let ser_ms2 = {
                 id:"ms2_"+product,
-                showInNavigator:true,
+                color:Global.colorsPortLegend[11],
                 type: 'line',
                 name: 'Суммарный счетчик 2 '+product,
                 tooltip: {

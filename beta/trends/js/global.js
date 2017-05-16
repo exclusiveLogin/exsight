@@ -1,4 +1,5 @@
 let Global = {
+    colorsPortLegend:["orange","red","yellow","#888","#666","#565","#090","#0f0","#CC5","CC6","9CC","6CC"],
     demo:true,
     pr_tank:[],
     jqready:false,
