@@ -20,40 +20,48 @@ if($f_valve){
 
     $valve_smt1 = 0;
     $valve_smt2 = 0;
-    $valve_smt3 = 0;
-    $valve_smt4 = 0;
-    $valve_smt5 = 0;
-    $valve_smt6 = 0;
+    $valve_dt1 = 0;
+    $valve_dt2 = 0;
+    $valve_oil1 = 0;
+    $valve_oil2 = 0;
     $fixtime = 0;
+
+    $datavalid = false;
 
     if (isset($select_arr['port_zadvsmt1'])) {
         $valve_smt1 = $select_arr['port_zadvsmt1'];
-        //echo "t1:".$port_plot_t1."<br>";
+        echo "valve_smt1:".$valve_smt1."<br>";
+        $datavalid = true;
     }
     if (isset($select_arr['port_zadvsmt2'])) {
         $valve_smt2 = $select_arr['port_zadvsmt2'];
-        //echo "t1:".$port_plot_t1."<br>";
+        echo "valve_smt2:".$valve_smt2."<br>";
+        $datavalid = true;
     }
     if (isset($select_arr['port_zadvdt1'])) {
         $valve_dt1 = $select_arr['port_zadvdt1'];
-        //echo "t1:".$port_plot_t1."<br>";
+        echo "valve_dt1:".$valve_dt1."<br>";
+        $datavalid = true;
     }
     if (isset($select_arr['port_zadvdt2'])) {
         $valve_dt2 = $select_arr['port_zadvdt2'];
-        //echo "t1:".$port_plot_t1."<br>";
+        echo "valve_dt2:".$valve_dt2."<br>";
+        $datavalid = true;
     }
     if (isset($select_arr['port_zadvoil1'])) {
         $valve_oil1 = $select_arr['port_zadvoil1'];
-        //echo "t1:".$port_plot_t1."<br>";
+        echo "valve_oil1:".$valve_oil1."<br>";
+        $datavalid = true;
     }
     if (isset($select_arr['port_zadvoil2'])) {
         $valve_oil2 = $select_arr['port_zadvoil2'];
-        //echo "t1:".$port_plot_t1."<br>";
+        echo "valve_oil2:".$valve_oil2."<br>";
+        $datavalid = true;
     }
 
     if (isset($select_arr['fixtime'])) {
         $fixtime = $select_arr['fixtime'];
-        //echo "plotfixtime2 :".$plotfixtime2."<br>";
+        echo "fixtime :".$fixtime."<br>";
     }
 
     $q = "INSERT INTO `port_valve` (`id`,`valve_smt1`,`valve_smt2`,`valve_dt1`,`valve_dt2`,`valve_oil1`,`valve_oil2`,`fixtime`)
@@ -68,8 +76,7 @@ if($f_valve){
         `fixtime`=\"".$fixtime."\";";
 
     echo "<p>Q valve:$q</p>";
-
-    $mysql->query($q);
+    if($datavalid)$mysql->query($q);
 
 }
 //парсинг UserSelect
@@ -82,17 +89,22 @@ if($f_select){
     $numbrezoil = 0;
     $fixtime = 0;
 
+    $datavalid = false;
+
     if (isset($select_arr['numbrezsmt'])) {
         $numbrezsmt = $select_arr['numbrezsmt'];
         //echo "t1:".$port_plot_t1."<br>";
+        $datavalid = true;
     }
     if (isset($select_arr['numbrezoil'])) {
         $numbrezoil = $select_arr['numbrezoil'];
         //echo "t1:".$port_plot_t1."<br>";
+        $datavalid = true;
     }
     if (isset($select_arr['numbrezdt'])) {
         $numbrezdt = $select_arr['numbrezdt'];
         //echo "t1:".$port_plot_t1."<br>";
+        $datavalid = true;
     }
 
     if (isset($select_arr['fixtime'])) {
@@ -110,7 +122,7 @@ if($f_select){
 
     ////echo "<p>Q1:$q</p>";
 
-    $mysql->query($q);
+    if($datavalid)$mysql->query($q);
 
 }
 //парсинг Плотномеров
@@ -160,78 +172,97 @@ if($f_plot1 && $f_plot2){
     $plotfixtime1 = 0;
     $plotfixtime2 = 0;
 
+    $datavalid1 = false;
+    $datavalid2 = false;
+
     //t
     if (isset($plot1_arr['port_plotnomer_t1'])) {
         $port_plot_t1 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_t1'])), 1);
         //echo "t1:".$port_plot_t1."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_t2'])) {
         $port_plot_t2 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_t2'])), 1);
         //echo "t2:".$port_plot_t2."<br>";
+        $datavalid2 = true;
     }
 
     //p
     if (isset($plot1_arr['port_plotnomer_p1'])) {
         $port_plot_p1 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_p1'])), 1);
         //echo "p1:".$port_plot_p1."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_p2'])) {
         $port_plot_p2 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_p2'])), 1);
         //echo "p1:".$port_plot_p1."<br>";
+        $datavalid2 = true;
     }
 
     //t
     if (isset($plot1_arr['port_plotnomer_t11'])) {
         $port_plot_t11 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_t11'])), 1);
         //echo "t11:".$port_plot_t11."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_t21'])) {
         $port_plot_t21 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_t21'])), 1);
         //echo "t21:".$port_plot_t21."<br>";
+        $datavalid2 = true;
     }
     if (isset($plot1_arr['port_plotnomer_t12'])) {
         $port_plot_t12 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_t12'])), 1);
         //echo "t12:".$port_plot_t12."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_t22'])) {
         $port_plot_t22 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_t22'])), 1);
         //echo "t22:".$port_plot_t22."<br>";
+        $datavalid2 = true;
     }
 
     //p
     if (isset($plot1_arr['port_plotnomer_p11'])) {
         $port_plot_p11 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_p11'])), 1);
         //echo "p11:".$port_plot_p11."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_p21'])) {
         $port_plot_p21 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_p21'])), 1);
         //echo "p21:".$port_plot_p21."<br>";
+        $datavalid2 = true;
     }
     if (isset($plot1_arr['port_plotnomer_p12'])) {
         $port_plot_p12 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_p12'])), 1);
         //echo "p12:".$port_plot_p12."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_p22'])) {
         $port_plot_p22 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_p22'])), 1);
         //echo "p22:".$port_plot_p22."<br>";
+        $datavalid2 = true;
     }
 
     //f
     if (isset($plot1_arr['port_plotnomer_f11'])) {
         $port_plot_f11 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_f11'])), 1);
         //echo "f11:".$port_plot_f11."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_f21'])) {
         $port_plot_f21 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_f21'])), 1);
         //echo "f21:".$port_plot_f21."<br>";
+        $datavalid2 = true;
     }
     if (isset($plot1_arr['port_plotnomer_f12'])) {
         $port_plot_f12 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_f12'])), 1);
         //echo "f12:".$port_plot_f12."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_f22'])) {
         $port_plot_f22 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_f22'])), 1);
         //echo "f22:".$port_plot_f22."<br>";
+        $datavalid2 = true;
     }
 
     //m
@@ -242,6 +273,7 @@ if($f_plot1 && $f_plot2){
         echo "tmp_r:".$tmp."<br>";
         $port_plot_m11 = round(((float)str_replace(",", ".", $tmp)), 1);
         echo "m11:".$port_plot_m11."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_m21'])) {
         $tmp = $plot1_arr['port_plotnomer_m21'];
@@ -250,6 +282,7 @@ if($f_plot1 && $f_plot2){
         echo "tmp_r:".$tmp."<br>";
         $port_plot_m21 = round(((float)str_replace(",", ".", $tmp)), 1);
         echo "m21:".$port_plot_m21."<br>";
+        $datavalid2 = true;
     }
     if (isset($plot1_arr['port_plotnomer_m12'])) {
         $tmp = $plot1_arr['port_plotnomer_m12'];
@@ -258,6 +291,7 @@ if($f_plot1 && $f_plot2){
         echo "tmp:".$tmp."<br>";
         $port_plot_m12 = round(((float)str_replace(",", ".", $tmp)), 1);
         echo "m12:".$port_plot_m12."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_m22'])) {
         $tmp = $plot1_arr['port_plotnomer_m22'];
@@ -266,24 +300,29 @@ if($f_plot1 && $f_plot2){
         echo "tmp_r:".$tmp."<br>";
         $port_plot_m22 = round(((float)str_replace(",", ".", $tmp)), 1);
         echo "m22:".$port_plot_m22."<br>";
+        $datavalid2 = true;
     }
 
     //ms
     if (isset($plot1_arr['port_plotnomer_ms11'])) {
         $port_plot_ms11 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_ms11'])), 1);
         //echo "ms11:".$port_plot_ms11."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_ms21'])) {
         $port_plot_ms21 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_ms21'])), 1);
         //echo "ms21:".$port_plot_ms21."<br>";
+        $datavalid2 = true;
     }
     if (isset($plot1_arr['port_plotnomer_ms12'])) {
         $port_plot_ms12 = round(((float)str_replace(",", ".", $plot1_arr['port_plotnomer_ms12'])), 1);
         //echo "ms12:".$port_plot_ms12."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_ms22'])) {
         $port_plot_ms22 = round(((float)str_replace(",", ".", $plot2_arr['port_plotnomer_ms22'])), 1);
         //echo "ms22:".$port_plot_ms22."<br>";
+        $datavalid2 = true;
     }
 
 
@@ -315,7 +354,7 @@ if($f_plot1 && $f_plot2){
         `ms2`=".$port_plot_ms12.",
         `fixtime`=\"".$plotfixtime1."\";";
     echo "q:".$q."<br>";
-    $mysql->query($q);
+    if($datavalid1)$mysql->query($q);
 
     $q = "INSERT INTO `port_plotnomer` (`num`,`t`,`t1`,`t2`,`p`,`p1`,`p2`,`f1`,`f2`,`m1`,`m2`,`ms1`,`ms2`,`fixtime`) 
         VALUES (2,".$port_plot_t2 .",".$port_plot_t21.",".$port_plot_t22.",".$port_plot_p2.",".$port_plot_p21.",".$port_plot_p22.",
@@ -335,7 +374,7 @@ if($f_plot1 && $f_plot2){
         `ms2`=".$port_plot_ms22.",
         `fixtime`=\"".$plotfixtime2."\";";
     echo "q:".$q."<br>";
-    $mysql->query($q);
+    if($datavalid2)$mysql->query($q);
 
 
     //insert in es_port for Trends
@@ -347,8 +386,8 @@ if($f_plot1 && $f_plot2){
         VALUES (".$port_plot_t2 .",".$port_plot_t21.",".$port_plot_t22.",".$port_plot_p2.",".$port_plot_p21.",".$port_plot_p22.",
         ".$port_plot_f21.",".$port_plot_f22.",".$port_plot_m21.",".$port_plot_m22.",".$port_plot_ms21.",".$port_plot_ms22.",\"".$plotfixtime2."\");";
 
-    $mysql_port_hd->query($es_q1);
-    $mysql_port_hd->query($es_q2);
+    if($datavalid1)$mysql_port_hd->query($es_q1);
+    if($datavalid2)$mysql_port_hd->query($es_q2);
 }
 
 //парсинг Емкостей
@@ -376,56 +415,71 @@ if($f_ecu1 && $f_ecu2){
     $ecufixtime1 = 0;
     $ecufixtime2 = 0;
 
+    $datavalid1 = false;
+    $datavalid2 = false;
+
     //ecu1
     if (isset($ecu1_arr['port_ecu1_l1'])) {
         $ecu1_level1 = $ecu1_arr['port_ecu1_l1'];
         //echo "ecu1_level1:".$ecu1_level1."<br>";
+        $datavalid1 = true;
     }
     if (isset($ecu1_arr['port_ecu1_l2'])) {
         $ecu1_level2 = $ecu1_arr['port_ecu1_l2'];
         //echo "ecu1_level2:".$ecu1_level2."<br>";
+        $datavalid1 = true;
     }
     if (isset($ecu1_arr['port_ecu1_l3'])) {
         $ecu1_level3 = $ecu1_arr['port_ecu1_l3'];
         //echo "ecu1_level3:".$ecu1_level3."<br>";
+        $datavalid1 = true;
     }
     if (isset($ecu1_arr['port_ecu1_l4'])) {
         $ecu1_level4 = $ecu1_arr['port_ecu1_l4'];
         //echo "ecu1_level4:".$ecu1_level4."<br>";
+        $datavalid1 = true;
     }
     if (isset($ecu1_arr['port_ecu1_l5'])) {
         $ecu1_level5 = $ecu1_arr['port_ecu1_l5'];
         //echo "ecu1_level5:".$ecu1_level5."<br>";
+        $datavalid1 = true;
     }
     if (isset($ecu1_arr['port_ecu1_l6'])) {
         $ecu1_level6 = $ecu1_arr['port_ecu1_l6'];
         //echo "ecu1_level6:".$ecu1_level6."<br>";
+        $datavalid1 = true;
     }
 
     //ecu2
     if (isset($ecu2_arr['port_ecu2_l1'])) {
         $ecu2_level1 = $ecu2_arr['port_ecu2_l1'];
         //echo "ecu2_level1:".$ecu2_level1."<br>";
+        $datavalid2 = true;
     }
     if (isset($ecu2_arr['port_ecu2_l2'])) {
         $ecu2_level2 = $ecu2_arr['port_ecu2_l2'];
         //echo "ecu2_level2:".$ecu2_level2."<br>";
+        $datavalid2 = true;
     }
     if (isset($ecu2_arr['port_ecu2_l3'])) {
         $ecu2_level3 = $ecu2_arr['port_ecu2_l3'];
         //echo "ecu2_level3:".$ecu2_level3."<br>";
+        $datavalid2 = true;
     }
     if (isset($ecu2_arr['port_ecu2_l4'])) {
         $ecu2_level4 = $ecu2_arr['port_ecu2_l4'];
         ////echo "ecu2_level4:".$ecu2_level4."<br>";
+        $datavalid2 = true;
     }
     if (isset($ecu2_arr['port_ecu2_l5'])) {
         $ecu2_level5 = $ecu2_arr['port_ecu2_l5'];
         ////echo "ecu2_level5:".$ecu2_level5."<br>";
+        $datavalid2 = true;
     }
     if (isset($ecu2_arr['port_ecu2_l6'])) {
         $ecu2_level6 = $ecu2_arr['port_ecu2_l6'];
         ////echo "ecu2_level6:".$ecu2_level6."<br>";
+        $datavalid2 = true;
     }
 
     //fixtime
@@ -454,7 +508,7 @@ if($f_ecu1 && $f_ecu2){
 
     ////echo "<p>Q1:$q</p>";
 
-    $mysql->query($q);
+    if ($datavalid1)$mysql->query($q);
 
     $q = "INSERT INTO `port_ecu` (`num`,`level1`,`level2`,`level3`,`level4`,`level5`,`level6`,`fixtime`)
         VALUES (2,".$ecu2_level1.",".$ecu2_level2.",".$ecu2_level3.",".$ecu2_level4.",".$ecu2_level5.",".$ecu2_level6.",\"".$ecufixtime2."\")
@@ -469,7 +523,6 @@ if($f_ecu1 && $f_ecu2){
 
     //echo "<p>Q2:$q</p>";
 
-    $mysql->query($q);
+    if ($datavalid2)$mysql->query($q);
 
-    ////echo "q:".$q."<br>";
 }

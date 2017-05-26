@@ -143,79 +143,105 @@ class port{
         function renderPort(data,label){
             if(data){
                 if(label == "tankselect"){
-                    $("#tankdt .tank_title_port").text(data.tankdt);
-                    $("#tankoil .tank_title_port").text(data.tankoil);
-                    $("#tanksmt .tank_title_port").text(data.tanksmt);
-                    let renderSelectedTanks = function () {
-                        var tmpRealOil = $("#minview .tank[data-num="+(data.tankoil)+"]")
-                            .find(".progress_tank_val_real").text();
-                        var tmpRealDt = $("#minview .tank[data-num="+(data.tankdt)+"]")
-                            .find(".progress_tank_val_real").text();
-                        var tmpRealSmt = $("#minview .tank[data-num="+(data.tanksmt)+"]")
-                            .find(".progress_tank_val_real").text();
+                    if((data.tankdt!="0" && data.tankoil!="0" && data.tanksmt!="0")&&(data.tankdt && data.tankoil && data.tanksmt)){
+                        $("#tankdt .tank_title_port").text(data.tankdt);
+                        $("#tankoil .tank_title_port").text(data.tankoil);
+                        $("#tanksmt .tank_title_port").text(data.tanksmt);
+                        let renderSelectedTanks = function () {
+                            var tmpRealOil = $("#minview .tank[data-num="+(data.tankoil)+"]")
+                                .find(".progress_tank_val_real").text();
+                            var tmpRealDt = $("#minview .tank[data-num="+(data.tankdt)+"]")
+                                .find(".progress_tank_val_real").text();
+                            var tmpRealSmt = $("#minview .tank[data-num="+(data.tanksmt)+"]")
+                                .find(".progress_tank_val_real").text();
 
-                        $("#tankdt .progress_tank_val_real").text(tmpRealDt);
-                        $("#tankoil .progress_tank_val_real").text(tmpRealOil);
-                        $("#tanksmt .progress_tank_val_real").text(tmpRealSmt);
+                            $("#tankdt .progress_tank_val_real").text(tmpRealDt);
+                            $("#tankoil .progress_tank_val_real").text(tmpRealOil);
+                            $("#tanksmt .progress_tank_val_real").text(tmpRealSmt);
 
-                        $("#tankoil .prod_cont").html($(".tank[data-num="+(data.tankoil)+"]").find(".prod_cont").html());
-                        $("#tankdt .prod_cont").html($(".tank[data-num="+(data.tankdt)+"]").find(".prod_cont").html());
-                        $("#tanksmt .prod_cont").html($(".tank[data-num="+(data.tanksmt)+"]").find(".prod_cont").html());
+                            $("#tankoil .prod_cont").html($(".tank[data-num="+(data.tankoil)+"]").find(".prod_cont").html());
+                            $("#tankdt .prod_cont").html($(".tank[data-num="+(data.tankdt)+"]").find(".prod_cont").html());
+                            $("#tanksmt .prod_cont").html($(".tank[data-num="+(data.tanksmt)+"]").find(".prod_cont").html());
 
-                        $("#tankoil .pereliv").html($(".tank[data-num="+(data.tankoil)+"]").find(".pereliv").html());
-                        $("#tankdt .pereliv").html($(".tank[data-num="+(data.tankdt)+"]").find(".pereliv").html());
-                        $("#tanksmt .pereliv").html($(".tank[data-num="+(data.tanksmt)+"]").find(".pereliv").html());
+                            $("#tankoil .pereliv").html($(".tank[data-num="+(data.tankoil)+"]").find(".pereliv").html());
+                            $("#tankdt .pereliv").html($(".tank[data-num="+(data.tankdt)+"]").find(".pereliv").html());
+                            $("#tanksmt .pereliv").html($(".tank[data-num="+(data.tanksmt)+"]").find(".pereliv").html());
 
-                        $("#tankoil .errortank").html($(".tank[data-num="+(data.tankoil)+"]").find(".errortank").html());
-                        $("#tankdt .errortank").html($(".tank[data-num="+(data.tankdt)+"]").find(".errortank").html());
-                        $("#tanksmt .errortank").html($(".tank[data-num="+(data.tanksmt)+"]").find(".errortank").html());
+                            $("#tankoil .errortank").html($(".tank[data-num="+(data.tankoil)+"]").find(".errortank").html());
+                            $("#tankdt .errortank").html($(".tank[data-num="+(data.tankdt)+"]").find(".errortank").html());
+                            $("#tanksmt .errortank").html($(".tank[data-num="+(data.tanksmt)+"]").find(".errortank").html());
 
-                        $("#tankoil .service").html($(".tank[data-num="+(data.tankoil)+"]").find(".service").html());
-                        $("#tankdt .service").html($(".tank[data-num="+(data.tankdt)+"]").find(".service").html());
-                        $("#tanksmt .service").html($(".tank[data-num="+(data.tanksmt)+"]").find(".service").html());
+                            $("#tankoil .service").html($(".tank[data-num="+(data.tankoil)+"]").find(".service").html());
+                            $("#tankdt .service").html($(".tank[data-num="+(data.tankdt)+"]").find(".service").html());
+                            $("#tanksmt .service").html($(".tank[data-num="+(data.tanksmt)+"]").find(".service").html());
 
-                        setTimeout(function () {
-                            var pr_color_oil = {
-                                from:{color:Global.pr_tank_port[0].path.getAttribute("stroke")},
-                                to:{color:Global.pr_tank[data.tankoil].path.getAttribute("stroke")}
-                            };
-                            var pr_color_dt = {
-                                from:{color:Global.pr_tank_port[1].path.getAttribute("stroke")},
-                                to:{color:Global.pr_tank[data.tankdt].path.getAttribute("stroke")}
-                            };
-                            var pr_color_smt = {
-                                from:{color:Global.pr_tank_port[2].path.getAttribute("stroke")},
-                                to:{color:Global.pr_tank[data.tanksmt].path.getAttribute("stroke")}
-                            };
-                            var pr_val_oil = Global.pr_tank[data.tankoil].value();
-                            var pr_val_dt = Global.pr_tank[data.tankdt].value();
-                            var pr_val_smt = Global.pr_tank[data.tanksmt].value();
-                            Global.pr_tank_port[0].animate(pr_val_oil,pr_color_oil);
-                            Global.pr_tank_port[1].animate(pr_val_dt,pr_color_dt);
-                            Global.pr_tank_port[2].animate(pr_val_smt,pr_color_smt);
-                            // console.log("rendering...oil:",pr_val_oil,"dt:",pr_val_dt,"smt:",pr_val_smt);
-                            // console.log("color oil:",pr_color_oil,"dt:",pr_color_dt,"smt:",pr_color_smt);
-                        },Global.pr_tank[1]._opts.duration);
-                    };
-                    let renderPortWind = function(){
-                        if(Global.meteo){
-                            if(Global.meteo.wind_direction){
-                                let winddirection = Number(Global.meteo.wind_direction);
-                                $(".port_wind_arrow").css({"transform":"rotateZ("+winddirection+"deg)"});
-                                $(".port_winddirection_val").html(winddirection+"&deg;");
+                            setTimeout(function () {
+                                var pr_color_oil = {
+                                    from:{color:Global.pr_tank_port[0].path.getAttribute("stroke")},
+                                    to:{color:Global.pr_tank[data.tankoil].path.getAttribute("stroke")}
+                                };
+                                var pr_color_dt = {
+                                    from:{color:Global.pr_tank_port[1].path.getAttribute("stroke")},
+                                    to:{color:Global.pr_tank[data.tankdt].path.getAttribute("stroke")}
+                                };
+                                var pr_color_smt = {
+                                    from:{color:Global.pr_tank_port[2].path.getAttribute("stroke")},
+                                    to:{color:Global.pr_tank[data.tanksmt].path.getAttribute("stroke")}
+                                };
+                                var pr_val_oil = Global.pr_tank[data.tankoil].value();
+                                var pr_val_dt = Global.pr_tank[data.tankdt].value();
+                                var pr_val_smt = Global.pr_tank[data.tanksmt].value();
+                                Global.pr_tank_port[0].animate(pr_val_oil,pr_color_oil);
+                                Global.pr_tank_port[1].animate(pr_val_dt,pr_color_dt);
+                                Global.pr_tank_port[2].animate(pr_val_smt,pr_color_smt);
+                                // console.log("rendering...oil:",pr_val_oil,"dt:",pr_val_dt,"smt:",pr_val_smt);
+                                // console.log("color oil:",pr_color_oil,"dt:",pr_color_dt,"smt:",pr_color_smt);
+                            },Global.pr_tank[1]._opts.duration);
+                        };
+                        let renderPortWind = function(){
+                            if(Global.meteo){
+                                if(Global.meteo.wind_direction){
+                                    let winddirection = Number(Global.meteo.wind_direction);
+                                    $(".port_wind_arrow").css({"transform":"rotateZ("+winddirection+"deg)"});
+                                    $(".port_winddirection_val").html(winddirection+"&deg;");
+                                }
                             }
+                        };
+                        if(Global.nodes[getNode("respark")].nodeObj.startedAndRefreshed.state() != "resolved"){
+                            Global.nodes[getNode("respark")].nodeObj.startedAndRefreshed.then(
+                                function () {
+                                    renderSelectedTanks();
+                                    renderPortWind();
+                                }
+                            );
+                        }else {
+                            renderSelectedTanks();
+                            renderPortWind();
                         }
-                    };
-                    if(Global.nodes[getNode("respark")].nodeObj.startedAndRefreshed.state() != "resolved"){
-                        Global.nodes[getNode("respark")].nodeObj.startedAndRefreshed.then(
-                            function () {
-                                renderSelectedTanks();
-                                renderPortWind();
-                            }
-                        );
                     }else {
-                        renderSelectedTanks();
-                        renderPortWind();
+                        $("#tankdt .tank_title_port").text("ошибка");
+                        $("#tankoil .tank_title_port").text("ошибка");
+                        $("#tanksmt .tank_title_port").text("ошибка");
+
+                        $("#tankdt .progress_tank_val_real").text("ошибка");
+                        $("#tankoil .progress_tank_val_real").text("ошибка");
+                        $("#tanksmt .progress_tank_val_real").text("ошибка");
+
+                        $("#tankoil .prod_cont").html($(".tank[data-num="+(1)+"]").find(".prod_cont").html());
+                        $("#tankdt .prod_cont").html($(".tank[data-num="+(1)+"]").find(".prod_cont").html());
+                        $("#tanksmt .prod_cont").html($(".tank[data-num="+(1)+"]").find(".prod_cont").html());
+
+                        // $("#tankoil .pereliv").text("ошибка");
+                        // $("#tankdt .pereliv").text("ошибка");
+                        // $("#tanksmt .pereliv").text("ошибка");
+
+                        // $("#tankoil .errortank").text("ошибка");
+                        // $("#tankdt .errortank").text("ошибка");
+                        // $("#tanksmt .errortank").text("ошибка");
+
+                        // $("#tankoil .service").text("ошибка");
+                        // $("#tankdt .service").text("ошибка");
+                        // $("#tanksmt .service").text("ошибка");
                     }
                 }
                 if(label == "valve"){
