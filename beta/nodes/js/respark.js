@@ -695,11 +695,14 @@ class respark{
                 if(!product[prodText.text]){//создаем продукт
                     product[prodText.text] = {
                         summ:tmpProdMass,
-                        summexport:tmpProdMass - tmpProdMassHideZone,
+                        summexport:0,
                         tanks:[],
                         class:prodText.class
                     };
-                    product[prodText.text].tanks.push(tmpNum);
+                    if(tmpProdMass > tmpProdMassHideZone){
+                        product[prodText.text].tanks.push(tmpNum);
+                        product[prodText.text].summexport = tmpProdMass - tmpProdMassHideZone;
+                    }
                 }else {//добавляем к продукту
                     let tmpOldObj = {};
                     Object.assign(tmpOldObj,product[prodText.text]);
