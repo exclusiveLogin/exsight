@@ -742,6 +742,18 @@ class TrendEngine{
                             data = {"trend":true,"coldtrend":true,"tank":tank};
                             upload.call(this);
                         }
+                    }else {
+                        let tmpExtr = this.Trend.get("timeline").getExtremes();
+                        var tmpInterval = tmpExtr.dataMax - tmpExtr.dataMin;
+                        this.selectedTanks.map(function (element,idx,tanks) {
+                            if(tmpInterval < 10*24*3600*1000){
+                                data = {"trend":true,"tank":element,"interval":1,"trendmin":tmpExtr.dataMin,"trendmax":tmpExtr.dataMax};
+                                upload.call(this);
+                            }else {
+                                data = {"trend":true,"tank":element,"interval":0,"trendmin":tmpExtr.dataMin,"trendmax":tmpExtr.dataMax};
+                                upload.call(this);
+                            }
+                        },this);
                     }
                 }
             }

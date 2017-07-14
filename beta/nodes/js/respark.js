@@ -15,9 +15,9 @@ class respark{
         if(state){
             $('#parm_panel').show(0,function () {
                 $(this).removeClass("transparent");
+                Global.TrendTankParm.reflow();
             });
-        }
-        else{
+        }else{
             $('#parm_panel').hide(0,function () {
                 $(this).addClass("transparent");
                 Global.tankselect = false;

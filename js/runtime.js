@@ -42,9 +42,20 @@ function adaptWin() {
         $(".danger_field").removeClass("adapt");
     }
 }
+Global.timerRedirectVal = 10;
+function redirectTimer() {
+    setTimeout(function () {
+        Global.timerRedirectVal--;
+        $("#fancydemo .redirectTime").text(Global.timerRedirectVal);
+        redirectTimer();
+    },1000);
+    if(Global.timerRedirectVal<1)location.pathname = "/exsight/beta";
+}
 $(document).ready(function(){
     $("#fancydemo .version").html(Global.version.v);
     $("#fancydemo .verdescription").html(Global.version.desc);
+    
+    redirectTimer();
 
     visit();
     adaptWin();

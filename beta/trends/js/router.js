@@ -38,6 +38,7 @@ Global.trendResparkBlank.levelroot = {
         },
         show:function (event) {
             event.target.chart.context.schemeParm.level = true;
+            event.target.chart.context.Uploader();
         }
     },
     visible:true,
@@ -58,6 +59,7 @@ Global.trendResparkBlank.massroot = {
         },
         show:function (event) {
             event.target.chart.context.schemeParm.mass = true;
+            event.target.chart.context.Uploader();
         }
     },
     visible:false,
@@ -78,6 +80,7 @@ Global.trendResparkBlank.volumeroot = {
         },
         show:function (event) {
             event.target.chart.context.schemeParm.volume = true;
+            event.target.chart.context.Uploader();
         }
     },
     visible:false,
@@ -98,6 +101,7 @@ Global.trendResparkBlank.temperatureroot = {
             },
             show:function (event) {
                 event.target.chart.context.schemeParm.temperature = true;
+                event.target.chart.context.Uploader();
             }
         },
         visible:false,
@@ -118,6 +122,7 @@ Global.trendResparkBlank.vaportemperatureroot = {
             },
             show:function (event) {
                 event.target.chart.context.schemeParm.vapor_temperature = true;
+                event.target.chart.context.Uploader();
             }
         },
         visible:false,
@@ -138,6 +143,7 @@ Global.trendResparkBlank.plotroot = {
             },
             show:function (event) {
                 event.target.chart.context.schemeParm.plot = true;
+                event.target.chart.context.Uploader();
             }
         },
         visible:false,

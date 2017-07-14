@@ -268,37 +268,33 @@ if($f_plot1 && $f_plot2){
     //m
     if (isset($plot1_arr['port_plotnomer_m11'])) {
         $tmp = $plot1_arr['port_plotnomer_m11'];
-        $tmp = mb_convert_encoding($tmp,"UTF-8");
-        $tmp = str_replace("?", "", $tmp);
-        echo "tmp_r:".$tmp."<br>";
+        $tmp = preg_replace("/[^0-9,.]/", "", $tmp);
         $port_plot_m11 = round(((float)str_replace(",", ".", $tmp)), 1);
+        echo "tmp_r:".$tmp."<br>";
         echo "m11:".$port_plot_m11."<br>";
         $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_m21'])) {
-        $tmp = $plot1_arr['port_plotnomer_m21'];
-        $tmp = mb_convert_encoding($tmp,"UTF-8");
-        $tmp = str_replace("?", "", $tmp);
-        echo "tmp_r:".$tmp."<br>";
+        $tmp = $plot2_arr['port_plotnomer_m21'];
+        $tmp = preg_replace("/[^0-9,.]/", "", $tmp);
         $port_plot_m21 = round(((float)str_replace(",", ".", $tmp)), 1);
+        echo "tmp_r:".$tmp."<br>";
         echo "m21:".$port_plot_m21."<br>";
         $datavalid2 = true;
     }
     if (isset($plot1_arr['port_plotnomer_m12'])) {
         $tmp = $plot1_arr['port_plotnomer_m12'];
-        $tmp = mb_convert_encoding($tmp,"UTF-8");
-        $tmp = str_replace("?", "", $tmp);
-        echo "tmp:".$tmp."<br>";
+        $tmp = preg_replace("/[^0-9,.]/", "", $tmp);
         $port_plot_m12 = round(((float)str_replace(",", ".", $tmp)), 1);
+        echo "tmp_r:".$tmp."<br>";
         echo "m12:".$port_plot_m12."<br>";
         $datavalid1 = true;
     }
     if (isset($plot2_arr['port_plotnomer_m22'])) {
-        $tmp = $plot1_arr['port_plotnomer_m22'];
-        $tmp = mb_convert_encoding($tmp,"UTF-8");
-        $tmp = str_replace("?", "", $tmp);
-        echo "tmp_r:".$tmp."<br>";
+        $tmp = $plot2_arr['port_plotnomer_m22'];
+        $tmp = preg_replace("/[^0-9,.]/", "", $tmp);
         $port_plot_m22 = round(((float)str_replace(",", ".", $tmp)), 1);
+        echo "tmp_r:".$tmp."<br>";
         echo "m22:".$port_plot_m22."<br>";
         $datavalid2 = true;
     }

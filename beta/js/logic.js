@@ -123,6 +123,9 @@ export default class Utility{
 		$('.glyphicon-warning-sign').each(function () {
 			$(this).attr("data-tooltip", "давно не обновлялся");
 		});
+        $('.fa-wrench').each(function () {
+            $(this).attr("data-tooltip", "на ремонте");
+        });
 		$('.glyphicon-arrow-down').each(function () {
 			$(this).attr("data-tooltip", "Идет слив НП");
 		});
