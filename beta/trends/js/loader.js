@@ -4,7 +4,7 @@ import Blink from "./blink.js"
 
 require("../style/style.css");
 
-//window.Highcharts = require("highcharts/highstock");
+window.Highcharts = require("highcharts/highstock");
 
 window.Utility = new UtilClass();
 
