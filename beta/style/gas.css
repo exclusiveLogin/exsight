@@ -1,0 +1,97 @@
+.gascontainer{
+    min-height: 300px;
+    overflow-y: scroll;
+    padding-bottom: 20px;
+    perspective-origin: center center;
+    perspective: 300px;
+}
+.gastrend{
+    min-height: 150px;
+    /*temp*/
+    border:1px orange solid;
+    background-color: darkgoldenrod;
+    /*display: none;*/
+}
+.gasSelectParkPanel{
+    /*line-height: 40px;*/
+}
+#gasview{
+}
+#gasview .btn{
+    margin:auto;
+}
+.gastank {
+    background-position: center center;
+    background-image: url(tank.png);
+    background-size: contain;
+    height: 180px;
+    background-repeat: no-repeat;
+    transition: all 0.5s ease;
+    transform: rotate3d(-1,0,0,17deg) translateY(-30px) translateZ(20px);
+}
+.gaspark{
+    background-color: #4c4c4c;
+    border: 2px solid gray;
+    grid-area: p;
+    display: grid;
+    padding: 20px;
+}
+.gaspark.park4{
+    grid-template-columns: 1fr 1fr;
+}
+.gaspark.park6{
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.gastanknum{
+    font-size: 250%;
+    font-weight: bold;
+    position: relative;
+    top: 75px;
+    text-align: center;
+    width: 80%;
+}
+.gasparkgrid{
+    display: grid;
+    grid-template-areas: "s44 s1 s2 s3 s4 s45""s5 p p p p s6""s7 p p p p s8""s9 p p p p s10""s46 s11 s12 s13 s14 s47";
+    /*grid-rows:1fr 1fr 1fr 1fr 1fr;*/
+    /*grid-columns:1fr 1fr 1fr 1fr 1fr 1fr;*/
+    padding-top: 40px;
+    padding-bottom: 40px;
+    transform-style: preserve-3d;
+    transform: rotate3d(1,0,0,17deg) translateZ(-50px);
+    z-index: -1;
+}
+.gassensor{
+    max-height: 40px;
+    padding: 5px 10px;
+    border: 1px whitesmoke solid;
+    background-color: gray;
+    top: 50%;
+    position: relative;
+    margin: 0 auto;
+    transform: rotate3d(-1,0,0,17deg) translate3d(0,-30px,30px);
+}
+.gassensor.left{
+    margin-left: 0;
+}
+.gassensor.right{
+    margin-right: 0;
+}
+.gasvalue{
+    font-size: 2rem;
+    font-weight: bold;
+    color: lightgreen;
+}
+.gasparkname{
+    font-size: 150%;
+    font-weight: bold;
+    color: darkgrey;
+    line-height: 18px;
+    text-align: center;
+    margin-top: -15px;
+    margin-left: -30px;
+    position: relative;
+    text-decoration: underline;
+    text-transform: uppercase;
+    transform: rotate3d(-1,0,0,17deg) translate3d(0px,0px,110px);
+}

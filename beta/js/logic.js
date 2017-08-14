@@ -28,10 +28,10 @@ export default class Utility{
 	}
     panelStateToggle(state){
         if(state){
-			$("#panelstate").removeClass("panelstate_hide");
+			$("#panels").removeClass("panelstate_hide");
         }
         else{
-            $("#panelstate").addClass("panelstate_hide");
+            $("#panels").addClass("panelstate_hide");
         }
     }
 	resultToggle(state){
@@ -71,13 +71,13 @@ export default class Utility{
 	connectionState(state) {
 		if(state){
 			$('#panel').hide().addClass("transparent");
-			$('#minview').removeClass("transparent");
+			$('#container').removeClass("transparent");
 			Global.conerr = 0;
 		}else{
 			Global.conerr++;
 			$('#panel').show().removeClass("transparent");
 			if(Global.conerr>3){
-				$('#minview').addClass("transparent");
+				$('#container').addClass("transparent");
 				$('#panel').html('<h2 class="label label-lg label-default conerror">Связь с сервером отключена</h2>');
 			}else {
 				$('#panel').html('<h2 class="label label-lg label-default conerror">Возникли проблемы со связью</h2>');

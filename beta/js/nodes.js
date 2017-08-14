@@ -60,8 +60,10 @@ class Node extends NodeCtrl{
                 Global.nodes.map(function (node,index) {
                     if(node.nameNode==name){
                         //console.log("Есть такой узел - "+node.nameNode+"index - "+index);
+                        //создает экземпляр объекта Ноды
                         Global.nodes[index].nodeObj = eval("new "+name+"();");
 
+                        //Создаем метод led у ноды
                         Global.nodes[index].nodeObj.led = function (state) {
                             if(state == "ok"){
                                 $("#btn"+name+" .led").removeClass("warn error");
@@ -83,6 +85,11 @@ class Node extends NodeCtrl{
                                 $("#btn"+name).removeClass("nodeselected");
                             }
                         };
+
+                        //создаем panel для ноды
+                        $("#panels").append("<div id='"+name+"panel' class='hidden-xs hidden-sm'></div>");
+                        //создаем view для ноды
+                        $("#container").append("<div id='"+name+"view' class='viewer'></div>");
 
                         Global.nodes[index].nodeObj.startNode();//temp
 

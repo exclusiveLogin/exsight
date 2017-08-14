@@ -18,7 +18,7 @@ class port{
 
             $(".pereliv,.errortank,.blink,.glyphicon-warning-sign,.glyphicon-remove-circle").addClass("blinkClass");
 
-            autostart();
+            //autostart();
             //console.log("this:",this);
 
             wrapperStartOPC();
@@ -81,7 +81,7 @@ class port{
         return result;
     }
     refreshPort(){
-        this.led("ok");//сетим в ОК ..если потом что то, то пересетим
+        //this.led("ok");//сетим в ОК ..если потом что то, то пересетим
         let context = this;
         $.ajax({
             url:"getport.php",
@@ -148,11 +148,11 @@ class port{
                         $("#tankoil .tank_title_port").text(data.tankoil);
                         $("#tanksmt .tank_title_port").text(data.tanksmt);
                         let renderSelectedTanks = function () {
-                            var tmpRealOil = $("#minview .tank[data-num="+(data.tankoil)+"]")
+                            var tmpRealOil = $("#resparkview .tank[data-num="+(data.tankoil)+"]")
                                 .find(".progress_tank_val_real").text();
-                            var tmpRealDt = $("#minview .tank[data-num="+(data.tankdt)+"]")
+                            var tmpRealDt = $("#resparkview .tank[data-num="+(data.tankdt)+"]")
                                 .find(".progress_tank_val_real").text();
-                            var tmpRealSmt = $("#minview .tank[data-num="+(data.tanksmt)+"]")
+                            var tmpRealSmt = $("#resparkview .tank[data-num="+(data.tanksmt)+"]")
                                 .find(".progress_tank_val_real").text();
 
                             $("#tankdt .progress_tank_val_real").text(tmpRealDt);

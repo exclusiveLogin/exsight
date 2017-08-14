@@ -33,11 +33,11 @@ $.ajaxSetup({
 });
 function adaptWin() {
     if(window.innerWidth < 1450 && window.innerWidth > 990){
-        $("#minview").addClass("adapt");
+        $("#container").addClass("adapt");
         $("#header").addClass("adapt");
         $(".danger_field").addClass("adapt");
     }else {
-        $("#minview").removeClass("adapt");
+        $("#container").removeClass("adapt");
         $("#header").removeClass("adapt");
         $(".danger_field").removeClass("adapt");
     }
@@ -63,9 +63,11 @@ $(document).ready(function(){
             if(Global.panelsateQ)panelStateToggle(true);
         },1000);
     });
-    $(document).on("mouseleave","#panelstate",function () {
-        panelStateToggle(false);
+    $(document).on("mouseleave",".danger_field",function () {
         Global.panelsateQ = false;
+    });
+    $(document).on("mouseleave","#panels",function () {
+        panelStateToggle(false);
     });
 
     $(".btn_whatnew").on("click",function () {
@@ -147,14 +149,6 @@ $(document).ready(function(){
         Global.loggedAs = "";
         showSysMsg("Вы успешно вышли из системы",true);
         refreshLog();
-    });
-    $('#minview').on('click','.tank',function(){
-        var num = $(this).data("num");
-        if(num){
-            if(getNode(respark)>(-1)){
-                Global.nodes[getNode(respark)].nodeObj.openTank(num);
-            }
-        }
     });
     $('#btn_close_parm').on('click',function(){
         if(getNode(respark)>(-1)){

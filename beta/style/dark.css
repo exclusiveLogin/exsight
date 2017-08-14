@@ -324,9 +324,11 @@ a:hover{
     margin-top: 5px;
     margin-bottom: 5px;
     overflow: auto;
-    transition: all .5s ease;
     text-align: center;
     /*font-size: 150% !important;*/
+}
+#panels{
+    transition: all .5s ease;
 }
 .btncont{
     text-align: center;
@@ -834,7 +836,7 @@ a:hover{
     animation-name: blink;
     animation-iteration-count: infinite;
 }
-#minview,#portview{
+.viewer{
     display: none;
 }
 .ship{

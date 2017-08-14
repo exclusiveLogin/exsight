@@ -603,7 +603,7 @@ class respark{
         var resparkbodyPromise = fetch("nodes/templates/respark.html").then(function (response) {
             return response.text();
         }).then(function (text) {
-            $('#minview').html(text);
+            $('#resparkview').html(text);
 
             reloadProgressBar();
 
@@ -627,6 +627,14 @@ class respark{
             $(".tank").each(function () {
                 $(this).find(".tends").html("<span class=\"val\">--</span> т/ч");
             });
+            $('#resparkview').on('click','.tank',function(){
+                var num = $(this).data("num");
+                if(num){
+                    if(getNode(respark)>(-1)){
+                        Global.nodes[getNode(respark)].nodeObj.openTank(num);
+                    }
+                }
+            });
         });
 
         var resparkpanelPromise = fetch("nodes/templates/resparkpanel.html").then(function (response) {
@@ -634,7 +642,8 @@ class respark{
         });
 
         resparkpanelPromise.then(function (text) {
-            $('#panelstate').html(text);
+            $('#resparkpanel').html(text);
+            $('#resparkpanel').addClass("cont_panel");
         });
 
         var wrapperStartOPC = this.startOPC.bind(this);
@@ -646,7 +655,7 @@ class respark{
     stopNode() {
         if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
         if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
-        $('#minview').empty();
+        $('#resparkview').empty();
         this.led("unselect");
 
     }
@@ -673,11 +682,11 @@ class respark{
                 }
             }
         });
-        $("#minview").show();
+        $("#resparkview").show();
         this.led("select");
     }
     hideNode(){
-        $("#minview").hide();
+        $("#resparkview").hide();
         this.led("unselect");
     }
     summaryBalance(data){
