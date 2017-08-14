@@ -316,4 +316,13 @@ export default class Utility{
         });
 	}
 
+    scrollTo(elem,destination) {
+        let dest = $(destination)[0];
+        let el = $(elem);
+        if(dest && el){
+            el.animate({"scrollTop":dest.offsetTop},1500);
+        }else {
+            console.error("ScrollTO:ошибка в поиска в DOM");
+        }
+    }
 }

@@ -362,11 +362,12 @@ class gas{
             $(".gas_btn_parkselect").on("click",function (elem) {
                 let numOfPark = $(this).data("gaspark");
                 if(numOfPark){
-                    if(numOfPark=="6")numOfPark="АСН";
+                    if(numOfPark=="6")context.Trend.setTitle({text:"Активность датчиков загазованности парка АСН"});
                     context.Trend.setTitle({text:"Активность датчиков загазованности парка "+numOfPark});
+                    Utility.scrollTo(".gascontainer",".gasparkgrid[data-gaspark="+numOfPark+"]");
                 }
 
-                console.log("this:",this,"element:",elem," numOfPark:",numOfPark);
+                //console.log("this:",this,"element:",elem," numOfPark:",numOfPark);
             });
 
             autostart();

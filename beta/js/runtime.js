@@ -12,6 +12,7 @@ Global.version.desc = "<li>Добавлен компонент Причал[new]
     "<li>Добавлен указатель направления ветра на причале[new]</li>" +
     "<li>Исправлены мелкие недочеты</li>" +
     "<li>Произведен рефакторинг кода</li>";
+
 function visit() {
     let req = {version:Global.version.v,build:Global.version.build};
     console.log("req:",req);
