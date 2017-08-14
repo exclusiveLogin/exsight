@@ -6,11 +6,7 @@
     perspective: 300px;
 }
 .gastrend{
-    min-height: 150px;
-    /*temp*/
-    border:1px orange solid;
-    background-color: darkgoldenrod;
-    /*display: none;*/
+    max-height: 150px;
 }
 .gasSelectParkPanel{
     /*line-height: 40px;*/
