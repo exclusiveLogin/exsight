@@ -320,7 +320,8 @@ export default class Utility{
         let dest = $(destination)[0];
         let el = $(elem);
         if(dest && el){
-            el.animate({"scrollTop":dest.offsetTop},1500);
+            let footerH = $("#footer")[0].offsetHeight;
+            el.animate({"scrollTop":dest.offsetTop+footerH/2},1500);
         }else {
             console.error("ScrollTO:ошибка в поиска в DOM");
         }

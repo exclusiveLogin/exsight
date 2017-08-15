@@ -391,8 +391,9 @@ class gas{
         //расчет размера блока газов
         let clH = document.documentElement.clientHeight;
         let elemOffset = $(".gascontainer").offset().top;
+        let footerH = $("#footer")[0].offsetHeight;
         //преобразование
-        let gasH = clH-elemOffset;
+        let gasH = clH-elemOffset-footerH;
         $(".gascontainer").css({maxHeight:gasH});
         this.Trend.reflow();
     }

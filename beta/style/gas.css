@@ -1,7 +1,5 @@
 .gascontainer{
-    min-height: 300px;
     overflow-y: scroll;
-    padding-bottom: 20px;
     perspective-origin: center center;
     perspective: 300px;
 }
