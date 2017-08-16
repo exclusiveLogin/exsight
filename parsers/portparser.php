@@ -1,17 +1,17 @@
 <?php
 //plot path
-$ini_plot1 = "opcdata/portopcdata1.ini";
-$ini_plot2 = "opcdata/portopcdata2.ini";
+$ini_plot1 = "../opcdata/portopcdata1.ini";
+$ini_plot2 = "../opcdata/portopcdata2.ini";
 //ecu path
-$ini_ecu1 = "opcdata/portecu1.ini";
-$ini_ecu2 = "opcdata/portecu2.ini";
+$ini_ecu1 = "../opcdata/portecu1.ini";
+$ini_ecu2 = "../opcdata/portecu2.ini";
 //tankselect
-$ini_select = "opcdata/portselect.ini";
+$ini_select = "../opcdata/portselect.ini";
 //valve path
-$ini_valve = "opcdata/portvalve.ini";
+$ini_valve = "../opcdata/portvalve.ini";
 
-require_once "db.php";
-require_once "db_port.php";
+require_once "../db.php";
+require_once "../db_port.php";
 
 //парсинг Valve
 $f_valve = file_exists($ini_valve);

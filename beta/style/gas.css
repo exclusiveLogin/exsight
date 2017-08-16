@@ -55,6 +55,15 @@
     transform: rotate3d(1,0,0,17deg) translateZ(-50px);
     z-index: -1;
 }
+.gasparkgrid.parkgrid1,.gasparkgrid.parkgrid2{
+    grid-template-areas:    ". s1 s2 s3 s4 ."
+                            "s5 p p p p s6"
+                            "s7 p p p p s8"
+                            "s9 p p p p s10"
+                            "s11 p p p p s12"
+                            ". s13 s14 s15 s16 ."
+                            ". tk tk tk tk .";
+}
 .gassensor{
     max-height: 40px;
     padding: 5px 10px;
@@ -64,6 +73,27 @@
     position: relative;
     margin: 0 auto;
     transform: rotate3d(-1,0,0,17deg) translate3d(0,-30px,30px);
+}
+.gassensortk{
+    max-height: 40px;
+    padding: 5px 10px;
+    border: 1px whitesmoke solid;
+    background-color: gray;
+    position: relative;
+    margin: 0 auto;
+}
+.tkname{
+    font-size: 120%;
+    color: #DDDDDD;
+}
+.gastk{
+    padding: 10px;
+    border: 1px whitesmoke solid;
+    background-color: #4c4c4c;
+    top: 50%;
+    position: relative;
+    margin: 0 auto;
+    z-index: 100;
 }
 .gassensor.left{
     margin-left: 0;
@@ -88,4 +118,7 @@
     text-decoration: underline;
     text-transform: uppercase;
     transform: rotate3d(-1,0,0,17deg) translate3d(0px,0px,110px);
+}
+.spacer{
+    height: 100px;
 }

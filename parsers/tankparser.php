@@ -1,10 +1,10 @@
 <?php
-$ini_tank_path = "opcdata/data_tank";
-$ini_asnload_path = "opcdata/asn_to_load.ini";
-$ini_meteo_path = "opcdata/meteodata.ini";
+$ini_tank_path = "../opcdata/data_tank";
+$ini_asnload_path = "../opcdata/asn_to_load.ini";
+$ini_meteo_path = "../opcdata/meteodata.ini";
 
-require_once "db.php";
-require_once "db_hd.php";
+require_once "../db.php";
+require_once "../db_hd.php";
 //парсинг METEO
 $f_meteo_exist = file_exists($ini_meteo_path);
 if($f_meteo_exist){
