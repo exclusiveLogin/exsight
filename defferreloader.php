@@ -1,5 +1,5 @@
 <?php
-include_once "db.php";
+include_once "settings/db.php";
 
 $ip = $_SERVER["REMOTE_ADDR"];
 $rip = $_SERVER["HTTP_X_FORWARDED_FOR"];

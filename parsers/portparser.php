@@ -1,4 +1,5 @@
 <?php
+$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/settings/";
 //plot path
 $ini_plot1 = "../opcdata/portopcdata1.ini";
 $ini_plot2 = "../opcdata/portopcdata2.ini";
@@ -10,8 +11,8 @@ $ini_select = "../opcdata/portselect.ini";
 //valve path
 $ini_valve = "../opcdata/portvalve.ini";
 
-require_once "../db.php";
-require_once "../db_port.php";
+require_once $path_settings."db.php";
+require_once $path_settings."db_port.php";
 
 //парсинг Valve
 $f_valve = file_exists($ini_valve);

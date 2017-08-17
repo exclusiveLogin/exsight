@@ -1,6 +1,6 @@
 <?php
 
-require_once "db_hd.php";
+require_once "settings/db_hd.php";
 
 if($_GET["lazy"]&&$_GET["tank"]){
     $tank = $_GET["tank"];

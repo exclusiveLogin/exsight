@@ -1,5 +1,6 @@
 <?php
-include_once "db.php";
+$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/settings/";
+include_once $path_settings."db.php";
 
 $auth=array("auth"=>false,"login"=>"");
 $login = null;

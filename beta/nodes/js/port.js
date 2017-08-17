@@ -81,7 +81,7 @@ class port{
         return result;
     }
     refreshPort(){
-        //this.led("ok");//сетим в ОК ..если потом что то, то пересетим
+        this.led("ok");//сетим в ОК ..если потом что то, то пересетим
         let context = this;
         $.ajax({
             url:"getport.php",
@@ -290,6 +290,7 @@ class port{
                             if(Number(data[elem].f1)>0 || Number(data[elem].f2)>0){
                                 $(".portstatus").addClass("naliv");
                                 $(".portstatus").text("Идет налив");
+                                context.led("warn");
                             }
 
                             $(".table_port .port_plot_t_dt").text(data[elem].t);
@@ -320,6 +321,7 @@ class port{
                             if(Number(data[elem].f1)>0 || Number(data[elem].f2)>0){
                                 $(".portstatus").addClass("naliv");
                                 $(".portstatus").text("Идет налив");
+                                context.led("warn");
                             }
 
                             $(".table_port .port_plot_t_smt").text(data[elem].t);

@@ -1,6 +1,6 @@
 <?php
-
-require_once "db_hd.php";
+$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/settings/";
+require_once $path_settings."db_hd.php";
 
 if($_GET["lazy"]&&$_GET["tank"]){
     $tank = $_GET["tank"];

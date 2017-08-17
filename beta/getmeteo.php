@@ -1,5 +1,6 @@
 <?php
-require_once "db.php";
+$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/settings/";
+require_once $path_settings."db.php";
 
 
 if($_GET['meteo']){

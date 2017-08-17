@@ -1,5 +1,5 @@
 <?php
-include_once "db.php";
+include_once "settings/db.php";
 
 $auth=array("auth"=>false,"login"=>"");
 $login = null;

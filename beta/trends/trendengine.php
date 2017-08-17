@@ -1,6 +1,8 @@
 <?php
-require_once "../db_hd.php";
-require_once "../db_port.php";
+$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/settings/";
+
+require_once $path_settings."db_hd.php";
+require_once $path_settings."db_port.php";
 
 //echo "<p> start programm </p>";
 
