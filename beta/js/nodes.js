@@ -85,6 +85,8 @@ class Node extends NodeCtrl{
                                 $("#btn"+name).removeClass("nodeselected");
                             }
                         };
+                        //создаем свойство showed у ноды
+                        Global.nodes[index].nodeObj.showed = false;
 
                         //создаем panel для ноды
                         $("#panels").append("<div id='"+name+"panel' class='hidden-xs hidden-sm'></div>");

@@ -37,11 +37,16 @@ class port{
             }
         });
         $("#portview").show();
+        this.showed = true;
         this.led("select");
+
+        //принудительно рефрешим порт при открытии вкладки
+        this.refreshPort();
     }
     hideNode(){
         $("#portview").hide();
         this.led("unselect");
+        this.showed = false;
     }
     startOPC(){
         var wrapperRefreshPort = this.refreshPort.bind(this);
@@ -91,7 +96,7 @@ class port{
             success:function(data){
                 let label = "tankselect";
                 //console.log("TANKSELECT:",data);
-                renderPort(data,label);
+                checkPort(data,label);
             },
             error:function(){
                 console.log("error TANKSELECT ajax data");
@@ -105,7 +110,7 @@ class port{
             success:function(data){
                 let label = "valve";
                 //console.log("VALVE:",data);
-                renderPort(data,label);
+                checkPort(data,label);
             },
             error:function(){
                 console.log("error VALVE ajax data");
@@ -119,7 +124,7 @@ class port{
             success:function(data){
                 let label = "plotnomer";
                 //console.log("PLOTNOMER:",data);
-                renderPort(data,label);
+                checkPort(data,label);
             },
             error:function(){
                 console.log("error PLOTNOMER ajax data");
@@ -133,12 +138,54 @@ class port{
             success:function(data){
                 let label = "ecu";
                 //console.log("ECU:",data);
-                renderPort(data,label);
+                checkPort(data,label);
             },
             error:function(){
                 console.log("error ECU ajax data");
             }
         });
+
+        function checkPort(data,label) {
+            console.log("checkport this:",this,"context:",context);
+            if(data){
+                //в порту кнотролируем
+                //-устаревание информации
+                //-налив
+
+                //-----WARNING SECTION------
+                if(label == "plotnomer"){
+                    for(var elem in data){
+                        if(data[elem].num == "1"){
+                            if(Number(data[elem].f1)>0 || Number(data[elem].f2)>0)context.led("warning");
+                        }
+                        if(data[elem].num == "2"){
+                            if(Number(data[elem].f1)>0 || Number(data[elem].f2)>0)context.led("warning");
+                        }
+                    }
+                }
+                //-----ERROR SECTION--------
+                if(label == "tankselect"){
+                    if((data.tankdt!="0" && data.tankoil!="0" && data.tanksmt!="0")&&(data.tankdt && data.tankoil && data.tanksmt)){
+                    }else {
+                        context.led("error");
+                    }
+                }
+                if(label == "valve"){
+                    if(context.checkExpired(data.datetime))context.led("error");
+                }
+                if(label == "plotnomer"){
+                    for(var elem in data){
+                        if(data[elem].num == "1"){
+                            if(context.checkExpired(data[elem].datetime))context.led("error");
+                        }
+                        if(data[elem].num == "2"){
+                            if(context.checkExpired(data[elem].datetime))context.led("error");
+                        }
+                    }
+                }
+                if(context.showed)renderPort(data,label);
+            }
+        }
 
         function renderPort(data,label){
             if(data){
@@ -230,18 +277,6 @@ class port{
                         $("#tankoil .prod_cont").html($(".tank[data-num="+(1)+"]").find(".prod_cont").html());
                         $("#tankdt .prod_cont").html($(".tank[data-num="+(1)+"]").find(".prod_cont").html());
                         $("#tanksmt .prod_cont").html($(".tank[data-num="+(1)+"]").find(".prod_cont").html());
-
-                        // $("#tankoil .pereliv").text("ошибка");
-                        // $("#tankdt .pereliv").text("ошибка");
-                        // $("#tanksmt .pereliv").text("ошибка");
-
-                        // $("#tankoil .errortank").text("ошибка");
-                        // $("#tankdt .errortank").text("ошибка");
-                        // $("#tanksmt .errortank").text("ошибка");
-
-                        // $("#tankoil .service").text("ошибка");
-                        // $("#tankdt .service").text("ошибка");
-                        // $("#tanksmt .service").text("ошибка");
                     }
                 }
                 if(label == "valve"){
@@ -290,7 +325,7 @@ class port{
                             if(Number(data[elem].f1)>0 || Number(data[elem].f2)>0){
                                 $(".portstatus").addClass("naliv");
                                 $(".portstatus").text("Идет налив");
-                                context.led("warn");
+                                context.led("warning");
                             }
 
                             $(".table_port .port_plot_t_dt").text(data[elem].t);
@@ -321,7 +356,7 @@ class port{
                             if(Number(data[elem].f1)>0 || Number(data[elem].f2)>0){
                                 $(".portstatus").addClass("naliv");
                                 $(".portstatus").text("Идет налив");
-                                context.led("warn");
+                                context.led("warning");
                             }
 
                             $(".table_port .port_plot_t_smt").text(data[elem].t);

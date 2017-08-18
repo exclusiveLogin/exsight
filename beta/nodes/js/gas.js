@@ -1,15 +1,8 @@
 class gas{
     startNode() {
-        /*$('#btngas').on("click",function () {
-            alert("Модуль находится в разработке");
-            // let win = window.open("trends/","_blank");
-            // win.focus();
-        });*/
         //var wrapperStartOPC = this.startOPC.bind(this);
 
         var context = this;
-
-
         var autostart = this.showNode.bind(this);
         this.led("error");
         //var autostart = this.showNode.bind(this);
