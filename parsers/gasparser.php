@@ -1,11 +1,12 @@
 <?php
-$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/settings/";
-$ini_gas_path = "../opcdata/upes_rp";
+require_once "../path.php";
 
+$ini_gas_path = $path_opc."upes_rp";
 require_once $path_settings."db_gas.php";
 
 //цикл парсинга с обходом ошибок
 //движок цикла
+
 for($i=1;$i<210;$i++) {//проходим по папке в поисках файлов из диапазона
     //проверка наличия нужных файлов
     $f_exist = file_exists($ini_gas_path . $i . ".ini");
@@ -33,25 +34,24 @@ for($i=1;$i<210;$i++) {//проходим по папке в поисках фа
                 $gas_id = str_replace("SGO_","",$key);
 
 
-                $q = "INSERT INTO `rt_tanks` (`id`,`fixtime`) VALUES (" . $gas_id . ",'" . $gas_fixtime . "') ON DUPLICATE KEY UPDATE `fixtime` = '" . $gas_fixtime . "';";
-                $mysql->query($q);
-
-
+				
+				
+				if($key <> "fixtime"){
+					echo "--------------------RT-------------------------------------<br>";
+                    $q = "INSERT INTO `rt_gassensors` (`id`,`value`,`fixtime`) VALUES (" .
+					$gas_id . ",".$gas_value.",'" . $gas_fixtime . "') ON DUPLICATE KEY UPDATE `value` = '" . $gas_value . "';";
+					$mysql->query($q);
+					//echo $q."<br>";
+					if($gas_value <> -1000){
+						//echo "--------------------Hist-----------------------------------<br>";
+						
+						$q = "INSERT INTO `hist_gassensors` (`id`,`value`,`fixtime`)
+							VALUES ($gas_id,$gas_value,'$gas_fixtime');";
+						$mysql_res_hd->query($q);
+						//echo $q_hd."<br>";
+					}
+				}
             }
-
-
         }
-        //проходим по массиву и скидываем в БД
-
     }
-
-
-
-
-
-
 }
-    $q_hd = "INSERT INTO `res".$i."_hd` (`level`,`plot`,`volume`,`temperature`,`vapor_temperature`,`mass`) VALUES ($tank_level,$tank_plot,$tank_volume,$tank_temp,$tank_vaportemp,$tank_mass);";
-    //echo $q_hd;
-    $mysql_res_hd->query($q_hd);
-

@@ -1,6 +1,8 @@
 <?php
-$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/settings/";
+require_once "path.php";
 require_once $path_settings."db.php";
+//echo $path_settings."db.php"."<br>";
+
 
 if($_GET['setstate'] && $_GET['sector']){
 	$state = $_GET['setstate'];

@@ -1,9 +1,9 @@
 <?php
-$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/settings/";
+require_once "../path.php";
 
-$ini_tank_path = "../opcdata/data_tank";
-$ini_asnload_path = "../opcdata/asn_to_load.ini";
-$ini_meteo_path = "../opcdata/meteodata.ini";
+$ini_tank_path = $path_opc."data_tank";
+$ini_asnload_path = $path_opc."asn_to_load.ini";
+$ini_meteo_path = $path_opc."meteodata.ini";
 
 require_once $path_settings."db.php";
 require_once $path_settings."db_hd.php";

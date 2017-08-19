@@ -1,5 +1,5 @@
 <?php
-$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/settings/";
+require_once "path.php";
 //plot path
 $ini_plot1 = "opcdata/portopcdata1.ini";
 $ini_plot2 = "opcdata/portopcdata2.ini";

@@ -1,15 +1,16 @@
 <?php
-$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/settings/";
+require_once "../path.php";
+
 //plot path
-$ini_plot1 = "../opcdata/portopcdata1.ini";
-$ini_plot2 = "../opcdata/portopcdata2.ini";
+$ini_plot1 = $path_opc."portopcdata1.ini";
+$ini_plot2 = $path_opc."portopcdata2.ini";
 //ecu path
-$ini_ecu1 = "../opcdata/portecu1.ini";
-$ini_ecu2 = "../opcdata/portecu2.ini";
+$ini_ecu1 = $path_opc."portecu1.ini";
+$ini_ecu2 = $path_opc."portecu2.ini";
 //tankselect
-$ini_select = "../opcdata/portselect.ini";
+$ini_select = $path_opc."portselect.ini";
 //valve path
-$ini_valve = "../opcdata/portvalve.ini";
+$ini_valve = $path_opc."portvalve.ini";
 
 require_once $path_settings."db.php";
 require_once $path_settings."db_port.php";

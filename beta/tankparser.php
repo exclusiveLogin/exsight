@@ -1,5 +1,5 @@
 <?php
-$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/settings/";
+require_once "path.php";
 
 $ini_tank_path = "../opcdata/data_tank";
 $ini_asnload_path = "../opcdata/asn_to_load.ini";
