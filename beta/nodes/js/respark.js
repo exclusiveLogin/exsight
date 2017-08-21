@@ -1,6 +1,7 @@
 class respark{
     constructor(){
         this.coldstart = true;
+        this.lastParkAjax = {};
     }
     rendermeteo(data){
         if (data){
@@ -94,20 +95,28 @@ class respark{
     refreshTank(tank) {
         var wrapperRenderTank = renderTank.bind(this);
         var wrapperTrend = this.renderTrendTankParm.bind(this);
-
         //запрос резервуара
-        $.ajax({
-            url:"gettank.php",
-            dataType:"json",
-            method:'GET',
-            data:{"tank":tank},
-            success:function(data){
-                wrapperRenderTank(data);
-            },
-            error:function(){
-                console.log("error to load refresh tank ajax data");
-            }
-        });
+        if(this.lastParkAjax) {
+            this.lastParkAjax.map(function (tankObj) {//выбираем и последнего респонса нужный резервуар
+                if(tankObj.num == tank){
+                    //отправляем его на рендер без доп запроса к серверу
+                    wrapperRenderTank(tankObj);
+                }
+            }, this);
+        }
+
+        /*$.ajax({
+         url:"gettank.php",
+         dataType:"json",
+         method:'GET',
+         data:{"tank":tank},
+         success:function(data){
+         wrapperRenderTank(data);
+         },
+         error:function(){
+         console.log("error to load refresh tank ajax data");
+         }
+         });*/
         //запрос на HD
         Global.TrendTankParm.showLoading("Загрузка данных");
         $.ajax({
@@ -262,6 +271,8 @@ class respark{
         var wrapperAsnBalance = this.asnLoading.bind(this);
         var wrapperMeteo = this.rendermeteo.bind(this);
 
+        let context = this;
+
         //запрос метео
         $.ajax({
             url:"getmeteo.php",
@@ -282,6 +293,7 @@ class respark{
             method:'GET',
             data:{park:true},
             success:function(data){
+                context.lastParkAjax = data;
                 connectionState(1);
                 wrapperCheckPark(data);
                 wrapperCalcArrows(data);
@@ -356,6 +368,8 @@ class respark{
             }else {
                 console.log("пропускаем рендер");
             }
+            this.startedAndRefreshed.resolve();
+            //console.log("Refreshed:",this.startedAndRefreshed);
         }
         function renderPark(data) {
             console.log("renderPark this :",this);
@@ -480,20 +494,14 @@ class respark{
                         $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class=\"fa fa-wrench\" aria-hidden=\"true\"></i>");
                         $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
                         $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
-
-
                     }else {
                         $(".tank[data-num="+(data[elem].num)+"]").find(".tank_service").addClass("transparent");
-
                     }
                 }
             }
             if(Global.tankselect){
                 this.refreshTank(Global.tankselect);
             }
-
-            this.startedAndRefreshed.resolve();
-            //console.log("Refreshed:",this.startedAndRefreshed);
         }
     }
     calcArrows(data) {

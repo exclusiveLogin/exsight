@@ -195,55 +195,196 @@ class port{
                         $("#tankoil .tank_title_port").text(data.tankoil);
                         $("#tanksmt .tank_title_port").text(data.tanksmt);
                         let renderSelectedTanks = function () {
-                            var tmpRealOil = $("#resparkview .tank[data-num="+(data.tankoil)+"]")
-                                .find(".progress_tank_val_real").text();
-                            var tmpRealDt = $("#resparkview .tank[data-num="+(data.tankdt)+"]")
-                                .find(".progress_tank_val_real").text();
-                            var tmpRealSmt = $("#resparkview .tank[data-num="+(data.tanksmt)+"]")
-                                .find(".progress_tank_val_real").text();
+                            let lastData = {};
+                            //берем последние данные с парка
+                            if(getNode(respark)>(-1)){
+                                lastData = Global.nodes[getNode(respark)].nodeObj.lastParkAjax;
+                                let rezpark  = Global.nodes[getNode(respark)].nodeObj;
+                                //рендерим резервуары в порту
+                                //хранит объект с данными для выбранного резервуара
+                                let tmpOil = {};
+                                let tmpDt = {};
+                                let tmpSmt = {};
 
-                            $("#tankdt .progress_tank_val_real").text(tmpRealDt);
-                            $("#tankoil .progress_tank_val_real").text(tmpRealOil);
-                            $("#tanksmt .progress_tank_val_real").text(tmpRealSmt);
+                                let tmpProdSmt = $("#tanksmt .prod_cont");
+                                let tmpProdDt = $("#tankdt .prod_cont");
+                                let tmpProdOil = $("#tankoil .prod_cont");
 
-                            $("#tankoil .prod_cont").html($(".tank[data-num="+(data.tankoil)+"]").find(".prod_cont").html());
-                            $("#tankdt .prod_cont").html($(".tank[data-num="+(data.tankdt)+"]").find(".prod_cont").html());
-                            $("#tanksmt .prod_cont").html($(".tank[data-num="+(data.tanksmt)+"]").find(".prod_cont").html());
+                                let tmpPerelivSmt = $("#tanksmt .pereliv");
+                                let tmpPerelivDt = $("#tankdt .pereliv");
+                                let tmpPerelivOil = $("#tankoil .pereliv");
 
-                            $("#tankoil .pereliv").html($(".tank[data-num="+(data.tankoil)+"]").find(".pereliv").html());
-                            $("#tankdt .pereliv").html($(".tank[data-num="+(data.tankdt)+"]").find(".pereliv").html());
-                            $("#tanksmt .pereliv").html($(".tank[data-num="+(data.tanksmt)+"]").find(".pereliv").html());
+                                let tmpErrorSmt = $("#tanksmt .errortank");
+                                let tmpErrorDt = $("#tankdt .errortank");
+                                let tmpErrorOil = $("#tankoil .errortank");
 
-                            $("#tankoil .errortank").html($(".tank[data-num="+(data.tankoil)+"]").find(".errortank").html());
-                            $("#tankdt .errortank").html($(".tank[data-num="+(data.tankdt)+"]").find(".errortank").html());
-                            $("#tanksmt .errortank").html($(".tank[data-num="+(data.tanksmt)+"]").find(".errortank").html());
+                                let tmpServiceSmt = $("#tanksmt .service");
+                                let tmpServiceDt = $("#tankdt .service");
+                                let tmpServiceOil = $("#tankoil .service");
 
-                            $("#tankoil .service").html($(".tank[data-num="+(data.tankoil)+"]").find(".service").html());
-                            $("#tankdt .service").html($(".tank[data-num="+(data.tankdt)+"]").find(".service").html());
-                            $("#tanksmt .service").html($(".tank[data-num="+(data.tanksmt)+"]").find(".service").html());
+                                lastData.map(function (tmpElement) {
+                                    if(tmpElement.num == data.tankdt)tmpDt = tmpElement;
+                                    if(tmpElement.num == data.tankoil)tmpOil = tmpElement;
+                                    if(tmpElement.num == data.tanksmt)tmpSmt = tmpElement;
+                                },this);
+                                //-----------------------Render level and product name--------------------------------
+                                $("#portview #tankdt .progress_tank_val_real").text(Number(tmpDt.level).toFixed(0));
+                                $("#portview #tankoil .progress_tank_val_real").text(Number(tmpOil.level).toFixed(0));
+                                $("#portview #tanksmt .progress_tank_val_real").text(Number(tmpSmt.level).toFixed(0));
 
-                            setTimeout(function () {
-                                var pr_color_oil = {
-                                    from:{color:Global.pr_tank_port[0].path.getAttribute("stroke")},
-                                    to:{color:Global.pr_tank[data.tankoil].path.getAttribute("stroke")}
-                                };
-                                var pr_color_dt = {
-                                    from:{color:Global.pr_tank_port[1].path.getAttribute("stroke")},
-                                    to:{color:Global.pr_tank[data.tankdt].path.getAttribute("stroke")}
-                                };
-                                var pr_color_smt = {
-                                    from:{color:Global.pr_tank_port[2].path.getAttribute("stroke")},
-                                    to:{color:Global.pr_tank[data.tanksmt].path.getAttribute("stroke")}
-                                };
-                                var pr_val_oil = Global.pr_tank[data.tankoil].value();
-                                var pr_val_dt = Global.pr_tank[data.tankdt].value();
-                                var pr_val_smt = Global.pr_tank[data.tanksmt].value();
-                                Global.pr_tank_port[0].animate(pr_val_oil,pr_color_oil);
-                                Global.pr_tank_port[1].animate(pr_val_dt,pr_color_dt);
-                                Global.pr_tank_port[2].animate(pr_val_smt,pr_color_smt);
-                                // console.log("rendering...oil:",pr_val_oil,"dt:",pr_val_dt,"smt:",pr_val_smt);
-                                // console.log("color oil:",pr_color_oil,"dt:",pr_color_dt,"smt:",pr_color_smt);
-                            },Global.pr_tank[1]._opts.duration);
+                                //для Oil
+                                if(Number(tmpOil.product)){
+                                    let product = rezpark.getProduct(Number(tmpOil.product));
+                                    tmpProdOil.text(product.text);
+                                    tmpProdOil.removeClass("disel diseleuro a76 a80 a92 a95 a98 smt");//подготовка
+                                    tmpProdOil.removeClass("label-danger label-warning").addClass("label-success");
+                                    tmpProdOil.addClass(product.class);
+                                }else {
+                                    tmpProdOil.text(rezpark.getProduct(Number(tmpOil.product)).text);
+                                    tmpProdOil.removeClass("label-success label-warning").addClass("label-danger");
+                                }
+                                //для DT
+                                if(Number(tmpDt.product)){
+                                    let product = rezpark.getProduct(Number(tmpDt.product));
+                                    tmpProdDt.text(product.text);
+                                    tmpProdDt.removeClass("disel diseleuro a76 a80 a92 a95 a98 smt");//подготовка
+                                    tmpProdDt.removeClass("label-danger label-warning").addClass("label-success");
+                                    tmpProdDt.addClass(product.class);
+                                }else {
+                                    tmpProdDt.text(rezpark.getProduct(Number(tmpDt.product)).text);
+                                    tmpProdDt.removeClass("label-success label-warning").addClass("label-danger");
+                                }
+                                //для SMT
+                                if(Number(tmpSmt.product)){
+                                    let product = rezpark.getProduct(Number(tmpSmt.product));
+                                    tmpProdSmt.text(product.text);
+                                    tmpProdSmt.removeClass("disel diseleuro a76 a80 a92 a95 a98 smt");//подготовка
+                                    tmpProdSmt.removeClass("label-danger label-warning").addClass("label-success");
+                                    tmpProdSmt.addClass(product.class);
+                                }else {
+                                    tmpProdSmt.text(rezpark.getProduct(Number(tmpSmt.product)).text);
+                                    tmpProdSmt.removeClass("label-success label-warning").addClass("label-danger");
+                                }
+                                //----------------------------Render pereliv-----------------------
+                                //для Oil
+                                if(Number(tmpOil.pereliv)){
+                                    tmpPerelivOil.removeClass("transparent");
+                                }else {
+                                    tmpPerelivOil.addClass("transparent");
+                                }
+                                //для Smt
+                                if(Number(tmpSmt.pereliv)){
+                                    tmpPerelivSmt.removeClass("transparent");
+                                }else {
+                                    tmpPerelivSmt.addClass("transparent");
+                                }
+                                //для Dt
+                                if(Number(tmpDt.pereliv)){
+                                    tmpPerelivDt.removeClass("transparent");
+                                }else {
+                                    tmpPerelivDt.addClass("transparent");
+                                }
+
+                                //-----------------------Render errors-----------------------------
+                                //Oil
+                                if(tmpOil.level == "-1000"){//если уровнемер не возвращает данных уровня
+                                    if(!tmpOil.service){// и нет "в ремонте"
+                                        tmpErrorOil.removeClass("transparent");
+                                        $("#portview #tankoil").css("opacity",0.6);
+                                        $("#portview #tankoil").find(".progress_tank").addClass("transparentStatic");
+                                    }
+                                }else {
+                                    $("#portview #tankoil").css("opacity",1);
+                                    $("#portview #tankoil").find(".progress_tank").removeClass("transparentStatic");
+                                }
+                                //dt
+                                if(tmpDt.level == "-1000"){//если уровнемер не возвращает данных уровня
+                                    if(!tmpDt.service){// и нет "в ремонте"
+                                        tmpErrorDt.removeClass("transparent");
+                                        $("#portview #tankdt").css("opacity",0.6);
+                                        $("#portview #tankdt").find(".progress_tank").addClass("transparentStatic");
+                                    }
+                                }else {
+                                    $("#portview #tankdt").css("opacity",1);
+                                    $("#portview #tankdt").find(".progress_tank").removeClass("transparentStatic");
+                                }
+                                //Smt
+                                if(tmpSmt.level == "-1000"){//если уровнемер не возвращает данных уровня
+                                    if(!tmpSmt.service){// и нет "в ремонте"
+                                        tmpErrorSmt.removeClass("transparent");
+                                        $("#portview #tanksmt").css("opacity",0.6);
+                                        $("#portview #tanksmt").find(".progress_tank").addClass("transparentStatic");
+                                    }
+                                }else {
+                                    $("#portview #tanksmt").css("opacity",1);
+                                    $("#portview #tanksmt").find(".progress_tank").removeClass("transparentStatic");
+                                }
+                                //-----------------------Render service-----------------------------
+                                //Если резервуар в ремонте
+                                //Oil
+                                if(tmpOil.service){
+                                    tmpServiceOil.removeClass("transparent");
+                                    tmpErrorOil.addClass("transparent");
+                                    $("#portview #tankoil").find(".progress_tank").addClass("transparentStatic");
+                                }else {
+                                    tmpServiceOil.addClass("transparent");
+                                }
+                                //smt
+                                if(tmpSmt.service){
+                                    tmpServiceSmt.removeClass("transparent");
+                                    tmpErrorSmt.addClass("transparent");
+                                    $("#portview #tanksmt").find(".progress_tank").addClass("transparentStatic");
+                                }else {
+                                    tmpServiceSmt.addClass("transparent");
+                                }
+                                //dt
+                                if(tmpDt.service){
+                                    tmpServiceDt.removeClass("transparent");
+                                    tmpErrorDt.addClass("transparent");
+                                    $("#portview #tankdt").find(".progress_tank").addClass("transparentStatic");
+                                }else {
+                                    tmpServiceDt.addClass("transparent");
+                                }
+                                //--------------------------------------------------------------------------------
+                                //Render progressbar
+
+                                let tmpPercentOil = rezpark.lvl2perc(Number(tmpOil.level),Number(tmpOil.max_level)).toFixed(0);
+                                let tmpPercentDt = rezpark.lvl2perc(Number(tmpDt.level),Number(tmpDt.max_level)).toFixed(0);
+                                let tmpPercentSmt = rezpark.lvl2perc(Number(tmpSmt.level),Number(tmpSmt.max_level)).toFixed(0);
+
+                                let pr_opt = {};
+
+                                pr_opt.from = Global.pr_tank_port[0].path.getAttribute("stroke");
+                                pr_opt.to = val2Color(tmpPercentOil);
+                                console.log("pr_opt1",pr_opt," tmpPercentOil:",tmpPercentOil);
+                                Global.pr_tank_port[0].animate(tmpPercentOil/100);
+
+                                pr_opt.from = Global.pr_tank_port[1].path.getAttribute("stroke");
+                                pr_opt.to = val2Color(tmpPercentDt);
+                                console.log("pr_opt2",pr_opt," tmpPercentDT:",tmpPercentDt);
+                                Global.pr_tank_port[1].animate(tmpPercentDt/100);
+
+                                pr_opt.from = Global.pr_tank_port[2].path.getAttribute("stroke");
+                                pr_opt.to = val2Color(tmpPercentSmt);
+                                console.log("pr_opt3",pr_opt," tmpPercentSMT:",tmpPercentSmt);
+                                Global.pr_tank_port[2].animate(tmpPercentSmt/100);
+
+                                function val2Color(tmppercent) {
+                                    let color = "#000";
+
+                                    if(tmppercent<10){
+                                        color = "#08f";
+                                    }else if(tmppercent>70 && tmppercent<90){
+                                        color = "rgb(200, 100, 0)";
+                                    }else if(tmppercent>90){
+                                        color="#a00";
+                                    }else{
+                                        color="#090";
+                                    }
+
+                                    return color;
+                                }
+                            }
                         };
                         let renderPortWind = function(){
                             if(Global.meteo){

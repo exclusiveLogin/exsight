@@ -14,4 +14,5 @@ if($check_prefix){
 	$path_settings = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/".$path_arr[1]."/settings/";
 	$path_opc = $_SERVER['CONTEXT_DOCUMENT_ROOT']."/".$path_arr[1]."/opcdata/";
 }
-//echo $path_settings;
+//echo "path_settings:".$path_settings."<br>";
+//echo "path_opc:".$path_opc."<br>";

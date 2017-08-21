@@ -33,22 +33,25 @@ for($i=1;$i<210;$i++) {//проходим по папке в поисках фа
 
                 $gas_id = str_replace("SGO_","",$key);
 
-
+                //echo "RAW SG:".$key."<br>";
 				
 				
 				if($key <> "fixtime"){
-					echo "--------------------RT-------------------------------------<br>";
-                    $q = "INSERT INTO `rt_gassensors` (`id`,`value`,`fixtime`) VALUES (" .
-					$gas_id . ",".$gas_value.",'" . $gas_fixtime . "') ON DUPLICATE KEY UPDATE `value` = '" . $gas_value . "';";
+					//echo "--------------------RT-------------------------------------<br>";
+                    $q = "INSERT INTO `rt_sensors` (`id`,`value`,`fixtime`) VALUES (" .
+					    $gas_id . ",".$gas_value.",'" . $gas_fixtime . "') ON DUPLICATE KEY UPDATE 
+					    `value` = '" . $gas_value . "',
+					    `fixtime` = '" . $gas_fixtime . "';";
 					$mysql->query($q);
+
 					//echo $q."<br>";
 					if($gas_value <> -1000){
 						//echo "--------------------Hist-----------------------------------<br>";
 						
-						$q = "INSERT INTO `hist_gassensors` (`id`,`value`,`fixtime`)
+						$q = "INSERT INTO `hist_sensors` (`num`,`value`,`fixtime`)
 							VALUES ($gas_id,$gas_value,'$gas_fixtime');";
-						$mysql_res_hd->query($q);
-						//echo $q_hd."<br>";
+						$mysql->query($q);
+						echo $q."<br>";
 					}
 				}
             }
