@@ -296,9 +296,6 @@ class respark{
                 context.lastParkAjax = data;
                 connectionState(1);
                 wrapperCheckPark(data);
-                wrapperCalcArrows(data);
-                wrapperSummaryBalance(data);
-                wrapperAsnBalance();
             },
             error:function(){
                 console.log("error to load refresh park ajax data");
@@ -306,7 +303,7 @@ class respark{
             }
         });
         function checkPark(data) {
-            console.log("checkpark this:",this);
+            //console.log("checkpark this:",this);
             this.led("ok");//сетим в норму изначально
             if(data){
                 /*Если это холодный старт то
@@ -363,10 +360,13 @@ class respark{
 
             }
             if(Global.nodes[getNode(respark)].nodeObj.showed){
-                console.log("рендерим парк");
+                //console.log("рендерим парк");
                 wrapperRenderpark(data);
+                wrapperCalcArrows(data);
+                wrapperSummaryBalance(data);
+                wrapperAsnBalance();
             }else {
-                console.log("пропускаем рендер");
+                //console.log("пропускаем рендер");
             }
             this.startedAndRefreshed.resolve();
             //console.log("Refreshed:",this.startedAndRefreshed);
@@ -752,6 +752,17 @@ class respark{
         $("#resparkview").hide();
         this.led("unselect");
         this.showed = false;
+        //-------подчищаем тренды
+        if(Global.TrendFancy.series.length){
+            Global.TrendFancy.series.forEach(function (elem) {
+                elem.setData();
+            })
+        }
+        if(Global.TrendTankParm.series.length){
+            Global.TrendTankParm.series.forEach(function (elem) {
+                elem.setData();
+            })
+        }
     }
     summaryBalance(data){
         if(data){

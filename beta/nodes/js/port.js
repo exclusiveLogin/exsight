@@ -146,7 +146,7 @@ class port{
         });
 
         function checkPort(data,label) {
-            console.log("checkport this:",this,"context:",context);
+            //console.log("checkport this:",this,"context:",context);
             if(data){
                 //в порту кнотролируем
                 //-устаревание информации
@@ -206,9 +206,9 @@ class port{
                                 let tmpDt = {};
                                 let tmpSmt = {};
 
-                                let tmpProdSmt = $("#tanksmt .prod_cont");
-                                let tmpProdDt = $("#tankdt .prod_cont");
-                                let tmpProdOil = $("#tankoil .prod_cont");
+                                let tmpProdSmt = $("#tanksmt .prod_cont .tank_prod");
+                                let tmpProdDt = $("#tankdt .prod_cont .tank_prod");
+                                let tmpProdOil = $("#tankoil .prod_cont .tank_prod");
 
                                 let tmpPerelivSmt = $("#tanksmt .pereliv");
                                 let tmpPerelivDt = $("#tankdt .pereliv");
@@ -237,7 +237,7 @@ class port{
                                     let product = rezpark.getProduct(Number(tmpOil.product));
                                     tmpProdOil.text(product.text);
                                     tmpProdOil.removeClass("disel diseleuro a76 a80 a92 a95 a98 smt");//подготовка
-                                    tmpProdOil.removeClass("label-danger label-warning").addClass("label-success");
+                                    tmpProdOil.removeClass("label-danger label-warning");
                                     tmpProdOil.addClass(product.class);
                                 }else {
                                     tmpProdOil.text(rezpark.getProduct(Number(tmpOil.product)).text);
@@ -248,7 +248,7 @@ class port{
                                     let product = rezpark.getProduct(Number(tmpDt.product));
                                     tmpProdDt.text(product.text);
                                     tmpProdDt.removeClass("disel diseleuro a76 a80 a92 a95 a98 smt");//подготовка
-                                    tmpProdDt.removeClass("label-danger label-warning").addClass("label-success");
+                                    tmpProdDt.removeClass("label-danger label-warning");
                                     tmpProdDt.addClass(product.class);
                                 }else {
                                     tmpProdDt.text(rezpark.getProduct(Number(tmpDt.product)).text);
@@ -259,7 +259,7 @@ class port{
                                     let product = rezpark.getProduct(Number(tmpSmt.product));
                                     tmpProdSmt.text(product.text);
                                     tmpProdSmt.removeClass("disel diseleuro a76 a80 a92 a95 a98 smt");//подготовка
-                                    tmpProdSmt.removeClass("label-danger label-warning").addClass("label-success");
+                                    tmpProdSmt.removeClass("label-danger label-warning");
                                     tmpProdSmt.addClass(product.class);
                                 }else {
                                     tmpProdSmt.text(rezpark.getProduct(Number(tmpSmt.product)).text);
@@ -352,22 +352,29 @@ class port{
                                 let tmpPercentDt = rezpark.lvl2perc(Number(tmpDt.level),Number(tmpDt.max_level)).toFixed(0);
                                 let tmpPercentSmt = rezpark.lvl2perc(Number(tmpSmt.level),Number(tmpSmt.max_level)).toFixed(0);
 
-                                let pr_opt = {};
+                                let pr_opt = {
+                                    from:{
+                                        color:"#000"
+                                    },
+                                    to:{
+                                        color:"#000"
+                                    }
+                                };
 
-                                pr_opt.from = Global.pr_tank_port[0].path.getAttribute("stroke");
-                                pr_opt.to = val2Color(tmpPercentOil);
-                                console.log("pr_opt1",pr_opt," tmpPercentOil:",tmpPercentOil);
-                                Global.pr_tank_port[0].animate(tmpPercentOil/100);
+                                pr_opt.from.color = Global.pr_tank_port[0].path.getAttribute("stroke");
+                                pr_opt.to.color = val2Color(tmpPercentOil);
+                                //console.log("pr_opt1",pr_opt," tmpPercentOil:",tmpPercentOil);
+                                Global.pr_tank_port[0].animate(tmpPercentOil/100,pr_opt);
 
-                                pr_opt.from = Global.pr_tank_port[1].path.getAttribute("stroke");
-                                pr_opt.to = val2Color(tmpPercentDt);
-                                console.log("pr_opt2",pr_opt," tmpPercentDT:",tmpPercentDt);
-                                Global.pr_tank_port[1].animate(tmpPercentDt/100);
+                                pr_opt.from.color = Global.pr_tank_port[1].path.getAttribute("stroke");
+                                pr_opt.to.color = val2Color(tmpPercentDt);
+                                //console.log("pr_opt2",pr_opt," tmpPercentDT:",tmpPercentDt);
+                                Global.pr_tank_port[1].animate(tmpPercentDt/100,pr_opt);
 
-                                pr_opt.from = Global.pr_tank_port[2].path.getAttribute("stroke");
-                                pr_opt.to = val2Color(tmpPercentSmt);
-                                console.log("pr_opt3",pr_opt," tmpPercentSMT:",tmpPercentSmt);
-                                Global.pr_tank_port[2].animate(tmpPercentSmt/100);
+                                pr_opt.from.color = Global.pr_tank_port[2].path.getAttribute("stroke");
+                                pr_opt.to.color = val2Color(tmpPercentSmt);
+                                //console.log("pr_opt3",pr_opt," tmpPercentSMT:",tmpPercentSmt);
+                                Global.pr_tank_port[2].animate(tmpPercentSmt/100,pr_opt);
 
                                 function val2Color(tmppercent) {
                                     let color = "#000";

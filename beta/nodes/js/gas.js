@@ -355,8 +355,8 @@ class gas{
             $(".gas_btn_parkselect").on("click",function (elem) {
                 let numOfPark = $(this).data("gaspark");
                 if(numOfPark){
-                    if(numOfPark=="6")context.Trend.setTitle({text:"Активность датчиков загазованности парка АСН"});
                     context.Trend.setTitle({text:"Активность датчиков загазованности парка "+numOfPark});
+                    if(numOfPark=="6")context.Trend.setTitle({text:"Активность датчиков загазованности парка АСН"});
                     Utility.scrollTo(".gascontainer",".gasparkgrid[data-gaspark="+numOfPark+"]");
                 }
 
