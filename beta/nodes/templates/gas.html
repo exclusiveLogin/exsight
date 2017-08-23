@@ -1,22 +1,22 @@
 <div class="gastrend"></div>
 <div class="gasSelectParkPanel row cont_panel">
     <div class="col-md-2">
-        <button class="btn btn-primary gas_btn_parkselect" data-gaspark="1">Парк 1</button>
+        <button class="btn btn-default gas_btn_parkselect" data-gaspark="1">Парк 1</button>
     </div>
     <div class="col-md-2">
-        <button class="btn btn-primary gas_btn_parkselect" data-gaspark="2">Парк 2</button>
+        <button class="btn btn-default gas_btn_parkselect" data-gaspark="2">Парк 2</button>
     </div>
     <div class="col-md-2">
-        <button class="btn btn-primary gas_btn_parkselect" data-gaspark="3">Парк 3</button>
+        <button class="btn btn-default gas_btn_parkselect" data-gaspark="3">Парк 3</button>
     </div>
     <div class="col-md-2">
-        <button class="btn btn-primary gas_btn_parkselect" data-gaspark="4">Парк 4</button>
+        <button class="btn btn-default gas_btn_parkselect" data-gaspark="4">Парк 4</button>
     </div>
     <div class="col-md-2">
-        <button class="btn btn-primary gas_btn_parkselect" data-gaspark="5">Парк 5</button>
+        <button class="btn btn-default gas_btn_parkselect" data-gaspark="5">Парк 5</button>
     </div>
     <div class="col-md-2">
-        <button class="btn btn-primary gas_btn_parkselect" data-gaspark="6">Парк АСН</button>
+        <button class="btn btn-default gas_btn_parkselect" data-gaspark="6">Парк АСН</button>
     </div>
 </div>
 <div class="gascontainer container-fluid">
@@ -41,8 +41,8 @@
             <div class="gassensor bottom" style="grid-area: s15"><span class="gasvalue">####</span></div>
             <div class="gassensor bottom" style="grid-area: s16"><span class="gasvalue">####</span></div>
 
-            <div class="gastk" style="grid-area: tk">
-                <span class="tkname">TK-1</span>
+            <div class="gasMiniContainer" style="grid-area: tk">
+                <span class="gasMiniTitle">TK-1</span>
                 <div class="gassensortk col-md-12"><span class="gasvalue">####</span></div>
             </div>
 
@@ -81,8 +81,8 @@
             <div class="gassensor bottom" style="grid-area: s15"><span class="gasvalue">####</span></div>
             <div class="gassensor bottom" style="grid-area: s16"><span class="gasvalue">####</span></div>
 
-            <div class="gastk" style="grid-area: tk">
-                <span class="tkname">TK-2</span>
+            <div class="gasMiniContainer" style="grid-area: tk">
+                <span class="gasMiniTitle">TK-2</span>
                 <div class="gassensortk col-md-12"><span class="gasvalue">####</span></div>
             </div>
 
@@ -102,156 +102,240 @@
                 </div>
             </div>
         <div class="spacer col-md-12"></div>
+        <!--Очистные-->
+        <div class="col-lg-12 col-md-12" data-gaspark="clearfacilities">
+            <div class="gasMiniContainer">
+                <p class="gasMiniTitle">Очистные сооружения</p>
+                <div class="gassensortk col-md-2"><span class="gasvalue">####</span></div>
+                <div class="gassensortk col-md-2"><span class="gasvalue">####</span></div>
+                <div class="gassensortk col-md-2"><span class="gasvalue">####</span></div>
+                <div class="gassensortk col-md-2"><span class="gasvalue">####</span></div>
+                <div class="gassensortk col-md-2"><span class="gasvalue">####</span></div>
+                <div class="gassensortk col-md-2"><span class="gasvalue">####</span></div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="spacer col-md-12"></div>
         <!--Парк 3-->
-        <div class="gasparkgrid col-lg-6 col-md-12" data-gaspark="3">
-                <div class="gasparkname">Парк 3</div>
-                <div class="gassensor top" style="grid-area: s1"><span class="gasvalue">####</span></div>
-                <div class="gassensor top" style="grid-area: s2"><span class="gasvalue">####</span></div>
-                <div class="gassensor top" style="grid-area: s3"><span class="gasvalue">####</span></div>
-                <div class="gassensor top" style="grid-area: s4"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s5"><span class="gasvalue">####</span></div>
-                <div class="gassensor left" style="grid-area: s6"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s7"><span class="gasvalue">####</span></div>
-                <div class="gassensor left" style="grid-area: s8"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s9"><span class="gasvalue">####</span></div>
-                <div class="gassensor left" style="grid-area: s10"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s11"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s12"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s13"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s14"><span class="gasvalue">####</span></div>
-                <div class="gaspark park6">
-                    <div class="gastank">
-                        <div class="gastanknum">9</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">10</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">11</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">12</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">13</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">14</div>
-                    </div>
+        <div class="gasparkgrid parkgrid3 col-lg-12 col-md-12" data-gaspark="3">
+            <div class="gasparkname">Парк 3</div>
+            <div class="gassensor top" style="grid-area: s1"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s2"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s3"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s4"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s5"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s6"><span class="gasvalue">####</span></div>
+            <div class="gassensor right" style="grid-area: s7"><span class="gasvalue">####</span></div>
+            <div class="gassensor left" style="grid-area: s8"><span class="gasvalue">####</span></div>
+            <div class="gassensor right" style="grid-area: s9"><span class="gasvalue">####</span></div>
+            <div class="gassensor left" style="grid-area: s10"><span class="gasvalue">####</span></div>
+            <div class="gassensor right" style="grid-area: s11"><span class="gasvalue">####</span></div>
+            <div class="gassensor left" style="grid-area: s12"><span class="gasvalue">####</span></div>
+            <div class="gassensor right" style="grid-area: s13"><span class="gasvalue">####</span></div>
+            <div class="gassensor left" style="grid-area: s14"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s15"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s16"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s17"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s18"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s19"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s20"><span class="gasvalue">####</span></div>
+
+            <div class="gasMiniContainer" style="grid-area: tk8">
+                <span class="gasMiniTitle">TK-8</span>
+                <div class="gassensortk col-md-12"><span class="gasvalue">####</span></div>
+            </div>
+
+            <div class="gasMiniContainer" style="grid-area: tk3">
+                <span class="gasMiniTitle">TK-3</span>
+                <div class="gassensortk col-md-12"><span class="gasvalue">####</span></div>
+            </div>
+
+            <div class="gasMiniContainer" style="grid-area: tk15">
+                <span class="gasMiniTitle">TK-15</span>
+                <div class="gassensortk col-md-12"><span class="gasvalue">####</span></div>
+            </div>
+
+            <div class="gaspark park6">
+                <div class="gastank">
+                    <div class="gastanknum">9</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">10</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">11</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">12</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">13</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">14</div>
                 </div>
             </div>
+        </div>
+        <div class="spacer col-md-12"></div>
         <!--Парк 4-->
-        <div class="gasparkgrid col-lg-6 col-md-12" data-gaspark="4">
+        <div class="gasparkgrid parkgrid4 col-lg-12 col-md-12" data-gaspark="4">
                 <div class="gasparkname">Парк 4</div>
-                <div class="gassensor top" style="grid-area: s1"><span class="gasvalue">####</span></div>
-                <div class="gassensor top" style="grid-area: s2"><span class="gasvalue">####</span></div>
-                <div class="gassensor top" style="grid-area: s3"><span class="gasvalue">####</span></div>
-                <div class="gassensor top" style="grid-area: s4"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s5"><span class="gasvalue">####</span></div>
-                <div class="gassensor left" style="grid-area: s6"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s7"><span class="gasvalue">####</span></div>
-                <div class="gassensor left" style="grid-area: s8"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s9"><span class="gasvalue">####</span></div>
-                <div class="gassensor left" style="grid-area: s10"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s11"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s12"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s13"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s14"><span class="gasvalue">####</span></div>
-                <div class="gaspark park6">
-                    <div class="gastank">
-                        <div class="gastanknum">15</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">16</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">17</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">18</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">19</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">20</div>
-                    </div>
+            <div class="gassensor top" style="grid-area: s1"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s2"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s3"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s4"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s5"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s6"><span class="gasvalue">####</span></div>
+            <div class="gassensor right" style="grid-area: s7"><span class="gasvalue">####</span></div>
+            <div class="gassensor left" style="grid-area: s8"><span class="gasvalue">####</span></div>
+            <div class="gassensor right" style="grid-area: s9"><span class="gasvalue">####</span></div>
+            <div class="gassensor left" style="grid-area: s10"><span class="gasvalue">####</span></div>
+            <div class="gassensor right" style="grid-area: s11"><span class="gasvalue">####</span></div>
+            <div class="gassensor left" style="grid-area: s12"><span class="gasvalue">####</span></div>
+            <div class="gassensor right" style="grid-area: s13"><span class="gasvalue">####</span></div>
+            <div class="gassensor left" style="grid-area: s14"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s15"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s16"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s17"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s18"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s19"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s20"><span class="gasvalue">####</span></div>
+
+            <div class="gasMiniContainer" style="grid-area: tk6">
+                <span class="gasMiniTitle">TK-6</span>
+                <div class="gassensortk col-md-12"><span class="gasvalue">####</span></div>
+            </div>
+
+            <div class="gasMiniContainer" style="grid-area: tk14b">
+                <span class="gasMiniTitle">TK-14Б</span>
+                <div class="gassensortk col-md-12"><span class="gasvalue">####</span></div>
+            </div>
+
+            <div class="gasMiniContainer" style="grid-area: tk14">
+                <span class="gasMiniTitle">TK-14</span>
+                <div class="gassensortk col-md-12"><span class="gasvalue">####</span></div>
+            </div>
+
+            <div class="gasMiniContainer" style="grid-area: tk4">
+                <span class="gasMiniTitle">TK-4</span>
+                <div class="gassensortk col-md-12"><span class="gasvalue">####</span></div>
+            </div>
+
+            <div class="gaspark park6">
+                <div class="gastank">
+                    <div class="gastanknum">15</div>
                 </div>
+                <div class="gastank">
+                    <div class="gastanknum">16</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">17</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">18</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">19</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">20</div>
+                </div>
+            </div>
             </div>
         <div class="spacer col-md-12"></div>
         <!--Парк 5-->
-        <div class="gasparkgrid col-lg-6 col-md-12" data-gaspark="5">
-                <div class="gasparkname">Парк 5</div>
-                <div class="gassensor top" style="grid-area: s1"><span class="gasvalue">####</span></div>
-                <div class="gassensor top" style="grid-area: s2"><span class="gasvalue">####</span></div>
-                <div class="gassensor top" style="grid-area: s3"><span class="gasvalue">####</span></div>
-                <div class="gassensor top" style="grid-area: s4"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s5"><span class="gasvalue">####</span></div>
-                <div class="gassensor left" style="grid-area: s6"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s7"><span class="gasvalue">####</span></div>
-                <div class="gassensor left" style="grid-area: s8"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s9"><span class="gasvalue">####</span></div>
-                <div class="gassensor left" style="grid-area: s10"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s11"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s12"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s13"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s14"><span class="gasvalue">####</span></div>
-                <div class="gaspark park6">
-                    <div class="gastank">
-                        <div class="gastanknum">69</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">70</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">71</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">72</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">73</div>
-                    </div>
+        <div class="gasparkgrid parkgrid5 col-lg-6 col-md-12" data-gaspark="5">
+            <div class="gasparkname">Парк 5</div>
+            <div class="gassensor top" style="grid-area: s1"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s2"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s3"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s4"><span class="gasvalue">####</span></div>
+            <div class="gassensor top" style="grid-area: s5"><span class="gasvalue">####</span></div>
+            <div class="gassensor right" style="grid-area: s6"><span class="gasvalue">####</span></div>
+            <div class="gassensor left" style="grid-area: s7"><span class="gasvalue">####</span></div>
+            <div class="gassensor right" style="grid-area: s9"><span class="gasvalue">####</span></div>
+            <div class="gassensor left" style="grid-area: s8"><span class="gasvalue">####</span></div>
+            <div class="gassensor left" style="grid-area: s10"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s11"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s12"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s13"><span class="gasvalue">####</span></div>
+            <div class="gassensor bottom" style="grid-area: s14"><span class="gasvalue">####</span></div>
+            <div class="gaspark park5">
+                <div class="gastank">
+                    <div class="gastanknum">71</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">72</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">73</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">70</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">69</div>
                 </div>
             </div>
+        </div>
         <!--Парк АСН-->
-        <div class="gasparkgrid col-lg-6 col-md-12" data-gaspark="6">
+        <div class="gasparkgrid parkgridasn col-lg-6 col-md-12" data-gaspark="6">
                 <div class="gasparkname">Парк АСН</div>
                 <div class="gassensor top" style="grid-area: s1"><span class="gasvalue">####</span></div>
                 <div class="gassensor top" style="grid-area: s2"><span class="gasvalue">####</span></div>
                 <div class="gassensor top" style="grid-area: s3"><span class="gasvalue">####</span></div>
-                <div class="gassensor top" style="grid-area: s4"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s5"><span class="gasvalue">####</span></div>
+
+                <div class="gassensor right" style="grid-area: s4"><span class="gasvalue">####</span></div>
+                <div class="gassensor left" style="grid-area: s5"><span class="gasvalue">####</span></div>
                 <div class="gassensor left" style="grid-area: s6"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s7"><span class="gasvalue">####</span></div>
-                <div class="gassensor left" style="grid-area: s8"><span class="gasvalue">####</span></div>
-                <div class="gassensor right" style="grid-area: s9"><span class="gasvalue">####</span></div>
-                <div class="gassensor left" style="grid-area: s10"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s11"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s12"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s13"><span class="gasvalue">####</span></div>
-                <div class="gassensor bottom" style="grid-area: s14"><span class="gasvalue">####</span></div>
-                <div class="gaspark park6">
-                    <div class="gastank">
-                        <div class="gastanknum">51</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">52</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">53</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">54</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">55</div>
-                    </div>
-                    <div class="gastank">
-                        <div class="gastanknum">56</div>
-                    </div>
+
+                <div class="gassensor bottom" style="grid-area: s7"><span class="gasvalue">####</span></div>
+                <div class="gassensor bottom" style="grid-area: s8"><span class="gasvalue">####</span></div>
+                <div class="gassensor bottom" style="grid-area: s9"><span class="gasvalue">####</span></div>
+
+            <div class="gasMiniContainer" style="grid-area: tkasn">
+                <span class="gasMiniTitle">TK-АСН</span>
+                <div class="gassensortk col-md-12"><span class="gasvalue">####</span></div>
+            </div>
+
+            <div class="gaspark park6">
+                <div class="gastank">
+                    <div class="gastanknum">53</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">52</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">51</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">56</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">55</div>
+                </div>
+                <div class="gastank">
+                    <div class="gastanknum">54</div>
                 </div>
             </div>
+        </div>
+        <div class="spacer col-md-12"></div>
+        <!--Subearth tank-->
+        <div class="col-lg-6 col-md-12" data-gaspark="clearfacilities">
+            <div class="gasMiniContainer">
+                <p class="gasMiniTitle">Подземный резервуар</p>
+                <div class="gassensortk col-md-4 col-md-offset-4"><span class="gasvalue">####</span></div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!--АЗС-->
+        <div class="col-lg-6 col-md-12" data-gaspark="clearfacilities">
+            <div class="gasMiniContainer">
+                <p class="gasMiniTitle">АЗС</p>
+                <div class="gassensortk col-md-4 col-md-offset-4"><span class="gasvalue">####</span></div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
         <div class="spacer col-md-12"></div>
     </div>
 </div>

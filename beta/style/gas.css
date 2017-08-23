@@ -36,6 +36,12 @@
 .gaspark.park6{
     grid-template-columns: 1fr 1fr 1fr;
 }
+.gaspark.park5{
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    /*меняет поведение алгоритма с row с на column*/
+    grid-auto-flow: dense;
+}
 .gastanknum{
     font-size: 250%;
     font-weight: bold;
@@ -46,7 +52,11 @@
 }
 .gasparkgrid{
     display: grid;
-    grid-template-areas: "s44 s1 s2 s3 s4 s45""s5 p p p p s6""s7 p p p p s8""s9 p p p p s10""s46 s11 s12 s13 s14 s47";
+    grid-template-areas:    "s44 s1 s2 s3 s4 s45"
+                            "s5 p p p p s6"
+                            "s7 p p p p s8"
+                            "s9 p p p p s10"
+                            "s46 s11 s12 s13 s14 s47";
     /*grid-rows:1fr 1fr 1fr 1fr 1fr;*/
     /*grid-columns:1fr 1fr 1fr 1fr 1fr 1fr;*/
     padding-top: 40px;
@@ -64,15 +74,52 @@
                             ". s13 s14 s15 s16 ."
                             ". tk tk tk tk .";
 }
+.gasparkgrid.parkgrid3{
+    grid-template-areas:    ". tk8 tk8 . . . . ."
+                            ". s1 s2 s3 s4 s5 s6 ."
+                            "s7 p p p p p p s8"
+                            "s9 p p p p p p s10"
+                            "s11 p p p p p p s12"
+                            "s13 p p p p p p s14"
+                            ". s15 s16 s17 s18 s19 s20 ."
+                            ". tk3 tk3 . . tk15 tk15 .";
+}
+.gasparkgrid.parkgrid4{
+    grid-template-areas:    ". tk6 . . tk14b . tk14 ."
+                            ". s1 s2 s3 s4 s5 s6 ."
+                            "s7 p p p p p p s8"
+                            "s9 p p p p p p s10"
+                            "s11 p p p p p p s12"
+                            "s13 p p p p p p s14"
+                            ". s15 s16 s17 s18 s19 s20 ."
+                            ". tk4 . . . . . .";
+}
+.gasparkgrid.parkgrid5{
+    grid-template-areas:    ". s1 s2 s3 s4 s5 . ."
+                            ". p p p p p p s7"
+                            "s6 p p p p p p s8"
+                            "s9 p p p p p p s10"
+                            ". s11 s12 s13 s14 . . .";
+}
+.gasparkgrid.parkgridasn{
+    grid-template-areas:    ". s1 . s2 . s3 ."
+                            ". p p p p p s5"
+                            "s4 p p p p p ."
+                            ". p p p p p s6"
+                            ". s7 . s8 . s9 ."
+                            ". tkasn tkasn tkasn tkasn tkasn .";
+}
 .gassensor{
-    max-height: 40px;
-    padding: 5px 10px;
+    line-height: 10px;
+    max-height: 50px;
+    padding: 7px 20px;
     border: 1px whitesmoke solid;
-    background-color: gray;
+    background-color: #333;
     top: 50%;
     position: relative;
     margin: 0 auto;
     transform: rotate3d(-1,0,0,17deg) translate3d(0,-30px,30px);
+    text-align: center;
 }
 .gassensortk{
     max-height: 40px;
@@ -80,13 +127,13 @@
     border: 1px whitesmoke solid;
     background-color: gray;
     position: relative;
-    margin: 0 auto;
+    text-align: center;
 }
-.tkname{
+.gasMiniTitle{
     font-size: 120%;
     color: #DDDDDD;
 }
-.gastk{
+.gasMiniContainer{
     padding: 10px;
     border: 1px whitesmoke solid;
     background-color: #4c4c4c;
