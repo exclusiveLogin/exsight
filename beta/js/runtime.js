@@ -44,7 +44,9 @@ function adaptWin() {
     }
 }
 $(document).ready(function(){
-
+    //опрос состояния приложения
+    if (Global.StateTimer)clearInterval(Global.StateTimer);
+    Global.StateTimer=setInterval(stateRefresher,10000);
 
     $("#fancydemo .version").html(Global.version.v);
     $("#fancydemo .verdescription").html(Global.version.desc);

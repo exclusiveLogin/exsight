@@ -712,18 +712,20 @@ class respark{
 
     }
     startOPC(){
+        //console.log("respark startOPC this:",this);
         var wrapperRefreshPark = this.refreshPark.bind(this);
-        let start = function () {
+        function start() {
+            //console.log("respark start function this:",this);
             wrapperRefreshPark();
+            if (this.OPCTimer)clearInterval(this.OPCTimer);
+            this.OPCTimer = setInterval(wrapperRefreshPark,60000);
+        }
 
-            if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
-            if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
-            Global.refreshParkTimer=setInterval(wrapperRefreshPark,60000);
-            Global.refreshStateTimer=setInterval(stateRefresher,10000);
-        };
-
-        start();
+        start.bind(this)();
         this.led("error");
+    }
+    stopOPC(){
+        if (this.OPCTimer)clearInterval(this.OPCTimer);
     }
     showNode(){
         console.log("Show node REZPARK");

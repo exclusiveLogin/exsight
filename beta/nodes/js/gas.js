@@ -1,18 +1,21 @@
 class gas{
+    constructor(){
+        this.showed = false;
+    }
     startNode() {
-        //var wrapperStartOPC = this.startOPC.bind(this);
+        let wrapperStartOPC = this.startOPC.bind(this);
 
-        var context = this;
-        var autostart = this.showNode.bind(this);
+        let context = this;
+        let autostart = this.showNode.bind(this);
         this.led("error");
         //var autostart = this.showNode.bind(this);
         console.log("start node GAS");
-        var bodyPromise = fetch("nodes/templates/gas.html").then(function (response) {
+        let bodyPromise = fetch("nodes/templates/gas.html").then(function (response) {
             return response.text();
         }).then(function (text) {
             $('#gasview').html(text);
 
-            console.log("GAS template load completed trendElement:",context.TrendElement);
+            //console.log("GAS template load completed trendElement:",context.TrendElement);
 
             //инициализируем тренд
             context.selectedGasPark = false;
@@ -197,7 +200,7 @@ class gas{
                 maskColor: 'rgba(255,255,255,0.3)'
             };
             Highcharts.setOptions(Highcharts.theme);
-            var G_Setting = {
+            let G_Setting = {
                 global:{
                     getTimezoneOffset:function () {
                         var offset = new Date().getTimezoneOffset();
@@ -205,10 +208,10 @@ class gas{
                     }}
             };
             Highcharts.setOptions(G_Setting);
-            var MainTrend_setting = {
+            let MainTrend_setting = {
                 credits:{enabled:false},
                 chart: {
-                    height:150,
+                    height:100,
                     renderTo:context.TrendElement,
                     zoomType: 'x'
                 },
@@ -351,6 +354,14 @@ class gas{
             };
             context.Trend = new Highcharts.Chart(MainTrend_setting);
             context.Trend.context = this;
+            //-----расставляем номера датчиков-----------
+            $("#gasview .gassensor,#gasview .gassensortk").each(function () {
+                let tmp = $(this).data("gassensor");
+                //console.log("DOM:",this,"data:",tmp);
+                if(tmp){
+                    $(this).prepend("<p class=\"gasMiniTitle\">SGO"+tmp+"</p>");
+                }
+            });
             //-------------------------------------------
             $(".gas_btn_parkselect").on("click",function (elem) {
                 let numOfPark = $(this).data("gaspark");
@@ -363,8 +374,8 @@ class gas{
                 //console.log("this:",this,"element:",elem," numOfPark:",numOfPark);
             });
 
+            wrapperStartOPC();
             autostart();
-            //wrapperStartOPC();
         });
     }
     stopNode() {
@@ -389,9 +400,129 @@ class gas{
         let gasH = clH-elemOffset-footerH;
         $(".gascontainer").css({maxHeight:gasH});
         this.Trend.reflow();
+
+        this.showed = true;
     }
     hideNode(){
         $("#gasview").hide();
         this.led("unselect");
+        this.showed = false;
+    }
+    startOPC(){
+        let wrapperRefreshUPES = this.refreshUPES.bind(this);
+        function start () {
+            wrapperRefreshUPES();
+
+            if (this.OPCTimer)clearInterval(this.OPCTimer);
+            this.OPCTimer=setInterval(wrapperRefreshUPES,60000);
+        }
+        start.bind(this)();
+    }
+    stopOPC(){
+        if (this.OPCTimer)clearInterval(this.OPCTimer);
+    }
+    refreshUPES(){
+        this.led("ok");//сетим в ОК ..если потом что то, то пересетим
+        let context = this;
+        $.ajax({
+            url:"getupes.php",
+            dataType:"json",
+            method:'GET',
+            data:{"gaspark":true,"gaspark_min":76,"gaspark_max":202},
+            success:function(data){
+                //console.log("UPES park:",data);
+                checkUPES(data);
+            },
+            error:function(){
+                console.log("error UPES park ajax data");
+                this.led("error");
+            }
+        });
+
+        function checkUPES(data) {
+            //console.log("checkport this:",this,"context:",context);
+            if(data){
+                console.log("data from check");
+                //в UPES контролируем
+                // - устаревание информации
+                // - уровни загазованности
+                // - ошибки сенсоров
+
+                //-----WARNING SECTION------
+
+                //-----ERROR SECTION--------
+
+                if(context.showed)renderUPES(data);
+            }
+        }
+
+        function renderUPES(data){
+            if(data){
+                console.log("data to render:",data);
+                data.map(function (sensor) {
+                    let nowSensor = sensor.id;
+                    let DOMelement = $("#gasview .gassensor[data-gassensor="+nowSensor+"],#gasview .gassensortk[data-gassensor="+nowSensor+"]");
+                    let DOMvalue = DOMelement.find(".gasvalue");
+                    //-рендерим значение датчика
+                    DOMvalue.text(sensor.value);
+                    //-убираем лишние классы с элемента и значения
+                    DOMelement.removeClass("ok warn emer error old");
+                    DOMvalue.removeClass("ok warn emer error old");
+                    //проверка на уровень
+                    if(Number(sensor.value)>10 && Number(sensor.value)<20){
+                        DOMvalue.addClass("warn");
+                        DOMelement.addClass("warn");
+                    }else if(Number(sensor.value)>19){
+                        DOMvalue.addClass("emer");
+                        DOMelement.addClass("emer");
+                    }else {
+                        DOMvalue.addClass("ok");
+                        DOMelement.addClass("ok");
+                    }
+                    //проверка на ошибку датчика
+                    if(Number(sensor.value)==-1000){
+                        DOMvalue.addClass("error");
+                        DOMelement.addClass("error");
+                        DOMvalue.text("Ошибка");
+                    }
+                    //проверка на устаревание
+                    if(this.checkExpired(sensor.datetime)){
+                        DOMvalue.addClass("old");
+                        DOMelement.addClass("old");
+                        DOMvalue.text("Устарел");
+                    }
+
+                    //стави tooltip с датой
+                    DOMelement.attr("data-tooltip",sensor.fixtime);
+                    Utility.nativeTooltipHandler();
+                },context);
+            }
+        }
+    }
+    checkExpired(datetime){
+        let result = true;//по умолчанию дата старая
+        //--------------
+        var xtime = new Date(Date.parse(datetime));
+        var t_year = xtime.getFullYear();
+        var t_month = xtime.getMonth();
+        var t_day = xtime.getDate();
+        var t_hour = xtime.getHours();
+        var t_minute = xtime.getMinutes();
+        var t_second = xtime.getSeconds();
+        var offset = new Date().getTimezoneOffset()*60000;
+        var utctime = Date.UTC(t_year,t_month,t_day,t_hour,t_minute,t_second);
+        var nowt = Date.now();
+        var now = nowt - offset;
+        var compare_t = now-utctime;
+        //console.log("now:"+now+" utc:"+utctime+" compare:"+compare_t);
+        if(compare_t > 3*60*1000){
+            result = true;
+            //console.log("Expired");
+        }else {
+            result = false;
+            //console.log("Actual");
+        }
+        //--------------
+        return result;
     }
 }

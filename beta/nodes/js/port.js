@@ -49,15 +49,18 @@ class port{
         this.showed = false;
     }
     startOPC(){
-        var wrapperRefreshPort = this.refreshPort.bind(this);
-        let start = function () {
+        let wrapperRefreshPort = this.refreshPort.bind(this);
+        function start () {
             wrapperRefreshPort();
 
-            if (Global.refreshPortTimer)clearInterval(Global.refreshParkTimer);
-            Global.refreshPortTimer=setInterval(wrapperRefreshPort,60000);
-        };
-        start();
+            if (this.OPCTimer)clearInterval(this.OPCTimer);
+            this.OPCTimer=setInterval(wrapperRefreshPort,60000);
+        }
+        start.bind(this)();
         Utility.nativeTooltipHandler();
+    }
+    stopOPC(){
+        if (this.OPCTimer)clearInterval(this.OPCTimer);
     }
     checkExpired(datetime){
         let result = true;//по умолчанию дата старая

@@ -113,7 +113,7 @@
     line-height: 10px;
     max-height: 50px;
     padding: 7px 20px;
-    border: 1px whitesmoke solid;
+    border: 1px darkred solid;
     background-color: #333;
     top: 50%;
     position: relative;
@@ -122,12 +122,34 @@
     text-align: center;
 }
 .gassensortk{
-    max-height: 40px;
-    padding: 5px 10px;
-    border: 1px whitesmoke solid;
-    background-color: gray;
+    line-height: 10px;
+    max-height: 50px;
+    padding: 7px 20px;
+    background-color: #333;
+    border: 1px darkred solid;
     position: relative;
     text-align: center;
+}
+
+.gassensor.ok,.gassensortk.ok{
+    background-color: #010;
+    border: 1px lightgreen solid;
+}
+.gassensor.warn,.gassensortk.warn{
+    background-color: #210;
+    border: 1px orange solid;
+}
+.gassensor.emer,.gassensortk.emer{
+    background-color: #221;
+    border: 1px orangered solid;
+}
+.gassensor.old,.gassensortk.old{
+    background-color: #022;
+    border: 1px darkslategray solid;
+}
+.gassensor.error,.gassensortk.error{
+    background-color: #200;
+    border: 1px red solid;
 }
 .gasMiniTitle{
     font-size: 120%;
@@ -151,7 +173,27 @@
 .gasvalue{
     font-size: 2rem;
     font-weight: bold;
+    color: red;
+}
+.gasvalue.ok{
     color: lightgreen;
+    text-shadow: 0 0 5px rgba(100,255,100,0.5);
+}
+.gasvalue.warn{
+    color: orange;
+    text-shadow: 0 0 5px rgba(255,255,0,0.5);
+}
+.gasvalue.emer{
+    color: orangered;
+    text-shadow: 0 0 5px rgba(255,0,0,0.7);
+}
+.gasvalue.old{
+    color: darkslategray;
+    text-shadow: 0 0 5px rgba(20,20,20,0.7);
+}
+.gasvalue.error{
+    color: red;
+    text-shadow: 0 0 5px rgba(255,0,0,0.7);
 }
 .gasparkname{
     font-size: 150%;
