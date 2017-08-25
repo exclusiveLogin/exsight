@@ -1,5 +1,23 @@
+.gas3dwrapper{
+
+}
+.gasToggle3d{
+    right: 1%;
+    position: fixed;
+    z-index: 1000;
+}
+.gas3dwrapper.with3d{
+    transform-style: preserve-3d;
+}
 .gascontainer{
+    /*overflow-y: scroll;*/
+
     overflow-y: scroll;
+    /*transform: translateY(-70px);*/
+    /*transform-style: preserve-3d;*/
+
+}
+.gascontainer.with3d{
     perspective-origin: center center;
     perspective: 300px;
 }
@@ -21,14 +39,20 @@
     height: 180px;
     background-repeat: no-repeat;
     transition: all 0.5s ease;
-    transform: rotate3d(-1,0,0,17deg) translateY(-30px) translateZ(20px);
+}
+.gastank.with3d{
+    transform: rotate3d(-1,0,0,17deg) translateY(-10px) translateZ(25px);
 }
 .gaspark{
-    background-color: #4c4c4c;
-    border: 2px solid gray;
+    background-color: #232323;
+    border: 2px solid #ababab;
     grid-area: p;
     display: grid;
-    padding: 20px;
+    padding: 30px;
+}
+.gaspark.with3d{
+    -moz-transform-style: preserve-3d;
+    backface-visibility: hidden;
 }
 .gaspark.park4{
     grid-template-columns: 1fr 1fr;
@@ -61,9 +85,10 @@
     /*grid-columns:1fr 1fr 1fr 1fr 1fr 1fr;*/
     padding-top: 40px;
     padding-bottom: 40px;
+}
+.gasparkgrid.with3d{
     transform-style: preserve-3d;
-    transform: rotate3d(1,0,0,17deg) translateZ(-50px);
-    z-index: -1;
+    transform: rotate3d(1,0,0,15deg) translateZ(-50px) translateY(-80px);
 }
 .gasparkgrid.parkgrid1,.gasparkgrid.parkgrid2{
     grid-template-areas:    ". s1 s2 s3 s4 ."
@@ -115,11 +140,13 @@
     padding: 7px 20px;
     border: 1px darkred solid;
     background-color: #333;
-    top: 50%;
     position: relative;
     margin: 0 auto;
-    transform: rotate3d(-1,0,0,17deg) translate3d(0,-30px,30px);
     text-align: center;
+}
+.gassensor.with3d{
+    /*transform: rotate3d(-1,0,0,17deg) translate3d(0,-30px,30px);*/
+    transform: translateZ(40px);
 }
 .gassensortk{
     line-height: 10px;
@@ -133,15 +160,18 @@
 
 .gassensor.ok,.gassensortk.ok{
     background-color: #010;
-    border: 1px lightgreen solid;
+    border: 1px lime solid;
+    box-shadow: 0 0 25px 5px rgba(25,255,0,0.2);
 }
 .gassensor.warn,.gassensortk.warn{
     background-color: #210;
     border: 1px orange solid;
+    box-shadow: 0 0 25px 5px rgba(255,255,0,0.2);
 }
 .gassensor.emer,.gassensortk.emer{
     background-color: #221;
     border: 1px orangered solid;
+    box-shadow: 0 0 25px 5px rgba(255,150,0,0.2);
 }
 .gassensor.old,.gassensortk.old{
     background-color: #022;
@@ -150,6 +180,7 @@
 .gassensor.error,.gassensortk.error{
     background-color: #200;
     border: 1px red solid;
+    box-shadow: 0 0 25px 5px rgba(255,0,0,0.2);
 }
 .gasMiniTitle{
     font-size: 120%;
@@ -159,7 +190,6 @@
     padding: 10px;
     border: 1px whitesmoke solid;
     background-color: #4c4c4c;
-    top: 50%;
     position: relative;
     margin: 0 auto;
     z-index: 100;
@@ -176,8 +206,8 @@
     color: red;
 }
 .gasvalue.ok{
-    color: lightgreen;
-    text-shadow: 0 0 5px rgba(100,255,100,0.5);
+    color: lime;
+    text-shadow: 0 0 25px rgba(100,255,100,1);
 }
 .gasvalue.warn{
     color: orange;
@@ -206,6 +236,8 @@
     position: relative;
     text-decoration: underline;
     text-transform: uppercase;
+}
+.gasparkname.with3d{
     transform: rotate3d(-1,0,0,17deg) translate3d(0px,0px,110px);
 }
 .spacer{

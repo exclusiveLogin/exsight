@@ -107,7 +107,7 @@ $(document).ready(function(){
     Global.nodes.push(Node.createNode("gas","panelnodes","СКЗ парка"));
 
     //Создаем ссылку на учел учета
-    Global.nodes.push(Node.createNode("uku","panelnodes","Узел учета"));
+    //Global.nodes.push(Node.createNode("uku","panelnodes","Узел учета"));
 
     Global.jqready = true;
     Global.authkey = true;

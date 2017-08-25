@@ -321,7 +321,7 @@ export default class Utility{
         let el = $(elem);
         if(dest && el){
             let footerH = $("#footer")[0].offsetHeight;
-            el.animate({"scrollTop":dest.offsetTop+footerH/2},1500);
+            el.animate({"scrollTop":dest.offsetTop},1000);
         }else {
             console.error("ScrollTO:ошибка в поиска в DOM");
         }

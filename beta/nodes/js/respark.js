@@ -370,6 +370,7 @@ class respark{
             }
             this.startedAndRefreshed.resolve();
             //console.log("Refreshed:",this.startedAndRefreshed);
+            data = null;
         }
         function renderPark(data) {
             console.log("renderPark this :",this);
@@ -502,6 +503,7 @@ class respark{
             if(Global.tankselect){
                 this.refreshTank(Global.tankselect);
             }
+            data = null;
         }
     }
     calcArrows(data) {

@@ -188,6 +188,7 @@ class port{
                 }
                 if(context.showed)renderPort(data,label);
             }
+            data = null;
         }
 
         function renderPort(data,label){
@@ -632,6 +633,7 @@ class port{
                 }
                 window.Utility.nativeTooltipHandler();
             }
+            data = null;
         }
     }
 }
