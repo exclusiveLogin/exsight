@@ -315,7 +315,32 @@ export default class Utility{
             }
         });
 	}
-
+    checkExpired(datetime){
+        let result = true;//по умолчанию дата старая
+        //--------------
+        var xtime = new Date(Date.parse(datetime));
+        var t_year = xtime.getFullYear();
+        var t_month = xtime.getMonth();
+        var t_day = xtime.getDate();
+        var t_hour = xtime.getHours();
+        var t_minute = xtime.getMinutes();
+        var t_second = xtime.getSeconds();
+        var offset = new Date().getTimezoneOffset()*60000;
+        var utctime = Date.UTC(t_year,t_month,t_day,t_hour,t_minute,t_second);
+        var nowt = Date.now();
+        var now = nowt - offset;
+        var compare_t = now-utctime;
+        //console.log("now:"+now+" utc:"+utctime+" compare:"+compare_t);
+        if(compare_t > 3*60*1000){
+            result = true;
+            //console.log("Expired");
+        }else {
+            result = false;
+            //console.log("Actual");
+        }
+        //--------------
+        return result;
+    }
     scrollTo(elem,destination) {
         let dest = $(destination)[0];
         let el = $(elem);

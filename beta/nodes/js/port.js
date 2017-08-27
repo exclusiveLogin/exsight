@@ -57,7 +57,7 @@ class port{
             this.OPCTimer=setInterval(wrapperRefreshPort,60000);
         }
         start.bind(this)();
-        Utility.nativeTooltipHandler();
+        //Utility.nativeTooltipHandler();
     }
     stopOPC(){
         if (this.OPCTimer)clearInterval(this.OPCTimer);
@@ -631,7 +631,7 @@ class port{
                         return percent;
                     }
                 }
-                window.Utility.nativeTooltipHandler();
+                //window.Utility.nativeTooltipHandler();
             }
             data = null;
         }

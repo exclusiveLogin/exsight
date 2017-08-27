@@ -44,6 +44,9 @@ function adaptWin() {
     }
 }
 $(document).ready(function(){
+    setInterval(function () {
+        Utility.nativeTooltipHandler();
+    },120000);
     //опрос состояния приложения
     if (Global.StateTimer)clearInterval(Global.StateTimer);
     Global.StateTimer=setInterval(stateRefresher,10000);
@@ -90,21 +93,29 @@ $(document).ready(function(){
 	        $.fancybox.close();
         },5000);
     }
+    let nodeName = ["respark","trends","port","porttrends","gas"];
+	let nodePanel = "panelnodes";
+	let nodeAlias = ["Парк","Тренды парка","Причал","Тренды причала","СКЗ парка"];
 
+	nodeName.map(function (node,idx) {
+        setTimeout(function () {
+            Global.nodes.push(Node.createNode(node,nodePanel,nodeAlias[idx]));
+        },1000*idx);
+    });
     //Создаем ноду Резпарка
-    Global.nodes.push(Node.createNode("respark","panelnodes","Парк"));
+    //Global.nodes.push(Node.createNode("respark","panelnodes","Парк"));
 
     //Создаем ссылку на тренды
-    Global.nodes.push(Node.createNode("trends","panelnodes","Тренды парка"));
+    //Global.nodes.push(Node.createNode("trends","panelnodes","Тренды парка"));
 
     //Создаем ссылку на причал
-    Global.nodes.push(Node.createNode("port","panelnodes","Причал"));
+    //Global.nodes.push(Node.createNode("port","panelnodes","Причал"));
 
     //Создаем ссылку на тренды причала
-    Global.nodes.push(Node.createNode("porttrends","panelnodes","Тренды причала"));
+    //Global.nodes.push(Node.createNode("porttrends","panelnodes","Тренды причала"));
 
     //Создаем ссылку на газы
-    Global.nodes.push(Node.createNode("gas","panelnodes","СКЗ парка"));
+    //Global.nodes.push(Node.createNode("gas","panelnodes","СКЗ парка"));
 
     //Создаем ссылку на учел учета
     //Global.nodes.push(Node.createNode("uku","panelnodes","Узел учета"));

@@ -3,6 +3,8 @@ import Integrator from "./integrator.js";
 import reloadProg from "./progresslogic.js";
 import reloadProgPort from "./port_progresslogic.js";
 import UtilClass from "./logic.js";
+import Renderer from "./renderer";
+
 //import Blink from "./blink.js";
 window.ProgressBar = require("progressbar.js");
 
@@ -12,6 +14,7 @@ require("../style/gas.css");
 window.Highcharts = require("highcharts");
 
 window.Utility = new UtilClass();
+window.Utility.Renderer = Renderer;
 
 //temporary adapter
 window.panelStateToggle = window.Utility.panelStateToggle;

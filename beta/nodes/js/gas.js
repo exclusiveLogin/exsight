@@ -396,9 +396,18 @@ class gas{
                 $(".gasparkname").removeClass("with3d");
             });
 
+            //подключаем smartRender
+            try {
+                context.smartRender = new Utility.Renderer(context,["value"]);
+            }catch (e){
+                console.error(e);
+            }
+
+
             wrapperStartOPC();
             autostart();
         });
+
     }
     stopNode() {
 
@@ -436,7 +445,7 @@ class gas{
             wrapperRefreshUPES();
 
             if (this.OPCTimer)clearInterval(this.OPCTimer);
-            this.OPCTimer=setInterval(wrapperRefreshUPES,60000);
+            this.OPCTimer=setInterval(wrapperRefreshUPES,10000);
         }
         start.bind(this)();
     }
@@ -453,131 +462,136 @@ class gas{
             data:{"gaspark":true,"gaspark_min":76,"gaspark_max":202},
             success:function(data){
                 //console.log("UPES park:",data);
+                context.lastAjaxData = data;
                 checkUPES(data);
             },
             error:function(){
                 console.log("error UPES park ajax data");
-                this.led("error");
+                context.led("error");
             }
         });
 
         function checkUPES(data) {
             //console.log("checkport this:",this,"context:",context);
             if(data){
-                console.log("data from check");
+                //console.log("data from check");
                 //в UPES контролируем
                 // - устаревание информации
                 // - уровни загазованности
                 // - ошибки сенсоров
 
-                data.forEach(function (sensor) {
+                for (let sensor in data){
                     //проверка на устаревание
-                    if(this.checkExpired(sensor.datetime)){
-                        this.led("error");
+                    if(Utility.checkExpired(data[sensor].datetime)){
+                        context.led("error");
                     }
-                    if(Number(sensor.value)>10 && Number(sensor.value)<50){
-                        this.led("warning");
-                    }else if(Number(sensor.value)>49){
-                        this.led("error");
+                    if(Number(data[sensor].value)>10 && Number(data[sensor].value)<50){
+                        context.led("warning");
+                    }else if(Number(data[sensor].value)>49){
+                        context.led("error");
                     }
                     //проверка на ошибку датчика
-                    if(Number(sensor.value)==-1000){
-                        this.led("error");
+                    if(Number(data[sensor].value)==-1000){
+                        context.led("error");
                     }
-                },context);
+                }
 
                 if(context.showed)renderUPES(data);
+                data = null;
             }
         }
 
         function renderUPES(data){
-            if(data){
-                //console.log("data to render:",data);
-                //сетим кнопки в ОК
-                $(".gasSelectParkPanel .gas_btn_parkselect").find(".gasparkbtnlabel").removeClass("label-warning label-danger label-primary").addClass("label-success").text("OK");
-                data.forEach(function (sensor) {
-                    let nowSensor = sensor.id;
-                    let DOMelement = $("#gasview .gassensor[data-gassensor="+nowSensor+"],#gasview .gassensortk[data-gassensor="+nowSensor+"]");
-                    let DOMvalue = DOMelement.find(".gasvalue");
+            if(data && context.smartRender){
+                for(var sensor in data){
+                    try {
+                        if(context.smartRender.needRender(sensor)){
+                            /*if(sensor == "0"){//если первая запись сетим в дефолт
+                                //console.log("RENDER 0 el value:",data[sensor].value,"lad value:",context.lastAjaxData[sensor].value);
+                                //сетим кнопки в ОК
+                                $(".gasSelectParkPanel .gas_btn_parkselect")
+                                    .find(".gasparkbtnlabel")
+                                    .removeClass("label-warning label-danger label-primary")
+                                    .addClass("label-success")
+                                    .text("OK");
+                                $("#gasview .gassensor, #gasview .gassensortk")
+                                    .removeClass("ok warn emer error old");
+                                $("#gasview .gasvalue")
+                                    .removeClass("ok warn emer error old");
+                            }*/
+                            let nowSensor = data[sensor].id;
+                            let DOMelement = $("#gasview .gassensor[data-gassensor="+nowSensor+"],#gasview" +
+                                " .gassensortk[data-gassensor="+nowSensor+"]");
+                            let DOMvalue = DOMelement.find(".gasvalue");
 
-                    //определяем номер парка по DOM элементу
-                    let park = DOMelement.closest("[data-gaspark]");
-                    let parknum = park.attr("data-gaspark");
-                    //находим кнопку для парка
-                    let parklabel = false;
-                    if(parknum){
-                        parklabel = $(".gasSelectParkPanel .gas_btn_parkselect[data-gaspark="+parknum+"]").find(".gasparkbtnlabel");
-                        //console.log("DOM gas btn label:",parklabel);
+                            //дефолтим дизайн элемента
+                            DOMelement
+                                .removeClass("ok warn emer error old");
+                            DOMvalue
+                                .removeClass("ok warn emer error old");
+
+                            //определяем номер парка по DOM элементу
+                            let park = DOMelement.closest("[data-gaspark]");
+                            let parknum = park.attr("data-gaspark");
+                            //находим кнопку для парка
+                            let parklabel = false;
+                            if(parknum){
+                                parklabel = $(".gasSelectParkPanel .gas_btn_parkselect[data-gaspark="+parknum+"]")
+                                    .find(".gasparkbtnlabel")
+                                    .removeClass("label-warning label-danger label-primary")
+                                    .addClass("label-success")
+                                    .text("OK");
+                                //дефолтим кнопку
+
+                                //console.log("DOM gas btn label:",parklabel);
+                            }
+                            //-рендерим значение датчика
+                            DOMvalue.text(data[sensor].value);
+                            //-убираем лишние классы с элемента и значения
+                            //проверка на устаревание
+                            if(Utility.checkExpired(data[sensor].datetime)){
+                                DOMvalue.addClass("old");
+                                DOMelement.addClass("old");
+                                DOMvalue.text("Устарел");
+                                if(parklabel)parklabel.removeClass("label-success").addClass("label-primary").text("Устарел");
+                            }//проверка на уровень
+                            else if(Number(data[sensor].value)>10 && Number(data[sensor].value)<50){
+                                DOMvalue.addClass("warn");
+                                DOMelement.addClass("warn");
+                                if(parklabel)parklabel.addClass("label-warning").text("Предупр.");
+                            }else if(Number(data[sensor].value)>49){
+                                DOMvalue.addClass("emer");
+                                DOMelement.addClass("emer");
+                                if(parklabel)parklabel.addClass("label-danger").text("Газ");
+                            }else {
+                                DOMvalue.addClass("ok");
+                                DOMelement.addClass("ok");
+                            }
+                            //проверка на ошибку датчика
+                            if(Number(data[sensor].value)==-1000){
+                                DOMvalue.addClass("error");
+                                DOMelement.addClass("error");
+                                DOMvalue.text("Ошибка");
+                                if(parklabel)parklabel.addClass("label-warning").text("Ошибка");
+                            }
+
+                            //стави tooltip с датой
+                            DOMelement.attr("data-tooltip",data[sensor].fixtime);
+                            DOMelement = null;
+                            DOMvalue = null;
+                            parklabel = null;
+                            park = null;
+                        }
+                    }catch (e){
+                        //console.log("smartRender error");
                     }
 
 
-                    //console.log("parknum in work:",parknum);
 
-                    //-рендерим значение датчика
-                    DOMvalue.text(sensor.value);
-                    //-убираем лишние классы с элемента и значения
-                    DOMelement.removeClass("ok warn emer error old");
-                    DOMvalue.removeClass("ok warn emer error old");
-                    //проверка на уровень
-                    if(Number(sensor.value)>10 && Number(sensor.value)<50){
-                        DOMvalue.addClass("warn");
-                        DOMelement.addClass("warn");
-                        if(parklabel)parklabel.addClass("label-warning").text("Предупр.");
-                    }else if(Number(sensor.value)>49){
-                        DOMvalue.addClass("emer");
-                        DOMelement.addClass("emer");
-                        if(parklabel)parklabel.addClass("label-danger").text("Газ");
-                    }else {
-                        DOMvalue.addClass("ok");
-                        DOMelement.addClass("ok");
-                    }
-                    //проверка на ошибку датчика
-                    if(Number(sensor.value)==-1000){
-                        DOMvalue.addClass("error");
-                        DOMelement.addClass("error");
-                        DOMvalue.text("Ошибка");
-                        if(parklabel)parklabel.addClass("label-warning").text("Ошибка");
-                    }
-                    //проверка на устаревание
-                    if(this.checkExpired(sensor.datetime)){
-                        DOMvalue.addClass("old");
-                        DOMelement.addClass("old");
-                        DOMvalue.text("Устарел");
-                        if(parklabel)parklabel.addClass("label-primary").text("Устарел");
-                    }
 
-                    //стави tooltip с датой
-                    DOMelement.attr("data-tooltip",sensor.fixtime);
-                    Utility.nativeTooltipHandler();
-                },context);
+                }
                 data = null;
             }
         }
-    }
-    checkExpired(datetime){
-        let result = true;//по умолчанию дата старая
-        //--------------
-        var xtime = new Date(Date.parse(datetime));
-        var t_year = xtime.getFullYear();
-        var t_month = xtime.getMonth();
-        var t_day = xtime.getDate();
-        var t_hour = xtime.getHours();
-        var t_minute = xtime.getMinutes();
-        var t_second = xtime.getSeconds();
-        var offset = new Date().getTimezoneOffset()*60000;
-        var utctime = Date.UTC(t_year,t_month,t_day,t_hour,t_minute,t_second);
-        var nowt = Date.now();
-        var now = nowt - offset;
-        var compare_t = now-utctime;
-        //console.log("now:"+now+" utc:"+utctime+" compare:"+compare_t);
-        if(compare_t > 3*60*1000){
-            result = true;
-            //console.log("Expired");
-        }else {
-            result = false;
-            //console.log("Actual");
-        }
-        //--------------
-        return result;
     }
 }

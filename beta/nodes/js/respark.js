@@ -264,6 +264,7 @@ class respark{
         }
     }
     refreshPark(){
+        this.led("ok");//сетим в норму изначально
         var wrapperRenderpark = renderPark.bind(this);
         var wrapperCheckPark = checkPark.bind(this);
         var wrapperCalcArrows = this.calcArrows.bind(this);
@@ -304,7 +305,6 @@ class respark{
         });
         function checkPark(data) {
             //console.log("checkpark this:",this);
-            this.led("ok");//сетим в норму изначально
             if(data){
                 /*Если это холодный старт то
                  надо список имеющихся активных резервуаров

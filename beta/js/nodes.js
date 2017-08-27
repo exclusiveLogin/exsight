@@ -95,7 +95,8 @@ class Node extends NodeCtrl{
 
                         Global.nodes[index].nodeObj.startNode();//temp
 
-                        $("#btn"+name).on("click",function () {
+                        $(document).on("click","#btn"+name,function () {
+                            console.log("click on btn "+name);
                             node.nodeObj.showNode();
                         })
                     }
