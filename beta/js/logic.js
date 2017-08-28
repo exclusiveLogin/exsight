@@ -120,25 +120,16 @@ export default class Utility{
 		}
 	}
 	refreshTooltips() {
-		$('.glyphicon-warning-sign').each(function () {
-			$(this).attr("data-tooltip", "давно не обновлялся");
-		});
-        $('.fa-wrench').each(function () {
-            $(this).attr("data-tooltip", "на ремонте");
-        });
-		$('.glyphicon-arrow-down').each(function () {
-			$(this).attr("data-tooltip", "Идет слив НП");
-		});
-		$('.glyphicon-arrow-up').each(function () {
-			$(this).attr("data-tooltip", "Идет налив НП");
-		});
-		$('.glyphicon-remove-circle').each(function () {
-			$(this).attr("data-tooltip", "Ошибка уровнемера");
-		});
-		$("#panelstate").off();
+		$('.glyphicon-warning-sign').attr("data-tooltip", "давно не обновлялся");
+        $('.fa-wrench').attr("data-tooltip", "на ремонте");
+		$('.glyphicon-arrow-down').attr("data-tooltip", "Идет слив НП");
+		$('.glyphicon-arrow-up').attr("data-tooltip", "Идет налив НП");
+		$('.glyphicon-remove-circle').attr("data-tooltip", "Ошибка уровнемера");
+
+		$("[data-tooltip]").off();
 		tooltipHandler();
 		function tooltipHandler() {
-			$("#panelstate").on("mousemove","[data-tooltip]",function (eventObject) {
+			$("[data-tooltip]").on("mousemove",function (eventObject) {
 
 				var data_tooltip = $(this).attr("data-tooltip");
 
@@ -176,44 +167,6 @@ export default class Utility{
 			});
 		}
 	}
-    nativeTooltipHandler() {
-        $(document).on("mousemove","[data-tooltip]",function (eventObject) {
-
-            var data_tooltip = $(this).attr("data-tooltip");
-
-
-            var tmpoffset = $("#tooltip").offset().left;
-            var tmpw = $("#tooltip").width();
-            var tmppanelw = $(document).outerWidth();
-            //console.log("offset:"+tmpoffset+"width:"+tmpw+"panelwidth:"+tmppanelw);
-            if((tmpoffset+tmpw+100)>tmppanelw){
-                $("#tooltip").text(data_tooltip)
-                    .css({
-                        "top" : eventObject.pageY + 10,
-                        "left" : eventObject.pageX - 10 - tmpw
-                    })
-                    .show();
-            }else {
-                $("#tooltip").text(data_tooltip)
-                    .css({
-                        "top" : eventObject.pageY + 10,
-                        "left" : eventObject.pageX + 10
-                    })
-                    .show();
-            }
-
-        }).mouseout(function () {
-
-            $("#tooltip").hide(0,function () {
-                $(this).text("")
-                    .css({
-                        "top" : 0,
-                        "left" : 0
-                    });
-            })
-
-        });
-    }
 	userEnter(user) {
 		Global.authkey=true;
 		Global.loggedAs = user;

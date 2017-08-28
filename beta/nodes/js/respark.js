@@ -466,23 +466,10 @@ class respark{
                             }
 
                             Global.pr_tank[data[elem].num].animate(tmpperc/100,pr_opt);
+
                             //проверка на устаревание данных
-                            {
-                                var xtime = new Date(Date.parse(data[elem].datetime));
-                                var t_year = xtime.getFullYear();
-                                var t_month = xtime.getMonth();
-                                var t_day = xtime.getDate();
-                                var t_hour = xtime.getHours();
-                                var t_minute = xtime.getMinutes();
-                                var t_second = xtime.getSeconds();
-                                var offset = new Date().getTimezoneOffset()*60000;
-                                var utctime = Date.UTC(t_year,t_month,t_day,t_hour,t_minute,t_second);
-                                var nowt = Date.now();
-                                var now = nowt - offset;
-                                var compare_t = now-utctime;
-                                if(compare_t > 3*60*1000){
-                                    $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.2);
-                                }
+                            if(Utility.checkExpired(data[elem].datetime)){
+                                $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.2);
                             }
                         }
                     }else {
@@ -578,7 +565,7 @@ class respark{
         }else {
             TankObj.find(".tends .val").text("---");
         }
-        refreshTooltips();
+        //refreshTooltips();
     }
     lvl2perc(val,max){
         var desc = max/100;
@@ -656,6 +643,7 @@ class respark{
         }
     }
     startNode() {
+        var context = this;
         this.startedAndRefreshed = $.Deferred();
 
         //console.log("start node REZPARK",this.startedAndRefreshed);
@@ -703,6 +691,13 @@ class respark{
         var wrapperStartOPC = this.startOPC.bind(this);
 
         Promise.all([resparkbodyPromise,resparkpanelPromise]).then(function () {
+            //подключаем smartRender
+            try {
+                context.smartRender = new Utility.Renderer(context,["level","pereliv","product","service"]);
+            }catch (e){
+                console.error(e);
+            }
+
             wrapperStartOPC();
         });
     }
@@ -724,7 +719,6 @@ class respark{
         }
 
         start.bind(this)();
-        this.led("error");
     }
     stopOPC(){
         if (this.OPCTimer)clearInterval(this.OPCTimer);

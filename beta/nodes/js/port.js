@@ -62,32 +62,6 @@ class port{
     stopOPC(){
         if (this.OPCTimer)clearInterval(this.OPCTimer);
     }
-    checkExpired(datetime){
-        let result = true;//по умолчанию дата старая
-        //--------------
-        var xtime = new Date(Date.parse(datetime));
-        var t_year = xtime.getFullYear();
-        var t_month = xtime.getMonth();
-        var t_day = xtime.getDate();
-        var t_hour = xtime.getHours();
-        var t_minute = xtime.getMinutes();
-        var t_second = xtime.getSeconds();
-        var offset = new Date().getTimezoneOffset()*60000;
-        var utctime = Date.UTC(t_year,t_month,t_day,t_hour,t_minute,t_second);
-        var nowt = Date.now();
-        var now = nowt - offset;
-        var compare_t = now-utctime;
-        //console.log("now:"+now+" utc:"+utctime+" compare:"+compare_t);
-        if(compare_t > 3*60*1000){
-            result = true;
-            //console.log("Expired");
-        }else {
-            result = false;
-            //console.log("Actual");
-        }
-        //--------------
-        return result;
-    }
     refreshPort(){
         this.led("ok");//сетим в ОК ..если потом что то, то пересетим
         let context = this;
@@ -174,15 +148,15 @@ class port{
                     }
                 }
                 if(label == "valve"){
-                    if(context.checkExpired(data.datetime))context.led("error");
+                    if(Utility.checkExpired(data.datetime))context.led("error");
                 }
                 if(label == "plotnomer"){
                     for(var elem in data){
                         if(data[elem].num == "1"){
-                            if(context.checkExpired(data[elem].datetime))context.led("error");
+                            if(Utility.checkExpired(data[elem].datetime))context.led("error");
                         }
                         if(data[elem].num == "2"){
-                            if(context.checkExpired(data[elem].datetime))context.led("error");
+                            if(Utility.checkExpired(data[elem].datetime))context.led("error");
                         }
                     }
                 }
@@ -461,7 +435,7 @@ class port{
                     //timestamp
                     $(".timestamp_port_valve").attr("data-tooltip",data.fixtime);
                     $(".timestamp_port_valve").removeClass("label-success label-danger");
-                    if(context.checkExpired(data.datetime)){
+                    if(Utility.checkExpired(data.datetime)){
                         $(".timestamp_port_valve").addClass("label-danger");
                         context.led("error");
                     }else {
@@ -494,7 +468,7 @@ class port{
                             $(".table_port .port_plot_ms2_dt").text(data[elem].ms2);
 
                             $(".table_port .timestamp_port_dt").removeClass("label-success label-danger");
-                            if(context.checkExpired(data[elem].datetime)){
+                            if(Utility.checkExpired(data[elem].datetime)){
                                 $(".table_port .timestamp_port_dt").addClass("label-danger");
                                 context.led("error");
                             }else {
@@ -525,7 +499,7 @@ class port{
                             $(".table_port .port_plot_ms2_smt").text(data[elem].ms2);
 
                             $(".table_port .timestamp_port_smt").removeClass("label-success label-danger");
-                            if(context.checkExpired(data[elem].datetime)){
+                            if(Utility.checkExpired(data[elem].datetime)){
                                 $(".table_port .timestamp_port_smt").addClass("label-danger");
                                 context.led("error");
                             }else {
@@ -563,7 +537,7 @@ class port{
                                 //timestamp
                                 $(".timestamp_port_ecu1").attr("data-tooltip",data[elem].fixtime);
                                 $(".timestamp_port_ecu1").removeClass("label-success label-danger");
-                                if(context.checkExpired(data[elem].datetime)){
+                                if(Utility.checkExpired(data[elem].datetime)){
                                     $(".timestamp_port_ecu1").addClass("label-danger");
                                     context.led("error");
                                 }else {
@@ -596,7 +570,7 @@ class port{
                                 //timestamp
                                 $(".timestamp_port_ecu2").attr("data-tooltip",data[elem].fixtime);
                                 $(".timestamp_port_ecu2").removeClass("label-success label-danger");
-                                if(context.checkExpired(data[elem].datetime)){
+                                if(Utility.checkExpired(data[elem].datetime)){
                                     $(".timestamp_port_ecu2").addClass("label-danger");
                                     context.led("error");
                                 }else {

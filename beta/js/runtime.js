@@ -45,7 +45,7 @@ function adaptWin() {
 }
 $(document).ready(function(){
     setInterval(function () {
-        Utility.nativeTooltipHandler();
+        Utility.refreshTooltips();
     },120000);
     //опрос состояния приложения
     if (Global.StateTimer)clearInterval(Global.StateTimer);
