@@ -176,7 +176,7 @@ class port{
                             let lastData = {};
                             //берем последние данные с парка
                             if(getNode(respark)>(-1)){
-                                lastData = Global.nodes[getNode(respark)].nodeObj.lastParkAjax;
+                                lastData = Global.nodes[getNode(respark)].nodeObj.lastAjaxData;
                                 let rezpark  = Global.nodes[getNode(respark)].nodeObj;
                                 //рендерим резервуары в порту
                                 //хранит объект с данными для выбранного резервуара

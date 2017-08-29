@@ -1,7 +1,7 @@
 class respark{
     constructor(){
         this.coldstart = true;
-        this.lastParkAjax = {};
+        this.lastAjaxData = {};
     }
     rendermeteo(data){
         if (data){
@@ -96,8 +96,8 @@ class respark{
         var wrapperRenderTank = renderTank.bind(this);
         var wrapperTrend = this.renderTrendTankParm.bind(this);
         //запрос резервуара
-        if(this.lastParkAjax) {
-            this.lastParkAjax.map(function (tankObj) {//выбираем и последнего респонса нужный резервуар
+        if(this.lastAjaxData) {
+            this.lastAjaxData.map(function (tankObj) {//выбираем и последнего респонса нужный резервуар
                 if(tankObj.num == tank){
                     //отправляем его на рендер без доп запроса к серверу
                     wrapperRenderTank(tankObj);
@@ -294,7 +294,7 @@ class respark{
             method:'GET',
             data:{park:true},
             success:function(data){
-                context.lastParkAjax = data;
+                context.lastAjaxData = data;
                 connectionState(1);
                 wrapperCheckPark(data);
             },
@@ -374,117 +374,120 @@ class respark{
         }
         function renderPark(data) {
             console.log("renderPark this :",this);
-            if(data){
+            if(data && context.smartRender){
                 for(var elem in data){ //основной цикл рендера
-                    elem = Number(elem);
-                    if(data[elem].level && data[elem].max_level){
-                        if(data[elem].level == "-1000"){//если уровнемер не возвращает данных уровня
-                            if(!data[elem].service){// и нет "в ремонте"
-                                $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
-                                $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-remove-circle'></i>");
+                    if(context.smartRender.needRender(elem)){
+                        elem = Number(elem);
+                        if(data[elem].level && data[elem].max_level){
+                            if(data[elem].level == "-1000"){//если уровнемер не возвращает данных уровня
+                                if(!data[elem].service){// и нет "в ремонте"
+                                    $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
+                                    $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-remove-circle'></i>");
 
-                                //this.led("error");
+                                    //this.led("error");
+                                }
+
+                                $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.6);
+                                $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
+
+                            }else if(!data[elem].service){
+                                //статус резервуаров
+                                $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-ok-circle'></i>");
+
+                                $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
+                                $(".tank[data-num="+(data[elem].num)+"]").css("opacity",1);
+                                $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").removeClass("transparentStatic");
+
+                                var tmpperc = this.lvl2perc(Number(data[elem].level),Number(data[elem].max_level)).toFixed(0);
+                                var tmpReal = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val_real");
+                                var tmpPerc = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val");
+                                var tmpProd = $(".tank[data-num="+(data[elem].num)+"]").find(".tank_prod");
+                                /*
+                                 if(tmpperc>95){
+                                 tmpPerc.addClass("blink");
+                                 tmpReal.addClass("blink");
+                                 }else {
+                                 tmpPerc.removeClass("blink");
+                                 tmpReal.removeClass("blink");
+                                 }
+                                 */
+                                tmpPerc.text(tmpperc+"%");
+                                tmpReal.text(Number(data[elem].level).toFixed(0));
+                                if(Number(data[elem].product)){
+                                    var product = this.getProduct(Number(data[elem].product));
+                                    tmpProd.text(product.text);
+                                    tmpProd.removeClass("disel diseleuro a76 a80 a92 a95 a98 smt");//подготовка
+                                    tmpProd.removeClass("label-danger label-warning").addClass("label-success");
+                                    tmpProd.addClass(product.class);
+                                }else {
+                                    tmpProd.text(this.getProduct(Number(data[elem].product)).text);
+                                    tmpProd.removeClass("label-success label-warning").addClass("label-danger");
+                                }
+
+                                //console.log("pereliv:"+Number(data[elem].pereliv));
+                                if(Number(data[elem].pereliv)){
+                                    $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").removeClass("transparent");
+                                    //this.led("warning");
+                                }else {
+                                    $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").addClass("transparent");
+                                }
+
+
+                                let pr_opt = {};
+                                if(tmpperc<10){
+                                    tmpPerc.css("color","#08f");
+                                    tmpReal.css("color","#333");
+                                    pr_opt={
+                                        from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                        to:{color:"#08f"}
+                                    };
+                                }else if(tmpperc>70 && tmpperc<90){
+                                    tmpPerc.css("color","rgb(200, 100, 0)");
+                                    //tmpReal.css("color","rgb(200, 100, 0)");
+                                    tmpReal.css("color","#333");
+                                    pr_opt={
+                                        from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                        to:{color:"rgb(200, 100, 0)"}
+                                    };
+                                }else if(tmpperc>90){
+                                    tmpPerc.css("color","#a00");
+                                    tmpReal.css("color","#a00");
+                                    pr_opt={
+                                        from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                        to:{color:"#a00"}
+                                    };
+                                }else{
+                                    tmpPerc.css("color","#090");
+                                    //tmpReal.css("color","#090");
+                                    tmpReal.css("color","#333");
+                                    pr_opt={
+                                        from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                        to:{color:"#090"}
+                                    };
+                                }
+
+                                Global.pr_tank[data[elem].num].animate(tmpperc/100,pr_opt);
+
+                                //проверка на устаревание данных
+                                if(Utility.checkExpired(data[elem].datetime)){
+                                    $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.2);
+                                }
                             }
-
-                            $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.6);
-                            $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
-
-                        }else if(!data[elem].service){
-                            //статус резервуаров
-                            $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-ok-circle'></i>");
-
-                            $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
-                            $(".tank[data-num="+(data[elem].num)+"]").css("opacity",1);
-                            $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").removeClass("transparentStatic");
-
-                            var tmpperc = this.lvl2perc(Number(data[elem].level),Number(data[elem].max_level)).toFixed(0);
-                            var tmpReal = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val_real");
-                            var tmpPerc = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val");
-                            var tmpProd = $(".tank[data-num="+(data[elem].num)+"]").find(".tank_prod");
-                            /*
-                             if(tmpperc>95){
-                             tmpPerc.addClass("blink");
-                             tmpReal.addClass("blink");
-                             }else {
-                             tmpPerc.removeClass("blink");
-                             tmpReal.removeClass("blink");
-                             }
-                             */
-                            tmpPerc.text(tmpperc+"%");
-                            tmpReal.text(Number(data[elem].level).toFixed(0));
-                            if(Number(data[elem].product)){
-                                var product = this.getProduct(Number(data[elem].product));
-                                tmpProd.text(product.text);
-                                tmpProd.removeClass("disel diseleuro a76 a80 a92 a95 a98 smt");//подготовка
-                                tmpProd.removeClass("label-danger label-warning").addClass("label-success");
-                                tmpProd.addClass(product.class);
-                            }else {
-                                tmpProd.text(this.getProduct(Number(data[elem].product)).text);
-                                tmpProd.removeClass("label-success label-warning").addClass("label-danger");
-                            }
-
-                            //console.log("pereliv:"+Number(data[elem].pereliv));
-                            if(Number(data[elem].pereliv)){
-                                $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").removeClass("transparent");
-                                //this.led("warning");
-                            }else {
-                                $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").addClass("transparent");
-                            }
-
-
-                            let pr_opt = {};
-                            if(tmpperc<10){
-                                tmpPerc.css("color","#08f");
-                                tmpReal.css("color","#333");
-                                pr_opt={
-                                    from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                                    to:{color:"#08f"}
-                                };
-                            }else if(tmpperc>70 && tmpperc<90){
-                                tmpPerc.css("color","rgb(200, 100, 0)");
-                                //tmpReal.css("color","rgb(200, 100, 0)");
-                                tmpReal.css("color","#333");
-                                pr_opt={
-                                    from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                                    to:{color:"rgb(200, 100, 0)"}
-                                };
-                            }else if(tmpperc>90){
-                                tmpPerc.css("color","#a00");
-                                tmpReal.css("color","#a00");
-                                pr_opt={
-                                    from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                                    to:{color:"#a00"}
-                                };
-                            }else{
-                                tmpPerc.css("color","#090");
-                                //tmpReal.css("color","#090");
-                                tmpReal.css("color","#333");
-                                pr_opt={
-                                    from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                                    to:{color:"#090"}
-                                };
-                            }
-
-                            Global.pr_tank[data[elem].num].animate(tmpperc/100,pr_opt);
-
-                            //проверка на устаревание данных
-                            if(Utility.checkExpired(data[elem].datetime)){
-                                $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.2);
-                            }
+                        }else {
+                            Global.pr_tank[data[elem].num].animate(0,pr_opt);
+                            //this.led("error");
                         }
-                    }else {
-                        Global.pr_tank[data[elem].num].animate(0,pr_opt);
-                        //this.led("error");
+                        //Если резервуар в ремонте
+                        if(data[elem].service){//если в ремонте то ВСЕГДА
+                            $(".tank[data-num="+(data[elem].num)+"]").find(".tank_service").removeClass("transparent");
+                            $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class=\"fa fa-wrench\" aria-hidden=\"true\"></i>");
+                            $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
+                            $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
+                        }else {
+                            $(".tank[data-num="+(data[elem].num)+"]").find(".tank_service").addClass("transparent");
+                        }
                     }
-                    //Если резервуар в ремонте
-                    if(data[elem].service){//если в ремонте то ВСЕГДА
-                        $(".tank[data-num="+(data[elem].num)+"]").find(".tank_service").removeClass("transparent");
-                        $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class=\"fa fa-wrench\" aria-hidden=\"true\"></i>");
-                        $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
-                        $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
-                    }else {
-                        $(".tank[data-num="+(data[elem].num)+"]").find(".tank_service").addClass("transparent");
-                    }
+
                 }
             }
             if(Global.tankselect){

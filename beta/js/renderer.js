@@ -1,4 +1,5 @@
 export default class renderer{
+    //SmartRenderer component for EXSIGHT
     constructor(context, parms_ctrlArr){
         //проверка аргументов
         if(context){
@@ -64,7 +65,7 @@ export default class renderer{
             this.renderedOnce[index] = true;
             result = true;
         }
-        this.connectNode.lastRenderedData[index]=this.connectNode.lastAjaxData[index];
+        this.connectNode.lastRenderedData[index] = this.connectNode.lastAjaxData[index];
         return result;
 
     }
