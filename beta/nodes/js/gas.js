@@ -376,24 +376,24 @@ class gas{
 
                 //console.log("this:",this,"element:",elem," numOfPark:",numOfPark);
             });
+            //--------------добавляем 3d со старта--------
+            $(".gas3dwrapper").addClass("with3d");
+            $(".gascontainer").addClass("with3d");
+            $(".gastank").addClass("with3d");
+            $(".gaspark").addClass("with3d");
+            $(".gasparkgrid").addClass("with3d");
+            $(".gassensor").addClass("with3d");
+            $(".gasparkname").addClass("with3d");
+
             //--------------------------------------------
             $(".gasToggle3d .btn-toggle3d").on("click",function (elem) {
-                $(".gas3dwrapper").addClass("with3d");
-                $(".gascontainer").addClass("with3d");
-                $(".gastank").addClass("with3d");
-                $(".gaspark").addClass("with3d");
-                $(".gasparkgrid").addClass("with3d");
-                $(".gassensor").addClass("with3d");
-                $(".gasparkname").addClass("with3d");
-            });
-            $(".gasToggle3d .btn-toggle2d").on("click",function (elem) {
-                $(".gas3dwrapper").removeClass("with3d");
-                $(".gascontainer").removeClass("with3d");
-                $(".gastank").removeClass("with3d");
-                $(".gaspark").removeClass("with3d");
-                $(".gasparkgrid").removeClass("with3d");
-                $(".gassensor").removeClass("with3d");
-                $(".gasparkname").removeClass("with3d");
+                $(".gas3dwrapper").toggleClass("with3d");
+                $(".gascontainer").toggleClass("with3d");
+                $(".gastank").toggleClass("with3d");
+                $(".gaspark").toggleClass("with3d");
+                $(".gasparkgrid").toggleClass("with3d");
+                $(".gassensor").toggleClass("with3d");
+                $(".gasparkname").toggleClass("with3d");
             });
 
             //подключаем smartRender
