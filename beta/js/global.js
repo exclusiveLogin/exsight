@@ -17,17 +17,11 @@ let Global = {
     trend2Container:undefined,
     trend3Container:undefined,
     trend4Container:undefined,
-    emer:{
-        state:false,
-        color:"",
-        msg:"",
-        users:[],
-        user_msg:[]
-    },
     loggedAs:"",
     tankselect:"",
     nodes:[],
     nodeDependencies:{},
-    conerr:0
+    conerr:0,
+    application_state:"normal"
 };
 export default Global;

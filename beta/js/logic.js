@@ -202,6 +202,7 @@ export default class Utility{
 				if(data){
 					for(var el in data){
 						if(data[el].sector == "main"){//отлавливаем сектор
+
 							//console.log("sector main");
 							if(data[el].state == "reset"){
 								//console.log("status = reset");
@@ -223,8 +224,19 @@ export default class Utility{
                                         }
 									});
 								},60000);
-							}	
-						}
+							}
+                            if(data[el].state == "dev"){
+								if(data[el].state != Global.application_state){
+                                    showSysMsg("Страница находится в режиме изменения, некоторые функции могут не работать",false,true);
+								}
+                            }
+                            if(data[el].state == "normal"){
+                                if(data[el].state != Global.application_state){
+                                    showSysMsg("Страница находится в рабочем режиме",true);
+                                }
+                            }
+                            Global.application_state = data[el].state;
+                        }
 					}
 				}
 			},
