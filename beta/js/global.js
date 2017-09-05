@@ -22,6 +22,6 @@ let Global = {
     nodes:[],
     nodeDependencies:{},
     conerr:0,
-    application_state:"normal"
+    application_state:"starting"
 };
 export default Global;

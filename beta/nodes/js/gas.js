@@ -231,12 +231,12 @@ class gas{
                     id:"timeline",
                     type: 'datetime',
                     ordinal:false,
-                    events:{
-                        setExtremes:function (e) {
-                            console.log(e);
-                            this.chart.context.Uploader(e);
-                        }
-                    }
+                    // events:{
+                    //     setExtremes:function (e) {
+                    //         console.log(e);
+                    //         this.chart.context.Uploader(e);
+                    //     }
+                    // }
                 },
                 navigator:{
                     adaptToUpdateData:false,
@@ -354,6 +354,7 @@ class gas{
             };
             context.Trend = new Highcharts.Chart(MainTrend_setting);
             context.Trend.context = this;
+            context.Trend.showLoading("Нет данных для отображения, выберите парк");
             //-----расставляем номера датчиков-----------
             $("#gasview .gassensor,#gasview .gassensortk").each(function () {
                 let tmp = $(this).data("gassensor");
@@ -363,7 +364,7 @@ class gas{
                 }
             });
             //-------------------------------------------
-            $(".gas_btn_parkselect").on("click",function (elem) {
+            $(".gas_btn_parkselect").on("click",function () {
                 let numOfPark = $(this).data("gaspark");
                 if(numOfPark){
                     context.Trend.setTitle({text:"Активность датчиков загазованности парка "+numOfPark});
@@ -372,6 +373,7 @@ class gas{
                     if(numOfPark=="azs")context.Trend.setTitle({text:"Активность датчиков загазованности АЗС"});
                     if(numOfPark=="subearthtank")context.Trend.setTitle({text:"Активность датчиков загазованности подземного резервуара"});
                     Utility.scrollTo(".gascontainer",".gascontainer div[data-gaspark="+numOfPark+"]");
+                    context.refreshTrends(numOfPark);
                 }
 
                 //console.log("this:",this,"element:",elem," numOfPark:",numOfPark);
@@ -438,6 +440,11 @@ class gas{
         $("#gasview").hide();
         this.led("unselect");
         this.showed = false;
+        while(this.Trend.series[0]){
+            this.Trend.series[0].remove(false);
+        }
+        this.Trend.redraw();
+        this.Trend.showLoading("Нет данных для отображения, выберите парк");
     }
     startOPC(){
         let wrapperRefreshUPES = this.refreshUPES.bind(this);
@@ -593,6 +600,70 @@ class gas{
                 });
 
                 data = null;
+            }
+        }
+    }
+    refreshTrends(park){
+        //собираем сенсоры в полученном парке
+        let context = this;
+        while (context.Trend.series[0]){
+            context.Trend.series[0].remove(false);
+        }
+        context.Trend.redraw();
+        context.Trend.showLoading("Загрузка данных");
+
+        if(park){
+            let sensors = [];
+            let sensorElements = $("#gasview div[data-gaspark="+park+"]").find(".gassensor, .gassensortk");
+            sensorElements.each(function(){
+                let sens = $(this).data("gassensor");
+                if(sens){
+                    sensors.push($(this).data("gassensor"));
+                }
+            });
+
+            //тут уже имеем сенсоры
+            sensors.map(function (sensor,idx) {
+                //пробегаем по сенсорам и отправляем запрос на историю
+                setTimeout(function () {
+                    $.ajax({
+                        url:"getupes.php",
+                        dataType:"json",
+                        method:'GET',
+                        data:{"gaspark_hist":true,"gaspark_hist_id":sensor},
+                        success:function(data){
+                            renderTrends(data);
+                        },
+                        error:function(){
+                            console.log("error UPES HISTORY ajax");
+                            context.led("error");
+                        }
+                    });
+                },idx*1000);
+            });
+        }
+        function renderTrends(data) {
+            if(data){
+                //шаблон для тренда
+                let trendSet = {
+                    id:"sgo_"+data[0].num,
+                    type: 'line',
+                    name: 'Активность сенсора SGO_'+data[0].num,
+                    tooltip: {
+                        valueDecimals: 0,
+                        valueSuffix:' %'
+                    },
+                };
+                let trend = [];
+                for (var e in data){//пробег по массиву
+                    if(data[e].utc && data[e].value){//проверка параметров
+                        trend.push([Number(data[e].utc),Number(data[e].value)]);
+                    }
+                }
+                trendSet.data = trend;
+                //тут имеем массив с трендом
+                context.Trend.addSeries(trendSet);
+                context.Trend.hideLoading();
             }
         }
     }

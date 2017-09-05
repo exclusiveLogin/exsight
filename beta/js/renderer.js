@@ -46,6 +46,13 @@ export default class renderer{
                         //надо проверить не рендерилось ли еще
                         if(this.dataOldAndRendered[index]){
                             //console.log("RENDERER: данные устарели и уже рендерились");
+                            if(this.connectNode.lastRenderedData[index]["fixtime"] != this.connectNode.lastAjaxData[index]["fixtime"]){
+                                //данные уже рендерились но обновилось время записи
+                                this.dataOldAndRendered[index] = false;
+                                result = true;
+                            }else {
+                                //данные уже рендерились и время записи старое
+                            }
                         }else {
                             //console.log("RENDERER: данные устарели но не рендерились до этого");
                             this.dataOldAndRendered[index] = true;
