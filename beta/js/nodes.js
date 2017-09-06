@@ -66,7 +66,7 @@ class Node extends NodeCtrl{
                         //Создаем метод led у ноды
                         Global.nodes[index].nodeObj.led = function (state) {
                             if(state == "ok"){
-                                $("#btn"+name+" .led").removeClass("warn error");
+                                $("#btn"+name+" .led").removeClass("warn error loading");
                                 $("#btn"+name+" .led").addClass("ok");
                             }
                             if(state == "error"){
@@ -76,13 +76,16 @@ class Node extends NodeCtrl{
                                 $("#btn"+name+" .led").addClass("warn");
                             }
                             if(state == "off"){
-                                $("#btn"+name+" .led").removeClass("warn ok error");
+                                $("#btn"+name+" .led").removeClass("warn ok error loading");
                             }
                             if(state == "select"){
                                 $("#btn"+name).addClass("nodeselected");
                             }
                             if(state == "unselect"){
                                 $("#btn"+name).removeClass("nodeselected");
+                            }
+                            if(state == "load"){
+                                $("#btn"+name+" .led").addClass("loading");
                             }
                         };
                         //создаем свойство showed у ноды

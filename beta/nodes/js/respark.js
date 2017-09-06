@@ -264,7 +264,7 @@ class respark{
         }
     }
     refreshPark(){
-        this.led("ok");//сетим в норму изначально
+        this.led("load");//сетим в норму изначально
         var wrapperRenderpark = renderPark.bind(this);
         var wrapperCheckPark = checkPark.bind(this);
         var wrapperCalcArrows = this.calcArrows.bind(this);
@@ -301,9 +301,11 @@ class respark{
             error:function(){
                 console.log("error to load refresh park ajax data");
                 connectionState(0);
+                context.led("error");
             }
         });
         function checkPark(data) {
+            context.led("ok");
             //console.log("checkpark this:",this);
             if(data){
                 /*Если это холодный старт то

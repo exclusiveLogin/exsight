@@ -63,7 +63,7 @@ class port{
         if (this.OPCTimer)clearInterval(this.OPCTimer);
     }
     refreshPort(){
-        this.led("ok");//сетим в ОК ..если потом что то, то пересетим
+        this.led("load");//сетим в ОК ..если потом что то, то пересетим
         let context = this;
         $.ajax({
             url:"getport.php",
@@ -77,6 +77,7 @@ class port{
             },
             error:function(){
                 console.log("error TANKSELECT ajax data");
+                context.led("error");
             }
         });
         $.ajax({
@@ -91,6 +92,7 @@ class port{
             },
             error:function(){
                 console.log("error VALVE ajax data");
+                context.led("error");
             }
         });
         $.ajax({
@@ -105,6 +107,7 @@ class port{
             },
             error:function(){
                 console.log("error PLOTNOMER ajax data");
+                context.led("error");
             }
         });
         $.ajax({
@@ -119,10 +122,12 @@ class port{
             },
             error:function(){
                 console.log("error ECU ajax data");
+                context.led("error");
             }
         });
 
         function checkPort(data,label) {
+            context.led("ok");
             //console.log("checkport this:",this,"context:",context);
             if(data){
                 //в порту кнотролируем

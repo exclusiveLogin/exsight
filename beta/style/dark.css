@@ -734,6 +734,10 @@ a:hover{
      background: red;
      box-shadow: 0 0 10px 2px red;
  }
+.node .led.loading{
+    background: #32e1ff;
+    box-shadow: 0 0 10px 2px cyan;
+}
 .copyright{
     float: right;
 }

@@ -346,6 +346,7 @@ class gas{
                 },
                 series:[],
                 title:{
+                    floating:true,
                     text:"",
                     style:{
                         fontSize:"13px"
@@ -425,16 +426,25 @@ class gas{
         });
         $("#gasview").show();
         this.led("select");
-        //расчет размера блока газов
-        let clH = document.documentElement.clientHeight;
-        let elemOffset = $(".gascontainer").offset().top;
-        let footerH = $("#footer")[0].offsetHeight;
-        //преобразование
-        let gasH = clH-elemOffset-footerH;
-        $(".gascontainer").css({maxHeight:gasH});
+
         this.Trend.reflow();
 
         this.showed = true;
+        function rescale() {
+            //расчет размера блока газов
+            let clH = document.documentElement.clientHeight;
+            let elemOffset = $(".gascontainer").offset().top;
+            let footerH = $("#footer")[0].offsetHeight;
+            //преобразование
+            let gasH = clH-elemOffset-footerH;
+            $(".gascontainer").css({maxHeight:gasH});
+        }
+        //перереопределить размер контейнера через 10с.
+        setTimeout(function () {
+            rescale();
+        },20000);
+        rescale();
+
     }
     hideNode(){
         $("#gasview").hide();
@@ -460,7 +470,7 @@ class gas{
         if (this.OPCTimer)clearInterval(this.OPCTimer);
     }
     refreshUPES(){
-        this.led("ok");//сетим в ОК ..если потом что то, то пересетим
+        this.led("load");//сетим в ОК ..если потом что то, то пересетим
         let context = this;
         $.ajax({
             url:"getupes.php",
@@ -468,7 +478,6 @@ class gas{
             method:'GET',
             data:{"gaspark":true,"gaspark_min":76,"gaspark_max":202},
             success:function(data){
-                //console.log("UPES park:",data);
                 context.lastAjaxData = data;
                 checkUPES(data);
             },
@@ -479,6 +488,7 @@ class gas{
         });
 
         function checkUPES(data) {
+            context.led("ok");
             //console.log("checkport this:",this,"context:",context);
             if(data){
                 //console.log("data from check");
@@ -639,7 +649,7 @@ class gas{
                             context.led("error");
                         }
                     });
-                },idx*1000);
+                },idx*100);
             });
         }
         function renderTrends(data) {
