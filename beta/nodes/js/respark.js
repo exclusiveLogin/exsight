@@ -375,7 +375,6 @@ class respark{
             data = null;
         }
         function renderPark(data) {
-            console.log("renderPark this :",this);
             if(data && context.smartRender){
                 for(var elem in data){ //основной цикл рендера
                     if(context.smartRender.needRender(elem)){
