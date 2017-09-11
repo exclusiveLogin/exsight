@@ -1,5 +1,5 @@
 <?php
-require_once "path.php"
+require_once "path.php";
 include_once $path_settings."db.php";
 
 $auth=array("auth"=>false,"login"=>"");

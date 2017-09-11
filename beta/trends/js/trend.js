@@ -249,7 +249,10 @@ class TrendEngine{
                 title: {
                     text: 'Уровень'
                 },
-                visible:false
+                visible:false,
+                //softMax:10000,
+                //softMin:10000
+                minRange:1000
             },{
                 id:"temper",
                 title: {
@@ -261,7 +264,8 @@ class TrendEngine{
                 title: {
                     text: 'Масса'
                 },
-                visible:false
+                visible:false,
+                minRange:1000
             },{
                 id:"volume",
                 title: {
