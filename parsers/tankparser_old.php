@@ -93,86 +93,7 @@ for($i=1;$i<80;$i++) {
 //        var_dump($ini_arr);
 //        echo "<p>---------</p>";
 
-        if (isset($ini_arr['tank_level'])) {
-            //если пришел 0
-            $tank_level = round((float)str_replace(",", ".", $ini_arr['tank_level']), 1);
-            if($tank_level == 0){
-                //запрос последних значений utc
-                $q_hd = "SELECT UNIX_TIMESTAMP(`datetime`) AS `utc` FROM `res".$i."_hd` ORDER BY `datetime` DESC LIMIT 1";
-
-                $result = $mysql_res_hd->query($q_hd);
-                $row = $result->fetch_assoc();
-                $serverUTC = time();
-                $lastBDUTC = $row["utc"];
-                //echo "DATA OF REZ:".$i."<br>";
-                //echo "utc from db".$row["utc"]."<br>";
-                //echo "utc server".time()."<br>";
-                //если пред данные старее 5 минут то не проводим проверок а сразу пишем.
-                if(($serverUTC - $lastBDUTC)>300){
-                    //echo "Данные устарели - Пишем в БД<br>";
-                    $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . "," . $tank_level . ") ON DUPLICATE KEY UPDATE `level` = " . $tank_level . ";";
-                    $mysql->query($q);
-                }else{//иначе все остальное
-                    //echo "Данные актуальны - ПРОВЕРЯЕМ дальше<br>";
-                    //запрос последний значений резервуара
-                    $q_hd = "SELECT `level` FROM `res".$i."_hd` ORDER BY `datetime` DESC LIMIT 5";
-                    $result = $mysql_res_hd->query($q_hd);
-                    //интегрирование
-                    $arr = array();
-                    $row = $result->fetch_assoc();
-
-                    while($row){
-                        //echo "<br>----------------DUMP ROW---------------<br>";
-                        //var_dump($row);
-                        //echo "<br>----------------DUMP ROW---------------<br>";
-                        array_push($arr,(int)$row["level"]);
-                        $row = $result->fetch_assoc();
-                    }
-
-
-                    $summ_of_arr = 0;
-                    foreach($arr as $value){
-                        $summ_of_arr += $value;
-                    }
-                    //echo "<br>----------------DUMP---------------<br>";
-                    //var_dump($arr);
-                    //echo "<br>----------------DUMP---------------<br>";
-
-                    //echo "summ of RES $i last points".$summ_of_arr."<br>";
-
-                    $avg_of_arr = $summ_of_arr/count($arr);
-                    //echo "AVG of RES $i last points".$avg_of_arr."<br>";
-
-                    //демпфирование
-                    if($avg_of_arr>10){
-                        $tank_noerror = false;
-
-                        //echo ">10 AVG";
-                    }else{
-                        //echo "<10 ::AVG WRITE IN DB";
-
-                        //если нет ошибок все таки пишем в RT и не сбрасываем флаг tank_noError, то есть данные попадут в HD
-                        $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . "," . $tank_level . ") ON DUPLICATE KEY UPDATE `level` = " . $tank_level . ";";
-                        $mysql->query($q);
-                    }
-
-                    echo "error status:".$tank_noerror;
-                }
-
-
-
-
-            }else{
-                $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . "," . $tank_level . ") ON DUPLICATE KEY UPDATE `level` = " . $tank_level . ";";
-                $mysql->query($q);
-            }
-            //В RT и HD не попадают данные с ошибками
-        }else{
-            $tank_level = 0;
-            $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . ",-1000) ON DUPLICATE KEY UPDATE `level` = -1000;";
-            $mysql->query($q);
-        }
-        if (isset($ini_arr['tank_mass']) && $tank_noerror) {
+        if (isset($ini_arr['tank_mass'])) {
             if($i==2){
                 $tank_mass = round(((float)str_replace(",", ".", $ini_arr['tank_mass'])/1000), 1);
                 //echo "i:".$i."-2 tank_mass=".$tank_mass."<br>";
@@ -207,6 +128,44 @@ for($i=1;$i<80;$i++) {
             $q = "INSERT INTO `rt_tanks` (`num`,`temp`) VALUES (" . $i . "," . $tank_temp . ") ON DUPLICATE KEY UPDATE `temp` = " . $tank_temp . ";";
             $mysql->query($q);
             //echo "q:".$q."<br>";
+        }
+        if (isset($ini_arr['tank_level'])) {
+            //если пришел 0
+            $tank_level = round((float)str_replace(",", ".", $ini_arr['tank_level']), 1);
+            if($tank_level == 0){
+                //запрос последний значений резервуара
+                $q_hd = "SELECT `level` FROM `res".$i."_hd` ORDER BY `datetime` DESC LIMIT 5";
+                $result = $mysql_res_hd->query($q_hd);
+                //интегрирование
+                $arr = array();
+                $row = $result->fetch_assoc();
+
+                while($row){
+                    array_push($arr,(int)$row);
+                    $row = $result->fetch_assoc();
+                }
+                $summ_of_arr = 0;
+                foreach($arr as $value){
+                    $summ_of_arr += $value;
+                }
+                $avg_of_arr = $summ_of_arr/count($arr);
+                //демпфирование
+                if($avg_of_arr>10){
+                    $tank_noerror = false;
+                }else{
+                    //если нет ошибок все таки пишем в RT и не сбрасываем флаг tank_noError, то есть данные попадут в HD
+                    $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . "," . $tank_level . ") ON DUPLICATE KEY UPDATE `level` = " . $tank_level . ";";
+                    $mysql->query($q);
+                }
+            }else{
+                $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . "," . $tank_level . ") ON DUPLICATE KEY UPDATE `level` = " . $tank_level . ";";
+                $mysql->query($q);
+            }
+            //В RT и HD не попадают данные с ошибками
+        }else{
+            $tank_level = 0;
+            $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . ",-1000) ON DUPLICATE KEY UPDATE `level` = -1000;";
+            $mysql->query($q);
         }
         if (isset($ini_arr['tank_maxlevel'])) {
             $tank_max_level = round((float)str_replace(",", ".", $ini_arr['tank_maxlevel']), 1);

@@ -444,7 +444,8 @@ class gas{
             rescale();
         },20000);
         rescale();
-
+        //принудительно рефрешим порт при открытии вкладки
+        this.refreshUPES();
     }
     hideNode(){
         $("#gasview").hide();
