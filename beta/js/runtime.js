@@ -4,14 +4,9 @@ Global.loginData={
     "password":""
 };
 Global.version = {};
-Global.version.v = "0.9.8b";
-Global.version.build = "98100";
-Global.version.desc = "<li>Добавлен компонент Причал[new]</li>" +
-    "<li>Исправлен алгоритм расчета баланса парка[new]</li>" +
-    "<li>Добавлен компонент трендов[new]</li>" +
-    "<li>Добавлен указатель направления ветра на причале[new]</li>" +
-    "<li>Исправлены мелкие недочеты</li>" +
-    "<li>Произведен рефакторинг кода</li>";
+Global.version.v = "0.9.9b";
+Global.version.build = "99000";
+Global.version.desc = "";
 
 function visit() {
     let req = {version:Global.version.v,build:Global.version.build};
@@ -44,6 +39,13 @@ function adaptWin() {
     }
 }
 $(document).ready(function(){
+    //Loading Progress bar init
+    if(Global.demo){
+        Global.LoadingPG = new LoadingPGClass("loading_pb","fancydemo");
+        Global.LoadingPG.showLoading();
+    }
+
+
     setInterval(function () {
         Utility.refreshTooltips();
     },120000);
@@ -85,14 +87,6 @@ $(document).ready(function(){
         },20000);
     });
 
-	if(Global.demo){
-	    $("#fancydemo").fancybox({
-	        modal:true
-        }).click();
-	    setTimeout(function(){
-	        $.fancybox.close();
-        },5000);
-    }
     let nodeName = ["respark","trends","port","porttrends","gas"];
 	let nodePanel = "panelnodes";
 	let nodeAlias = ["Парк","Тренды парка","Причал","Тренды причала","СКЗ парка"];
@@ -100,6 +94,13 @@ $(document).ready(function(){
 	nodeName.map(function (node,idx) {
         setTimeout(function () {
             Global.nodes.push(Node.createNode(node,nodePanel,nodeAlias[idx]));
+            let full = nodeName.length;
+            let curent = idx+1;
+            let curPercent = 100/full*curent;
+            Global.LoadingPG.setStep(curPercent);
+            if(curent == nodeName.length){
+                Global.LoadingPG.hideLoading();
+            }
         },1000*idx);
     });
     //Создаем ноду Резпарка

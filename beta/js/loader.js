@@ -4,6 +4,7 @@ import reloadProg from "./progresslogic.js";
 import reloadProgPort from "./port_progresslogic.js";
 import UtilClass from "./logic.js";
 import Renderer from "./renderer";
+import Loading from "./loading_pg";
 
 //import Blink from "./blink.js";
 window.ProgressBar = require("progressbar.js");
@@ -31,6 +32,8 @@ window.nativeTooltipHandler = window.Utility.nativeTooltipHandler;
 window.userEnter = window.Utility.userEnter;
 window.showSysMsg = window.Utility.showSysMsg;
 window.stateRefresher = window.Utility.stateRefresher;
+
+window.LoadingPGClass = Loading;
 //-----------------------------------
 window.Global = gl;
 window.reloadProgressBar = reloadProg;

@@ -996,3 +996,7 @@ a:hover{
     margin-top: -79%;
     width: 150px;
 }
+#loading_pb{
+    /*height: 10px;*/
+    border-radius: 5px;
+}
