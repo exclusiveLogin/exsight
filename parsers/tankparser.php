@@ -20,23 +20,23 @@ if($f_meteo_exist){
 
     if (isset($meteo_ini_arr['meteo_temperature_air'])) {
         $meteo_temperature_air = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_temperature_air'])), 1);
-        //echo "temp:".$meteo_temperature_air."<br>";
+        ////echo "temp:".$meteo_temperature_air."<br>";
     }
     if (isset($meteo_ini_arr['meteo_windforce_nb'])) {
         $meteo_wind_nb = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_windforce_nb'])), 1);
-        //echo "wind_nb:".$meteo_wind_nb."<br>";
+        ////echo "wind_nb:".$meteo_wind_nb."<br>";
     }
     if (isset($meteo_ini_arr['meteo_windforce_p'])) {
         $meteo_wind_p = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_windforce_p'])), 1);
-        //echo "wind_p:".$meteo_wind_p."<br>";
+        ////echo "wind_p:".$meteo_wind_p."<br>";
     }
     if (isset($meteo_ini_arr['meteo_winddirection_p'])) {
         $meteo_wind_direction = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_winddirection_p'])), 1);
-        //echo "wind_p:".$meteo_wind_p."<br>";
+        ////echo "wind_p:".$meteo_wind_p."<br>";
     }
     if (isset($meteo_ini_arr['fixtime'])) {
         $fixtime = $meteo_ini_arr['fixtime'];
-        //echo "wind_p:".$meteo_wind_p."<br>";
+        ////echo "wind_p:".$meteo_wind_p."<br>";
     }
     $q = "INSERT INTO `meteo` (`wind_p`,`wind_nb`,`temperature_air`,`wind_direction`,`fixtime`) VALUES (" . $meteo_wind_p . "," . $meteo_wind_nb . ",
         ".$meteo_temperature_air.",".$meteo_wind_direction.",\"".$fixtime."\") ON DUPLICATE KEY UPDATE 
@@ -46,7 +46,7 @@ if($f_meteo_exist){
         `temperature_air`=".$meteo_temperature_air.",
         `fixtime`=\"".$fixtime."\";";
     $mysql->query($q);
-    //echo "q:".$q."<br>";
+    ////echo "q:".$q."<br>";
 }
 
 
@@ -69,7 +69,7 @@ if($f_asn_exist){
 for($i=1;$i<80;$i++) {
     //проверка целостности файла
     $f_exist = file_exists($ini_tank_path . $i . ".ini");
-    //echo "tank_".$i.":".$f_exist."<br>";
+    ////echo "tank_".$i.":".$f_exist."<br>";
     //внутренние переменные
     $tank_mass;
     $tank_level;
@@ -89,9 +89,6 @@ for($i=1;$i<80;$i++) {
 
     if ($f_exist) {
         $ini_arr = parse_ini_file($ini_tank_path . $i . ".ini");
-//        echo "<p>----VARDUMP for $i-----</p>";
-//        var_dump($ini_arr);
-//        echo "<p>---------</p>";
 
         if (isset($ini_arr['tank_level'])) {
             //если пришел 0
@@ -104,16 +101,14 @@ for($i=1;$i<80;$i++) {
                 $row = $result->fetch_assoc();
                 $serverUTC = time();
                 $lastBDUTC = $row["utc"];
-                //echo "DATA OF REZ:".$i."<br>";
-                //echo "utc from db".$row["utc"]."<br>";
-                //echo "utc server".time()."<br>";
+                ////echo "DATA OF REZ:".$i."<br>";
+                ////echo "utc from db".$row["utc"]."<br>";
+                ////echo "utc server".time()."<br>";
                 //если пред данные старее 5 минут то не проводим проверок а сразу пишем.
                 if(($serverUTC - $lastBDUTC)>300){
-                    //echo "Данные устарели - Пишем в БД<br>";
-                    $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . "," . $tank_level . ") ON DUPLICATE KEY UPDATE `level` = " . $tank_level . ";";
-                    $mysql->query($q);
+                    ////echo "Данные устарели - Пишем в БД<br>";
                 }else{//иначе все остальное
-                    //echo "Данные актуальны - ПРОВЕРЯЕМ дальше<br>";
+                    ////echo "Данные актуальны - ПРОВЕРЯЕМ дальше<br>";
                     //запрос последний значений резервуара
                     $q_hd = "SELECT `level` FROM `res".$i."_hd` ORDER BY `datetime` DESC LIMIT 5";
                     $result = $mysql_res_hd->query($q_hd);
@@ -122,74 +117,48 @@ for($i=1;$i<80;$i++) {
                     $row = $result->fetch_assoc();
 
                     while($row){
-                        //echo "<br>----------------DUMP ROW---------------<br>";
-                        //var_dump($row);
-                        //echo "<br>----------------DUMP ROW---------------<br>";
                         array_push($arr,(int)$row["level"]);
                         $row = $result->fetch_assoc();
                     }
-
-
                     $summ_of_arr = 0;
                     foreach($arr as $value){
                         $summ_of_arr += $value;
                     }
-                    //echo "<br>----------------DUMP---------------<br>";
-                    //var_dump($arr);
-                    //echo "<br>----------------DUMP---------------<br>";
-
-                    //echo "summ of RES $i last points".$summ_of_arr."<br>";
-
                     $avg_of_arr = $summ_of_arr/count($arr);
-                    //echo "AVG of RES $i last points".$avg_of_arr."<br>";
 
                     //демпфирование
                     if($avg_of_arr>10){
                         $tank_noerror = false;
 
-                        //echo ">10 AVG";
+                        //echo "<p>Blink ERROR res:$i level >10 AVG </p>";
                     }else{
-                        //echo "<10 ::AVG WRITE IN DB";
-
+                        ////echo "<10 ::AVG WRITE IN DB";
                         //если нет ошибок все таки пишем в RT и не сбрасываем флаг tank_noError, то есть данные попадут в HD
-                        $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . "," . $tank_level . ") ON DUPLICATE KEY UPDATE `level` = " . $tank_level . ";";
-                        $mysql->query($q);
                     }
-
-                    echo "error status:".$tank_noerror;
+                    ////echo "error status:".$tank_noerror;
                 }
-
-
-
-
-            }else{
-                $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . "," . $tank_level . ") ON DUPLICATE KEY UPDATE `level` = " . $tank_level . ";";
-                $mysql->query($q);
             }
             //В RT и HD не попадают данные с ошибками
         }else{
-            $tank_level = 0;
-            $q = "INSERT INTO `rt_tanks` (`num`,`level`) VALUES (" . $i . ",-1000) ON DUPLICATE KEY UPDATE `level` = -1000;";
-            $mysql->query($q);
+            $tank_level = -1000;
         }
-        if (isset($ini_arr['tank_mass']) && $tank_noerror) {
+        if (isset($ini_arr['tank_mass'])) {
             if($i==2){
                 $tank_mass = round(((float)str_replace(",", ".", $ini_arr['tank_mass'])/1000), 1);
-                //echo "i:".$i."-2 tank_mass=".$tank_mass."<br>";
+                ////echo "i:".$i."-2 tank_mass=".$tank_mass."<br>";
             }else{
                 $tank_mass = round((float)str_replace(",", ".", $ini_arr['tank_mass']), 1);
-                //echo "i:".$i."-not 2 tank_mass=".$tank_mass."<br>";
+                ////echo "i:".$i."-not 2 tank_mass=".$tank_mass."<br>";
             }
-
-            $q = "INSERT INTO `rt_tanks` (`num`,`mass`) VALUES (" . $i . "," . $tank_mass . ") ON DUPLICATE KEY UPDATE `mass` = " . $tank_mass . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else{
+            $tank_noerror = false;
+            //echo "<p>$i - tankmass error</p>";
         }
         if (isset($ini_arr['tank_plot'])) {
             $tank_plot = round((float)str_replace(",", ".", $ini_arr['tank_plot']), 1);
-            $q = "INSERT INTO `rt_tanks` (`num`,`plot`) VALUES (" . $i . "," . $tank_plot . ") ON DUPLICATE KEY UPDATE `plot` = " . $tank_plot . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else {
+            //$tank_noerror = false;
+            //echo "<p>$i - tankplot error</p>";
         }
         if (isset($ini_arr['tank_volume'])) {
             if($i==2){
@@ -197,74 +166,97 @@ for($i=1;$i<80;$i++) {
             }else{
                 $tank_volume = round((float)str_replace(",", ".", $ini_arr['tank_volume']), 1);
             }
-
-            $q = "INSERT INTO `rt_tanks` (`num`,`volume`) VALUES (" . $i . "," . $tank_volume . ") ON DUPLICATE KEY UPDATE `volume` = " . $tank_volume . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else {
+            $tank_noerror = false;
+            //echo "<p>$i - tankvolume error</p>";
         }
         if (isset($ini_arr['tank_temp'])) {
             $tank_temp = round((float)str_replace(",", ".", $ini_arr['tank_temp']), 2);
-            $q = "INSERT INTO `rt_tanks` (`num`,`temp`) VALUES (" . $i . "," . $tank_temp . ") ON DUPLICATE KEY UPDATE `temp` = " . $tank_temp . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else {
+            //$tank_noerror = false;
+            //echo "<p>$i - tanktemp error</p>";
         }
         if (isset($ini_arr['tank_maxlevel'])) {
             $tank_max_level = round((float)str_replace(",", ".", $ini_arr['tank_maxlevel']), 1);
-            $q = "INSERT INTO `rt_tanks` (`num`,`max_level`) VALUES (" . $i . "," . $tank_max_level . ") ON DUPLICATE KEY UPDATE `max_level` = " . $tank_max_level . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else {
+            //$tank_noerror = false;
+            //echo "<p>$i - tankmaxlevel error</p>";
         }
         if (isset($ini_arr['tank_templab'])) {
             $tank_templab = round((float)str_replace(",", ".", $ini_arr['tank_templab']), 1);
-            $q = "INSERT INTO `rt_tanks` (`num`,`templab`) VALUES (" . $i . "," . $tank_templab . ") ON DUPLICATE KEY UPDATE `templab` = " . $tank_templab . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else {
+            //$tank_noerror = false;
+            //echo "<p>$i - tanktemplab error</p>";
         }
         if (isset($ini_arr['tank_plotlab'])) {
             $tank_plotlab = round((float)str_replace(",", ".", $ini_arr['tank_plotlab']), 1);
-            $q = "INSERT INTO `rt_tanks` (`num`,`plotlab`) VALUES (" . $i . "," . $tank_plotlab . ") ON DUPLICATE KEY UPDATE `plotlab` = " . $tank_plotlab . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else {
+            //$tank_noerror = false;
+            //echo "<p>$i - tankplotlab error</p>";
         }
         if (isset($ini_arr['tank_avlevel'])) {
             $tank_avlevel = round((float)str_replace(",", ".", $ini_arr['tank_avlevel']), 1);
-            $q = "INSERT INTO `rt_tanks` (`num`,`avlevel`) VALUES (" . $i . "," . $tank_avlevel . ") ON DUPLICATE KEY UPDATE `avlevel` = " . $tank_avlevel . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else {
+            //$tank_noerror = false;
+            //echo "<p>$i - tankavlevel error</p>";
         }
         if (isset($ini_arr['tank_signallevel'])) {
             $tank_signallevel = round((float)str_replace(",", ".", $ini_arr['tank_signallevel']), 1);
-            $q = "INSERT INTO `rt_tanks` (`num`,`signallevel`) VALUES (" . $i . "," . $tank_signallevel . ") ON DUPLICATE KEY UPDATE `signallevel` = " . $tank_signallevel . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else {
+            //$tank_noerror = false;
+            //echo "<p>$i - tanksignallevel error</p>";
         }
         if (isset($ini_arr['tank_pereliv'])) {
             $tank_pereliv = round((float)str_replace(",", ".", $ini_arr['tank_pereliv']), 1);
-            $q = "INSERT INTO `rt_tanks` (`num`,`pereliv`) VALUES (" . $i . "," . $tank_pereliv . ") ON DUPLICATE KEY UPDATE `pereliv` = " . $tank_pereliv . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else {
+            //$tank_noerror = false;
+            //echo "<p>$i - tankpereliv error</p>";
         }
         if (isset($ini_arr['tank_product'])) {
             $tank_product = round((float)str_replace(",", ".", $ini_arr['tank_product']), 1);
-            $q = "INSERT INTO `rt_tanks` (`num`,`product`) VALUES (" . $i . "," . $tank_product . ") ON DUPLICATE KEY UPDATE `product` = " . $tank_product . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else {
+            //$tank_noerror = false;
+            //echo "<p>$i - tankproduct error</p>";
         }
         if (isset($ini_arr['tank_vaportemp'])) {
             $tank_vaportemp = round((float)str_replace(",", ".", $ini_arr['tank_vaportemp']), 2);
-            $q = "INSERT INTO `rt_tanks` (`num`,`tempvapor`) VALUES (" . $i . "," . $tank_vaportemp . ") ON DUPLICATE KEY UPDATE `tempvapor` = " . $tank_vaportemp . ";";
-            $mysql->query($q);
-            //echo "q:".$q."<br>";
+        }else {
+            //$tank_noerror = false;
+            //echo "<p>$i - tankvaportemp error</p>";
         }
         if (isset($ini_arr['fixtime'])) {
             $tank_fixtime = $ini_arr['fixtime'];
-            $q = "INSERT INTO `rt_tanks` (`num`,`fixtime`) VALUES (" . $i . ",'" . $tank_fixtime . "') ON DUPLICATE KEY UPDATE `fixtime` = '" . $tank_fixtime . "';";
+        }
+
+        //проверка переменных и флага noerror, запись в БД по состоянию
+        if($tank_noerror){
+            //RT
+            $q = "INSERT INTO `rt_tanks` (`num`,`level`,`mass`,`plot`,`volume`,`temp`,`avlevel`,`max_level`,`signallevel`,`pereliv`,`tempvapor`,`product`,`plotlab`,`templab`,`fixtime`) 
+                VALUES(" . $i . ", $tank_level, $tank_mass, $tank_plot, $tank_volume, $tank_temp, $tank_avlevel, $tank_max_level,
+                 $tank_signallevel, $tank_pereliv, $tank_vaportemp, $tank_product, $tank_plotlab, $tank_templab, \"".$tank_fixtime."\") 
+                 ON DUPLICATE KEY UPDATE `level` = $tank_level,
+                                        `mass` = $tank_mass,
+                                        `plot`= $tank_mass,
+                                        `volume` = $tank_volume,
+                                        `temp` = $tank_temp,
+                                        `avlevel` = $tank_avlevel,
+                                        `max_level` = $tank_max_level,
+                                        `signallevel` = $tank_signallevel,
+                                        `pereliv` = $tank_pereliv,
+                                        `tempvapor` = $tank_vaportemp,
+                                        `product` = $tank_product,
+                                        `plotlab` = $tank_plotlab,
+                                        `templab` = $tank_templab,
+                                        `fixtime` = \"$tank_fixtime\"";
             $mysql->query($q);
-            //echo "q:".$q."<br>";
+            //if($i==15)//echo $q;
+            //echo $q."--<br>";
+            //HIST
+            $q_hd = "INSERT INTO `res".$i."_hd` (`level`,`plot`,`volume`,`temperature`,`vapor_temperature`,`mass`) VALUES ($tank_level,$tank_plot,$tank_volume,$tank_temp,$tank_vaportemp,$tank_mass);";
+            $mysql_res_hd->query($q_hd);
+        }else{
+            //echo "<p> rez: $i tankerror</p>";
         }
     }
-    $q_hd = "INSERT INTO `res".$i."_hd` (`level`,`plot`,`volume`,`temperature`,`vapor_temperature`,`mass`) VALUES ($tank_level,$tank_plot,$tank_volume,$tank_temp,$tank_vaportemp,$tank_mass);";
-    //echo $q_hd;
-    $mysql_res_hd->query($q_hd);
 }
 

@@ -63,7 +63,7 @@ class port{
         if (this.OPCTimer)clearInterval(this.OPCTimer);
     }
     refreshPort(){
-        this.led("load");//сетим в ОК ..если потом что то, то пересетим
+        this.led("ok");//сетим в ОК ..если потом что то, то пересетим
         let context = this;
         $.ajax({
             url:"getport.php",
@@ -127,7 +127,7 @@ class port{
         });
 
         function checkPort(data,label) {
-            context.led("ok");
+            //context.led("ok");
             //console.log("checkport this:",this,"context:",context);
             if(data){
                 //в порту кнотролируем
@@ -146,9 +146,17 @@ class port{
                     }
                 }
                 //-----ERROR SECTION--------
+                if(label == "ecu"){
+                    for(var elem in data){
+                        if(Utility.checkExpired(data[elem].datetime))context.led("error");
+                    }
+                }
                 if(label == "tankselect"){
                     if((data.tankdt!="0" && data.tankoil!="0" && data.tanksmt!="0")&&(data.tankdt && data.tankoil && data.tanksmt)){
                     }else {
+                        context.led("error");
+                    }
+                    if(Utility.checkExpired(data.datetime)){
                         context.led("error");
                     }
                 }
