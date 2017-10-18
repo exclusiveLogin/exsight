@@ -12,6 +12,7 @@ window.ProgressBar = require("progressbar.js");
 require("../style/dark.css");
 require("../style/progress.css");
 require("../style/gas.css");
+require("../style/railgas.css");
 window.Highcharts = require("highcharts");
 
 window.Utility = new UtilClass();

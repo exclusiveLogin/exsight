@@ -1,0 +1,88 @@
+.railgas3dwrapper{
+
+}
+.railgasToggle3d{
+    right: 1%;
+    position: fixed;
+    z-index: 1000;
+}
+.railgas3dwrapper.with3d{
+    transform-style: preserve-3d;
+}
+.railgascontainer{
+    /*overflow-y: scroll;*/
+    max-height: 1000px;
+    /*overflow-y: scroll;*/
+    overflow-x:hidden;
+    padding-left: 0;
+    padding-right: 0;
+    /*transform: translateY(-70px);*/
+    /*transform-style: preserve-3d;*/
+
+}
+.railgascontainer.with3d{
+    perspective-origin: center center;
+    perspective: 500px;
+}
+.railgastrend{
+    max-height: 150px;
+}
+.railgasSelectParkPanel{
+    /*line-height: 40px;*/
+}
+#railgasview{
+    margin-left: 0;
+    margin-right: 0;
+}
+#railgasview .btn{
+    margin:auto;
+}
+.railgasgrid{
+    transition: .5s ease all;
+    display: grid;
+    grid-template-areas:    "s1 s2 s3 s4 s5 s6 s7 s8 s9 s10"
+                            "p p p p p p p p p p"
+                            "s11 s12 s13 s14 s15 s16 s17 s18 s19 s20";
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.railgasgrid.with3d{
+    transform-style: preserve-3d;
+    transform: rotate3d(1,0,0,20deg);
+}
+.rail_container{
+    transition: .5s ease all;
+}
+.rail_container.with3d{
+    transform-style: preserve-3d;
+    transform: rotate3d(1,0,0,20deg);
+}
+.railup{
+    height: 30px;
+    width: 200%;
+    transform: translateX(-25%);
+    background-image: url("../nodes/templates/scheme/rails1.jpg");
+    background-size: contain;
+}
+.raildown{
+    height: 30px;
+    width: 200%;
+    transform: translateX(-25%);
+    background-image: url("../nodes/templates/scheme/rails3.jpg");
+    background-size: contain;
+    background-repeat: repeat-x;
+}
+.railestakada{
+    text-align: center;
+    transition: .5s ease all;
+    color:black;
+    font-family: "Arial Black";
+    font-size: 140%;
+    font-weight: bold;
+    line-height: 30px;
+    width: 200%;
+    transform: translateX(-25%);
+    background-image: url("../nodes/templates/scheme/concrete.jpg");
+    background-size: contain;
+    background-repeat: repeat-x;
+}

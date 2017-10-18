@@ -7,14 +7,12 @@ class port{
         var resparkbodyPromise = fetch("nodes/templates/port.html").then(function (response) {
             return response.text();
         }).then(function (text) {
-            //console.log("include asserts PORT");
             $('#portview').html(text);
-            //console.log("after include asserts PORT");
             reloadProgressBarPort();
 
-            $(".tank_pereliv").addClass("transparent");
-            $(".tank_service").addClass("transparent");
-            $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
+            $("#portview .tank_pereliv").addClass("transparent");
+            $("#portview .tank_service").addClass("transparent");
+            $("#portview .tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
 
             $(".pereliv,.errortank,.blink,.glyphicon-warning-sign,.glyphicon-remove-circle").addClass("blinkClass");
 

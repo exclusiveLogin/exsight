@@ -1000,3 +1000,28 @@ a:hover{
     /*height: 10px;*/
     border-radius: 5px;
 }
+.btn-default{
+    text-shadow: none;
+    background-image: -webkit-linear-gradient(top,#292929 0,#424242 100%);
+    background-image: -o-linear-gradient(top,#292929 0,#424242 100%);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#292929),to(#424242));
+    background-image: linear-gradient(to bottom,#292929 0,#424242 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe0e0e0', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+    background-repeat: repeat-x;
+    border-color: #ccc;
+    color: antiquewhite;
+}
+.btn:hover{
+    color: antiquewhite;
+}
+.btn-default:hover{
+    color: antiquewhite;
+    background-color: #292929;
+    background-position: 0 15px;
+}
+.btn-default:active, .btn-default:focus{
+    color: antiquewhite;
+    background-color: #393939;
+    background-position: 0 -15px;
+}

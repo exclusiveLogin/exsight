@@ -648,6 +648,7 @@ class respark{
     }
     startNode() {
         var context = this;
+        let autostart = this.showNode.bind(this);
         this.startedAndRefreshed = $.Deferred();
 
         //console.log("start node REZPARK",this.startedAndRefreshed);
@@ -659,9 +660,9 @@ class respark{
             reloadProgressBar();
 
 
-            $(".tank_pereliv").addClass("transparent");
-            $(".tank_service").addClass("transparent");
-            $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
+            $("#resparkview .tank_pereliv").addClass("transparent");
+            $("#resparkview .tank_service").addClass("transparent");
+            $("#resparkview .tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
 
             $(".pereliv,.errortank,.blink,.glyphicon-warning-sign,.glyphicon-remove-circle").addClass("blinkClass");
 
@@ -703,6 +704,7 @@ class respark{
             }
 
             wrapperStartOPC();
+            autostart();
         });
     }
     stopNode() {
@@ -728,6 +730,7 @@ class respark{
         if (this.OPCTimer)clearInterval(this.OPCTimer);
     }
     showNode(){
+        this.led("select");
         console.log("Show node REZPARK");
         Global.nodes.map(function (elem) {
             if(elem.nodeObj){
@@ -738,17 +741,17 @@ class respark{
         });
         $("#resparkview").show();
 
-        $(".tank").addClass("initScroll");//Плавный старт
+        /*$(".tank").addClass("initScroll");//Плавный старт
         $(".tank").each(function (index, elem) {
             setTimeout(function () {
                 $(elem).removeClass("initScroll");
             },index*70);
-        });
-        this.showed = true;
-        this.led("select");
+        });*/
+
 
         //принудительно запускаем обновление данных парка
         this.refreshPark();
+        this.showed = true;
     }
     hideNode(){
         $("#resparkview").hide();

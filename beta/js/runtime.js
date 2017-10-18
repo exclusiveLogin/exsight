@@ -4,8 +4,8 @@ Global.loginData={
     "password":""
 };
 Global.version = {};
-Global.version.v = "0.9.9b";
-Global.version.build = "99000";
+Global.version.v = "0.10.1b";
+Global.version.build = "11010";
 Global.version.desc = "";
 
 function visit() {
@@ -55,6 +55,7 @@ $(document).ready(function(){
 
     $("#fancydemo .version").html(Global.version.v);
     $("#fancydemo .verdescription").html(Global.version.desc);
+    $("#header .demo").html("Бета версия с ранним доступом "+Global.version.v);
 
     visit();
     adaptWin();
@@ -87,9 +88,9 @@ $(document).ready(function(){
         },20000);
     });
 
-    let nodeName = ["respark","trends","port","porttrends","gas"];
+    let nodeName = ["respark","trends","port","porttrends","gas","railgas"];
 	let nodePanel = "panelnodes";
-	let nodeAlias = ["Парк","Тренды парка","Причал","Тренды причала","СКЗ парка"];
+	let nodeAlias = ["Парк","Тренды парка","Причал","Тренды причала","СКЗ парка","СКЗ ЖД"];
 
 	nodeName.map(function (node,idx) {
         setTimeout(function () {

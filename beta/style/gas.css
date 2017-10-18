@@ -13,6 +13,7 @@
     /*overflow-y: scroll;*/
     max-height: 1000px;
     overflow-y: scroll;
+	overflow-x:hidden;
     /*transform: translateY(-70px);*/
     /*transform-style: preserve-3d;*/
 

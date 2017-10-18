@@ -1,4 +1,4 @@
-class gas{
+class railgas{
     constructor(){
         this.showed = false;
     }
@@ -8,18 +8,17 @@ class gas{
         let context = this;
         let autostart = this.showNode.bind(this);
         this.led("error");
-        //var autostart = this.showNode.bind(this);
-        console.log("start node GAS");
-        let bodyPromise = fetch("nodes/templates/gas.html").then(function (response) {
+        console.log("start node RAILGAS");
+        let bodyPromise = fetch("nodes/templates/railgas.html").then(function (response) {
             return response.text();
         }).then(function (text) {
-            $('#gasview').html(text);
+            $('#railgasview').html(text);
 
             //console.log("GAS template load completed trendElement:",context.TrendElement);
 
             //инициализируем тренд
             context.selectedGasPark = false;
-            context.TrendElement  = $(".gastrend")[0];
+            context.TrendElement  = $(".railgastrend")[0];
             Highcharts.theme = {
                 colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
                     "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
@@ -355,48 +354,28 @@ class gas{
             };
             context.Trend = new Highcharts.Chart(MainTrend_setting);
             context.Trend.context = this;
-            context.Trend.showLoading("Нет данных для отображения, выберите парк");
+            context.Trend.showLoading("Нет данных для отображения");
             //-----расставляем номера датчиков-----------
-            $("#gasview .gassensor,#gasview .gassensortk").each(function () {
+            $("#railgasview .gassensor").each(function () {
                 let tmp = $(this).data("gassensor");
-                //console.log("DOM:",this,"data:",tmp);
                 if(tmp){
                     $(this).prepend("<p class=\"gasMiniTitle\">SGO"+tmp+"</p>");
                 }
             });
-            //-------------------------------------------
-            $(".gas_btn_parkselect").on("click",function () {
-                let numOfPark = $(this).data("gaspark");
-                if(numOfPark){
-                    context.Trend.setTitle({text:"Активность датчиков загазованности парка "+numOfPark});
-                    if(numOfPark=="6")context.Trend.setTitle({text:"Активность датчиков загазованности парка АСН"});
-                    if(numOfPark=="clearfacilities")context.Trend.setTitle({text:"Активность датчиков загазованности очистных сооружений"});
-                    if(numOfPark=="azs")context.Trend.setTitle({text:"Активность датчиков загазованности АЗС"});
-                    if(numOfPark=="subearthtank")context.Trend.setTitle({text:"Активность датчиков загазованности подземного резервуара"});
-                    Utility.scrollTo(".gascontainer",".gascontainer div[data-gaspark="+numOfPark+"]");
-                    context.refreshTrends(numOfPark);
-                }
-
-                //console.log("this:",this,"element:",elem," numOfPark:",numOfPark);
-            });
             //--------------добавляем 3d со старта--------
-            $(".gas3dwrapper").addClass("with3d");
-            $(".gascontainer").addClass("with3d");
-            $(".gastank").addClass("with3d");
-            $(".gaspark").addClass("with3d");
-            $(".gasparkgrid").addClass("with3d");
-            $(".gassensor").addClass("with3d");
-            $(".gasparkname").addClass("with3d");
+            $(".railgas3dwrapper").addClass("with3d");
+            $(".railgascontainer").addClass("with3d");
+            $(".railgasgrid").addClass("with3d");
+            $(".rail_container").addClass("with3d");
 
             //--------------------------------------------
-            $(".gasToggle3d .btn-toggle3d").on("click",function (elem) {
-                $(".gas3dwrapper").toggleClass("with3d");
-                $(".gascontainer").toggleClass("with3d");
-                $(".gastank").toggleClass("with3d");
-                $(".gaspark").toggleClass("with3d");
-                $(".gasparkgrid").toggleClass("with3d");
-                $(".gassensor").toggleClass("with3d");
-                $(".gasparkname").toggleClass("with3d");
+            $(".railgasToggle3d .btn-toggle3d").on("click",function (elem) {
+                $(".railgas3dwrapper").toggleClass("with3d");
+                $(".railgascontainer").toggleClass("with3d");
+                $(".railgasgrid").toggleClass("with3d");
+                $(".rail_container").toggleClass("with3d");
+                //$(".gassensor").toggleClass("with3d");
+                //$(".gasparkname").toggleClass("with3d");
             });
 
             //подключаем smartRender
@@ -406,6 +385,9 @@ class gas{
                 console.error(e);
             }
 
+            $(".railgas_refresh_btn").on("click",function () {
+                context.refreshTrends();
+            });
 
             wrapperStartOPC();
             //autostart();
@@ -416,7 +398,7 @@ class gas{
 
     }
     showNode(){
-        //console.log("show node GAS");
+        //убираем все
         Global.nodes.map(function (elem) {
             if(elem.nodeObj){
                 if(elem.nodeObj.hideNode){
@@ -424,38 +406,29 @@ class gas{
                 }
             }
         });
-        $("#gasview").show();
+        //показываем наш
+        $("#railgasview").show();
         this.led("select");
 
+        //корректируем тренд
         this.Trend.reflow();
 
+        //ставим флаг
         this.showed = true;
-        function rescale() {
-            //расчет размера блока газов
-            let clH = document.documentElement.clientHeight;
-            let elemOffset = $(".gascontainer").offset().top;
-            let footerH = $("#footer")[0].offsetHeight;
-            //преобразование
-            let gasH = clH-elemOffset-footerH;
-            $(".gascontainer").css({maxHeight:gasH});
-        }
-        //перереопределить размер контейнера через 10с.
-        setTimeout(function () {
-            rescale();
-        },20000);
-        rescale();
+
         //принудительно рефрешим порт при открытии вкладки
         this.refreshUPES();
+
     }
     hideNode(){
-        $("#gasview").hide();
+        $("#railgasview").hide();
         this.led("unselect");
         this.showed = false;
         while(this.Trend.series[0]){
             this.Trend.series[0].remove(false);
         }
         this.Trend.redraw();
-        this.Trend.showLoading("Нет данных для отображения, выберите парк");
+        this.Trend.showLoading("Нет данных для отображения");
     }
     startOPC(){
         let wrapperRefreshUPES = this.refreshUPES.bind(this);
@@ -471,13 +444,13 @@ class gas{
         if (this.OPCTimer)clearInterval(this.OPCTimer);
     }
     refreshUPES(){
-        this.led("load");//сетим в ОК ..если потом что то, то пересетим
+        this.led("load");//сетим в loading
         let context = this;
         $.ajax({
             url:"getupes.php",
             dataType:"json",
             method:'GET',
-            data:{"gaspark":true,"gaspark_min":76,"gaspark_max":202},
+            data:{"gaspark":true,"gaspark_min":7,"gaspark_max":45},
             success:function(data){
                 context.lastAjaxData = data;
                 checkUPES(data);
@@ -490,7 +463,6 @@ class gas{
 
         function checkUPES(data) {
             context.led("ok");
-            //console.log("checkport this:",this,"context:",context);
             if(data){
                 //console.log("data from check");
                 //в UPES контролируем
@@ -526,8 +498,7 @@ class gas{
                     try {
                         if(context.smartRender.needRender(sensor)){
                             let nowSensor = data[sensor].id;
-                            let DOMelement = $("#gasview .gassensor[data-gassensor="+nowSensor+"],#gasview" +
-                                " .gassensortk[data-gassensor="+nowSensor+"]");
+                            let DOMelement = $("#railgasview .gassensor[data-gassensor="+nowSensor+"]");
                             let DOMvalue = DOMelement.find(".gasvalue");
 
                             //дефолтим дизайн элемента
@@ -572,15 +543,15 @@ class gas{
                     }
                 }
                 //дефолтим кнопки
-                $(".gasparkbtnlabel")
+                $(".railgasparkbtnlabel")
                     .removeClass("label-warning label-danger label-primary")
                     .addClass("label-success")
                     .text("OK");
-                $("#gasview div[data-gaspark]").each(function (element) {
+                $("#railgasview div[data-railgaspark]").each(function () {
                     //для каждого парка определяем id
-                    let tmpnum = $(this).attr("data-gaspark");
+                    let tmpnum = $(this).attr("data-railgaspark");
                     //ищем элемент label на кнопке для текущего парка
-                    let parklabel = $(".gasSelectParkPanel .gas_btn_parkselect[data-gaspark="+tmpnum+"]")
+                    let parklabel = $(".railgasSelectParkPanel .railgas_btn_parkselect[data-railgaspark="+tmpnum+"]")
                         .find(".gasparkbtnlabel");
 
                     //бежим по кнопкам и ищем аварии устаревание и предупреждения
@@ -614,7 +585,7 @@ class gas{
             }
         }
     }
-    refreshTrends(park){
+    refreshTrends(){
         //собираем сенсоры в полученном парке
         let context = this;
         while (context.Trend.series[0]){
@@ -623,36 +594,39 @@ class gas{
         context.Trend.redraw();
         context.Trend.showLoading("Загрузка данных");
 
-        if(park){
-            let sensors = [];
-            let sensorElements = $("#gasview div[data-gaspark="+park+"]").find(".gassensor, .gassensortk");
-            sensorElements.each(function(){
-                let sens = $(this).data("gassensor");
-                if(sens){
-                    sensors.push($(this).data("gassensor"));
-                }
-            });
 
-            //тут уже имеем сенсоры
-            sensors.map(function (sensor,idx) {
-                //пробегаем по сенсорам и отправляем запрос на историю
-                setTimeout(function () {
-                    $.ajax({
-                        url:"getupes.php",
-                        dataType:"json",
-                        method:'GET',
-                        data:{"gaspark_hist":true,"gaspark_hist_id":sensor},
-                        success:function(data){
-                            renderTrends(data);
-                        },
-                        error:function(){
-                            console.log("error UPES HISTORY ajax");
-                            context.led("error");
+        let sensors = [];
+        let sensorElements = $("#railgasview div[data-railgaspark]").find(".gassensor, .gassensortk");
+        sensorElements.each(function(){
+            let sens = $(this).data("gassensor");
+            if(sens){
+                sensors.push($(this).data("gassensor"));
+            }
+        });
+
+        //тут уже имеем сенсоры
+        sensors.map(function (sensor,idx) {
+            //пробегаем по сенсорам и отправляем запрос на историю
+            //setTimeout(function () {
+                $.ajax({
+                    url:"getupes.php",
+                    dataType:"json",
+                    method:'GET',
+                    data:{"gaspark_hist":true,"gaspark_hist_id":sensor},
+                    success:function(data){
+                        renderTrends(data);
+                        if(idx == sensors.length-1){
+                            context.Trend.hideLoading();
                         }
-                    });
-                },idx*100);
-            });
-        }
+                    },
+                    error:function(){
+                        console.log("error UPES HISTORY ajax");
+                        context.led("error");
+                    }
+                });
+            //},idx*100);
+        });
+
         function renderTrends(data) {
             if(data){
                 //шаблон для тренда
@@ -674,7 +648,7 @@ class gas{
                 trendSet.data = trend;
                 //тут имеем массив с трендом
                 context.Trend.addSeries(trendSet);
-                context.Trend.hideLoading();
+                //context.Trend.hideLoading();
             }
         }
     }
