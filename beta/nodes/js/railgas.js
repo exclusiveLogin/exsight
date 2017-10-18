@@ -586,28 +586,31 @@ class railgas{
         }
     }
     refreshTrends(){
-        //собираем сенсоры в полученном парке
-        let context = this;
-        while (context.Trend.series[0]){
-            context.Trend.series[0].remove(false);
-        }
-        context.Trend.redraw();
-        context.Trend.showLoading("Загрузка данных");
-
-
-        let sensors = [];
-        let sensorElements = $("#railgasview div[data-railgaspark]").find(".gassensor, .gassensortk");
-        sensorElements.each(function(){
-            let sens = $(this).data("gassensor");
-            if(sens){
-                sensors.push($(this).data("gassensor"));
+        if(!$(".railgas_refresh_btn").hasClass("disable")){
+            //btn deactivation
+            $(".railgas_refresh_btn").addClass("active disable");
+            //собираем сенсоры в полученном парке
+            let context = this;
+            while (context.Trend.series[0]){
+                context.Trend.series[0].remove(false);
             }
-        });
+            context.Trend.redraw();
+            context.Trend.showLoading("Загрузка данных");
 
-        //тут уже имеем сенсоры
-        sensors.map(function (sensor,idx) {
-            //пробегаем по сенсорам и отправляем запрос на историю
-            //setTimeout(function () {
+
+            let sensors = [];
+            let sensorElements = $("#railgasview div[data-railgaspark]").find(".gassensor, .gassensortk");
+            sensorElements.each(function(){
+                let sens = $(this).data("gassensor");
+                if(sens){
+                    sensors.push($(this).data("gassensor"));
+                }
+            });
+
+            //тут уже имеем сенсоры
+            sensors.map(function (sensor,idx) {
+                //пробегаем по сенсорам и отправляем запрос на историю
+                //setTimeout(function () {
                 $.ajax({
                     url:"getupes.php",
                     dataType:"json",
@@ -617,6 +620,7 @@ class railgas{
                         renderTrends(data);
                         if(idx == sensors.length-1){
                             context.Trend.hideLoading();
+                            $(".railgas_refresh_btn").removeClass("active disable");
                         }
                     },
                     error:function(){
@@ -624,32 +628,34 @@ class railgas{
                         context.led("error");
                     }
                 });
-            //},idx*100);
-        });
+                //},idx*100);
+            });
 
-        function renderTrends(data) {
-            if(data){
-                //шаблон для тренда
-                let trendSet = {
-                    id:"sgo_"+data[0].num,
-                    type: 'line',
-                    name: 'Активность сенсора SGO_'+data[0].num,
-                    tooltip: {
-                        valueDecimals: 0,
-                        valueSuffix:' %'
-                    },
-                };
-                let trend = [];
-                for (var e in data){//пробег по массиву
-                    if(data[e].utc && data[e].value){//проверка параметров
-                        trend.push([Number(data[e].utc),Number(data[e].value)]);
+            function renderTrends(data) {
+                if(data){
+                    //шаблон для тренда
+                    let trendSet = {
+                        id:"sgo_"+data[0].num,
+                        type: 'line',
+                        name: 'Активность сенсора SGO_'+data[0].num,
+                        tooltip: {
+                            valueDecimals: 0,
+                            valueSuffix:' %'
+                        },
+                    };
+                    let trend = [];
+                    for (var e in data){//пробег по массиву
+                        if(data[e].utc && data[e].value){//проверка параметров
+                            trend.push([Number(data[e].utc),Number(data[e].value)]);
+                        }
                     }
+                    trendSet.data = trend;
+                    //тут имеем массив с трендом
+                    context.Trend.addSeries(trendSet);
+                    //context.Trend.hideLoading();
                 }
-                trendSet.data = trend;
-                //тут имеем массив с трендом
-                context.Trend.addSeries(trendSet);
-                //context.Trend.hideLoading();
             }
         }
+
     }
 }
