@@ -28,7 +28,7 @@ if($_GET['gaspark']){
 if($_GET['gaspark_hist']){//в запросе есть флаг запроса истории
     if($_GET['gaspark_hist_id']){//в запросе есть номер запрашиваемого датчика
         $id = $_GET['gaspark_hist_id'];
-        $q = "SELECT *,UNIX_TIMESTAMP(`datetime`)*1000 AS `utc` FROM `hist_sensors` WHERE `datetime`>SUBDATE(NOW(),INTERVAL 1 DAY) AND `num` = $id ORDER BY `datetime`";
+        $q = "SELECT *,UNIX_TIMESTAMP(`datetime`)*1000 AS `utc` FROM `hist_sensors` WHERE `num` = $id AND MINUTE(`datetime`)%10=0 AND `datetime`>SUBDATE(NOW(),INTERVAL 3 DAY) ORDER BY `datetime`";
         //echo $q;
 
         $result = $mysql->query($q);

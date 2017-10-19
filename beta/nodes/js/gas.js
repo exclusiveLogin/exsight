@@ -406,6 +406,8 @@ class gas{
                 console.error(e);
             }
 
+            //подключаем loading PB
+            context.loading_trends_pb = new LoadingPGClass("loading_gastrends");
 
             wrapperStartOPC();
             //autostart();
@@ -615,6 +617,7 @@ class gas{
         }
     }
     refreshTrends(park){
+        $("#loading_gastrends").fadeIn(500);
         //собираем сенсоры в полученном парке
         let context = this;
         while (context.Trend.series[0]){
@@ -644,6 +647,13 @@ class gas{
                         data:{"gaspark_hist":true,"gaspark_hist_id":sensor},
                         success:function(data){
                             renderTrends(data);
+                            //console.log("loading completes for idx:",idx);
+                            context.loading_trends_pb.setStep(val2perc(idx,sensors.length));
+                            if(idx == sensors.length-1){
+                                context.loading_trends_pb.setStep(0.001);
+                                context.Trend.hideLoading();
+                                $("#loading_gastrends").fadeOut(500);
+                            }
                         },
                         error:function(){
                             console.log("error UPES HISTORY ajax");
@@ -652,6 +662,10 @@ class gas{
                     });
                 },idx*100);
             });
+        }
+        function val2perc(val,max){
+            let tmp = max/100;
+            return val/tmp;
         }
         function renderTrends(data) {
             if(data){
@@ -674,7 +688,6 @@ class gas{
                 trendSet.data = trend;
                 //тут имеем массив с трендом
                 context.Trend.addSeries(trendSet);
-                context.Trend.hideLoading();
             }
         }
     }

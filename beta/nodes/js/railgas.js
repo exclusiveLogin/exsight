@@ -389,6 +389,9 @@ class railgas{
                 context.refreshTrends();
             });
 
+            //подключаем progressbar
+            context.loading_trends_pb = new LoadingPGClass("loading_railtrends");
+
             wrapperStartOPC();
             //autostart();
         });
@@ -588,6 +591,7 @@ class railgas{
     refreshTrends(){
         if(!$(".railgas_refresh_btn").hasClass("disable")){
             //btn deactivation
+            $("#loading_railtrends").fadeIn(500);
             $(".railgas_refresh_btn").addClass("active disable");
             //собираем сенсоры в полученном парке
             let context = this;
@@ -607,10 +611,20 @@ class railgas{
                 }
             });
 
-            //тут уже имеем сенсоры
+            /*function * serializer(sensors){
+                for (let sensor in sensors){
+                    //console.log("yield:",sensor," sensor:",sensors[sensor]);
+                    yield sensor;
+                }
+                //console.log("done...all sensor is loaded");
+            }*/
+
+            //let gen = serializer(sensors);
+
+            //getSensorTrend(gen.next().value);
+
+
             sensors.map(function (sensor,idx) {
-                //пробегаем по сенсорам и отправляем запрос на историю
-                //setTimeout(function () {
                 $.ajax({
                     url:"getupes.php",
                     dataType:"json",
@@ -621,15 +635,26 @@ class railgas{
                         if(idx == sensors.length-1){
                             context.Trend.hideLoading();
                             $(".railgas_refresh_btn").removeClass("active disable");
+                            context.loading_trends_pb.setStep(0.001);
+                            setTimeout(function () {
+                                $("#loading_railtrends").fadeOut(500);
+                            },500);
                         }
                     },
                     error:function(){
                         console.log("error UPES HISTORY ajax");
                         context.led("error");
+                    },
+                    complete:function () {
+                        context.loading_trends_pb.setStep(val2perc(idx,sensors.length));
                     }
                 });
-                //},idx*100);
             });
+
+            function val2perc(val,max){
+                let tmp = max/100;
+                return val/tmp;
+            }
 
             function renderTrends(data) {
                 if(data){

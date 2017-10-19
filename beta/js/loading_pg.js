@@ -1,6 +1,9 @@
 export default class Loading{
     constructor(DOMel,fancyElement){
-        this.fancyElement = $("#"+fancyElement);
+        if(fancyElement){
+            this.fancyElement = $("#"+fancyElement);
+        }
+
         this.ProgressElem = new ProgressBar.Line('#'+DOMel, {
             color: '#f90',
             duration: 500,
@@ -25,8 +28,10 @@ export default class Loading{
         },2000);
     }
     showLoading(){
-        this.fancyElement.fancybox({
-            modal:true
-        }).click();
+        if(this.fancyElement){
+            this.fancyElement.fancybox({
+                modal:true
+            }).click();
+        }
     }
 }
