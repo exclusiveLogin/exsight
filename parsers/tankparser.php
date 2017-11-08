@@ -156,6 +156,7 @@ for($i=1;$i<80;$i++) {
         }
         if (isset($ini_arr['tank_plot'])) {
             $tank_plot = round((float)str_replace(",", ".", $ini_arr['tank_plot']), 1);
+			//echo "<p>plot: $tank_plot</p>";
         }else {
             //$tank_noerror = false;
             //echo "<p>$i - tankplot error</p>";
@@ -236,7 +237,7 @@ for($i=1;$i<80;$i++) {
                  $tank_signallevel, $tank_pereliv, $tank_vaportemp, $tank_product, $tank_plotlab, $tank_templab, \"".$tank_fixtime."\") 
                  ON DUPLICATE KEY UPDATE `level` = $tank_level,
                                         `mass` = $tank_mass,
-                                        `plot`= $tank_mass,
+                                        `plot`= $tank_plot,
                                         `volume` = $tank_volume,
                                         `temp` = $tank_temp,
                                         `avlevel` = $tank_avlevel,
@@ -248,6 +249,7 @@ for($i=1;$i<80;$i++) {
                                         `plotlab` = $tank_plotlab,
                                         `templab` = $tank_templab,
                                         `fixtime` = \"$tank_fixtime\"";
+										
             $mysql->query($q);
             //if($i==15)//echo $q;
             //echo $q."--<br>";
