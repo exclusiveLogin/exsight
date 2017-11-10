@@ -88,9 +88,9 @@ $(document).ready(function(){
         },20000);
     });
 
-    let nodeName = ["respark","trends","port","porttrends","gas","railgas"];
+    let nodeName = ["respark","trends","port","porttrends","gas","railgas","system"];
 	let nodePanel = "panelnodes";
-	let nodeAlias = ["Парк","Тренды парка","Причал","Тренды причала","СКЗ парка","СКЗ ЖД"];
+	let nodeAlias = ["Парк","Тренды парка","Причал","Тренды причала","СКЗ парка","СКЗ ЖД","О системе"];
 
 	nodeName.map(function (node,idx) {
         setTimeout(function () {
@@ -104,23 +104,6 @@ $(document).ready(function(){
             }
         },1000*idx);
     });
-    //Создаем ноду Резпарка
-    //Global.nodes.push(Node.createNode("respark","panelnodes","Парк"));
-
-    //Создаем ссылку на тренды
-    //Global.nodes.push(Node.createNode("trends","panelnodes","Тренды парка"));
-
-    //Создаем ссылку на причал
-    //Global.nodes.push(Node.createNode("port","panelnodes","Причал"));
-
-    //Создаем ссылку на тренды причала
-    //Global.nodes.push(Node.createNode("porttrends","panelnodes","Тренды причала"));
-
-    //Создаем ссылку на газы
-    //Global.nodes.push(Node.createNode("gas","panelnodes","СКЗ парка"));
-
-    //Создаем ссылку на учел учета
-    //Global.nodes.push(Node.createNode("uku","panelnodes","Узел учета"));
 
     Global.jqready = true;
     Global.authkey = true;

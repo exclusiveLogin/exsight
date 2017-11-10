@@ -1,0 +1,8 @@
+.system-rightbar{
+    background-color: #4c4c4c;
+    box-shadow: 0 0 5px grey;
+    color: #FFD100;
+}
+.system-rightbar .val{
+    color: #eeeeee;
+}
