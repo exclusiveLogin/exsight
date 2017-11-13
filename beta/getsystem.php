@@ -4,7 +4,7 @@ require_once $path_settings."db.php";
 
 
 if($_GET['visits']){
-    $q = "SELECT * FROM `visits` ORDER BY `id` DESC LIMIT 20;";
+    $q = "SELECT * FROM `visits` ORDER BY `id` DESC LIMIT 5;";
 
     $result = $mysql->query($q);
     //var_dump($result);

@@ -19,6 +19,9 @@
 .system-about .devider{
     border-bottom: 1px solid orange;
 }
+.system-about .invisedevider{
+    height: 20px;
+}
 .system-about a{
     font-weight: bold;
     font-size: 150%;
@@ -49,7 +52,7 @@
     overflow-y: auto;
 }
 .system-about .defferContainer{
-    max-height: 30vh;
+    max-height: 20vh;
     overflow-y: auto;
 }
 .system-about .logdata{

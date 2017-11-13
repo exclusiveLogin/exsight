@@ -327,10 +327,12 @@ if($f_plot1 && $f_plot2){
     if (isset($plot1_arr['fixtime'])) {
         $plotfixtime1 = $plot1_arr['fixtime'];
         //echo "plotfixtime1 :".$plotfixtime1."<br>";
+        $datavalid1 = true;
     }
     if (isset($plot2_arr['fixtime'])) {
         $plotfixtime2 = $plot2_arr['fixtime'];
         //echo "plotfixtime2 :".$plotfixtime2."<br>";
+        $datavalid2 = true;
     }
 
 

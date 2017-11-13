@@ -629,10 +629,9 @@ a:hover{
     padding-top: 10px;
     font-size: 150%;
     text-transform: uppercase;
-    color: #FF0000;
-    text-shadow: 0 0 10px #FF0000;
+    color: antiquewhite;
+    text-shadow: 0 0 10px antiquewhite;
     line-height: 20px;
-    display: none;
 }
 .label-my-normal{
     background: #6db563; /* Old browsers */

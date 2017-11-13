@@ -19,7 +19,7 @@ class system{
             //создаем логеры
             context.visitLog = new Tbl2log("table.tbl_visits",["id","ip","rip","datetime","ver","build"]);
             context.uniqueLog = new Tbl2log("table.tbl_uniq",["id","ip","datetime","ver","build"]);
-            context.defferLog = new Tbl2log("table.tbl_deffered",["id","ip","rip","datetime","ver","build"]);
+            context.defferLog = new Tbl2log("table.tbl_deffered",["id","ip","datetime","ver","build"]);
 
             //старт обновления
             wrapperStartOPC();
