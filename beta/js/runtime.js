@@ -10,7 +10,7 @@ Global.version.desc = "";
 
 function visit() {
     let req = {version:Global.version.v,build:Global.version.build};
-    console.log("req:",req);
+    //console.log("req:",req);
     $.ajax({
         url:"visitparser.php",
         dataType:"text",
@@ -102,7 +102,7 @@ $(document).ready(function(){
             if(curent == nodeName.length){
                 Global.LoadingPG.hideLoading();
             }
-        },1000*idx);
+        },250*idx);
     });
 
     Global.jqready = true;

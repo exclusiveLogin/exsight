@@ -2,11 +2,20 @@
     <div class="row system-about">
         <div class="col-sm-4 system-rightbar">
             <h3>Разработка:</h3>
-            <h2 class="val">Савин Сергей Владимирович<img src="style/ssv.jpg" class="img-respositive img-circle author_img"></h2>
+            <h2 class="val">
+                Савин Сергей Владимирович
+                <img src="style/ssv.jpg" class="img-respositive img-circle author_img">
+                <img src="style/sibintek_logo.png" class="img-respositive img-rounded vendor_img">
+            </h2>
             <div class="devider"></div>
             <h3>Контакты:</h3>
             <h4>Электронная почта:</h4>
-            <h2 class="val">alter4444@gmail.com</h2>
+            <h2 class="val">
+                alter4444@gmail.com
+                <a href="mailto:alter4444@gmail.com">
+                    <i class="fa fa-reply" aria-hidden="true"></i>
+                </a>
+            </h2>
             <h4>Телефон:</h4>
             <h2 class="val">8 917 121 5000</h2>
             <div class="devider"></div>
@@ -37,10 +46,24 @@
 
                 <span>Сектор:</span>
                 <span class="label label-primary sector"></span>
+
+                <span>Вход выполнен как:</span>
+                <span class="label label-primary userLogin"></span>
             </div>
 
             <div class="invisedevider"></div>
-            <div class="header">Последние посещения</div>
+            <div class="header">
+                Последние посещения:
+                <span class="visits val"></span>
+                За сегодня<i class="fa fa-table table_btn_vd" aria-hidden="true"></i>:
+                <span class="visits_d val"></span>(<span class="visits_du valu"></span>)
+                За неделю<i class="fa fa-table table_btn_vw" aria-hidden="true"></i>:
+                <span class="visits_w val"></span>(<span class="visits_wu valu"></span>)
+                За месяц<i class="fa fa-table table_btn_vm" aria-hidden="true"></i>:
+                <span class="visits_m val"></span>(<span class="visits_mu valu"></span>)
+                За год<i class="fa fa-table table_btn_vy" aria-hidden="true"></i>:
+                <span class="visits_y val"></span>(<span class="visits_yu valu"></span>)
+            </div>
 
             <div class="visitContainer">
                 <table class="tbl_visits" width="100%">
@@ -56,7 +79,7 @@
             </div>
 
             <div class="invisedevider"></div>
-            <div class="header">Уникальные посетители</div>
+            <div class="header">Уникальные посетители <span class="uniqueips val"></span></div>
 
             <div class="uniqContainer">
                 <table class="tbl_uniq" width="100%">
@@ -71,7 +94,7 @@
             </div>
 
             <div class="invisedevider"></div>
-            <div class="header">Ждут обновления</div>
+            <div class="header">Ждут обновления <span class="deffered val"></span></div>
 
             <div class="defferContainer">
                 <table class="tbl_deffered" width="100%">
@@ -85,5 +108,14 @@
                 </table>
             </div>
         </div>
+    </div>
+    <div class="fancy">
+        <table class="tbl_fancy" width="450">
+            <tr style="border-bottom: 1px solid;">
+                <td>Визиты</td>
+                <td>IP</td>
+                <td>Real IP</td>
+            </tr>
+        </table>
     </div>
 </div>

@@ -21,6 +21,37 @@ class system{
             context.uniqueLog = new Tbl2log("table.tbl_uniq",["id","ip","datetime","ver","build"]);
             context.defferLog = new Tbl2log("table.tbl_deffered",["id","ip","datetime","ver","build"]);
 
+            context.fancyLog = new Tbl2log("table.tbl_fancy",["cnt","ip","rip"]);
+
+            $(".system-about .fancy").fancybox();
+
+            $(".system-about .header .fa-table").on("click", function () {
+                if($(this).hasClass("table_btn_vd")){
+                    context.fancyLog.clearLog();
+                    context.lastVisitsD.forEach(
+                        (el) => context.fancyLog.write2log(el)
+                    );
+                }
+                if($(this).hasClass("table_btn_vw")){
+                    context.fancyLog.clearLog();
+                    context.lastVisitsW.forEach(
+                        (el) => context.fancyLog.write2log(el)
+                    );
+                }
+                if($(this).hasClass("table_btn_vm")){
+                    context.fancyLog.clearLog();
+                    context.lastVisitsM.forEach(
+                        (el) => context.fancyLog.write2log(el)
+                    );
+                }
+                if($(this).hasClass("table_btn_vy")){
+                    context.fancyLog.clearLog();
+                    context.lastVisitsY.forEach(
+                        (el) => context.fancyLog.write2log(el)
+                    );
+                }
+                $(".system-about .fancy").click();
+            });
             //старт обновления
             wrapperStartOPC();
             //autostart();
@@ -49,7 +80,7 @@ class system{
         //принудительно рефрешим порт при открытии вкладки
         this.refresh();
 
-        rescale();
+        //rescale();
 
         function rescale() {
             //расчет размера блока
@@ -137,6 +168,62 @@ class system{
             }
         });
 
+        $.ajax({
+            url:"getsystem.php?visits_d=1",
+            dataType:"json",
+            method:'GET',
+            success:function(data){
+                let tbl = "visits_d";
+                check(data,tbl);
+            },
+            error:function(){
+                console.log("error SYSTEM ajax data");
+                context.led("error");
+            }
+        });
+
+        $.ajax({
+            url:"getsystem.php?visits_w=1",
+            dataType:"json",
+            method:'GET',
+            success:function(data){
+                let tbl = "visits_w";
+                check(data,tbl);
+            },
+            error:function(){
+                console.log("error SYSTEM ajax data");
+                context.led("error");
+            }
+        });
+
+        $.ajax({
+            url:"getsystem.php?visits_m=1",
+            dataType:"json",
+            method:'GET',
+            success:function(data){
+                let tbl = "visits_m";
+                check(data,tbl);
+            },
+            error:function(){
+                console.log("error SYSTEM ajax data");
+                context.led("error");
+            }
+        });
+
+        $.ajax({
+            url:"getsystem.php?visits_y=1",
+            dataType:"json",
+            method:'GET',
+            success:function(data){
+                let tbl = "visits_y";
+                check(data,tbl);
+            },
+            error:function(){
+                console.log("error SYSTEM ajax data");
+                context.led("error");
+            }
+        });
+
         function check(data,tbl) {
             if(data){
                 if(context.showed)render(data,tbl);
@@ -151,22 +238,63 @@ class system{
                     data.forEach(function (element) {
                         if(context.visitLog)context.visitLog.write2log(element);
                     });
+                    $(".system-about .header .visits").text(data.length);
                 }
                 if(tbl == "uniqueip"){
                     if(context.uniqueLog)context.uniqueLog.clearLog();
                     data.forEach(function (element) {
                         if(context.uniqueLog)context.uniqueLog.write2log(element);
                     });
+                    $(".system-about .header .uniqueips").text(data.length);
                 }
                 if(tbl == "defferreload"){
                     if(context.defferLog)context.defferLog.clearLog();
                     data.forEach(function (element) {
                         if(context.defferLog)context.defferLog.write2log(element);
                     });
+                    $(".system-about .header .deffered").text(data.length);
                 }
                 if(tbl == "status"){
                     $(".system-about .status span.status").text(data[0].state);
                     $(".system-about .status span.sector").text(data[0].sector);
+                    $(".system-about .status span.userLogin").text(Global.loggedAs);
+
+                }
+                if(tbl == "visits_d"){
+                    let summ = 0;
+                    for(let i in data){
+                        summ += Number(data[i].cnt);
+                    }
+                    $(".system-about .header .visits_d").text(summ);
+                    $(".system-about .header .visits_du").text(data.length);
+                    context.lastVisitsD = data;
+                }
+                if(tbl == "visits_w"){
+                    let summ = 0;
+                    for(let i in data){
+                        summ += Number(data[i].cnt);
+                    }
+                    $(".system-about .header .visits_w").text(summ);
+                    $(".system-about .header .visits_wu").text(data.length);
+                    context.lastVisitsW = data;
+                }
+                if(tbl == "visits_m"){
+                    let summ = 0;
+                    for(let i in data){
+                        summ += Number(data[i].cnt);
+                    }
+                    $(".system-about .header .visits_m").text(summ);
+                    $(".system-about .header .visits_mu").text(data.length);
+                    context.lastVisitsM = data;
+                }
+                if(tbl == "visits_y"){
+                    let summ = 0;
+                    for(let i in data){
+                        summ += Number(data[i].cnt);
+                    }
+                    $(".system-about .header .visits_y").text(summ);
+                    $(".system-about .header .visits_yu").text(data.length);
+                    context.lastVisitsY = data;
                 }
             }
         }

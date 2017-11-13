@@ -326,12 +326,12 @@ if($f_plot1 && $f_plot2){
 
     if (isset($plot1_arr['fixtime'])) {
         $plotfixtime1 = $plot1_arr['fixtime'];
-        //echo "plotfixtime1 :".$plotfixtime1."<br>";
+        echo "plotfixtime1 :".$plotfixtime1."<br>";
         $datavalid1 = true;
     }
     if (isset($plot2_arr['fixtime'])) {
         $plotfixtime2 = $plot2_arr['fixtime'];
-        //echo "plotfixtime2 :".$plotfixtime2."<br>";
+        echo "plotfixtime2 :".$plotfixtime2."<br>";
         $datavalid2 = true;
     }
 
@@ -354,7 +354,10 @@ if($f_plot1 && $f_plot2){
         `ms2`=".$port_plot_ms12.",
         `fixtime`=\"".$plotfixtime1."\";";
     echo "q:".$q."<br>";
-    if($datavalid1)$mysql->query($q);
+    if($datavalid1){
+        echo "data valid<br>";
+        $mysql->query($q);
+    }
 
     $q = "INSERT INTO `port_plotnomer` (`num`,`t`,`t1`,`t2`,`p`,`p1`,`p2`,`f1`,`f2`,`m1`,`m2`,`ms1`,`ms2`,`fixtime`) 
         VALUES (2,".$port_plot_t2 .",".$port_plot_t21.",".$port_plot_t22.",".$port_plot_p2.",".$port_plot_p21.",".$port_plot_p22.",
@@ -374,7 +377,10 @@ if($f_plot1 && $f_plot2){
         `ms2`=".$port_plot_ms22.",
         `fixtime`=\"".$plotfixtime2."\";";
     echo "q:".$q."<br>";
-    if($datavalid2)$mysql->query($q);
+    if($datavalid2){
+        echo "data valid<br>";
+        $mysql->query($q);
+    }
 
 
     //insert in es_port for Trends
