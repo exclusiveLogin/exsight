@@ -15,7 +15,12 @@ class system{
         }).then(function (text) {
             context.view = $('#systemview');
             context.view.html(text);
-            console.log("templ:",text, " view:",context.view);
+
+            //создаем логеры
+            context.visitLog = new Tbl2log("table.tbl_visits",["id","ip","rip","datetime","ver","build"]);
+            context.uniqueLog = new Tbl2log("table.tbl_uniq",["id","ip","datetime","ver","build"]);
+            context.defferLog = new Tbl2log("table.tbl_deffered",["id","ip","rip","datetime","ver","build"]);
+
             //старт обновления
             wrapperStartOPC();
             //autostart();
@@ -79,30 +84,90 @@ class system{
     refresh(){
         this.led("load");//сетим в loading
         let context = this;
-        /*$.ajax({
-            url:"",
+        $.ajax({
+            url:"getsystem.php?visits=1",
             dataType:"json",
             method:'GET',
             success:function(data){
-                context.lastAjaxData = data;
-                check(data);
+                let tbl = "visits";
+                check(data,tbl);
             },
             error:function(){
-                console.log("error UPES park ajax data");
+                console.log("error SYSTEM ajax data");
                 context.led("error");
             }
-        });*/
+        });
+        $.ajax({
+            url:"getsystem.php?uniqueip=1",
+            dataType:"json",
+            method:'GET',
+            success:function(data){
+                let tbl = "uniqueip";
+                check(data,tbl);
+            },
+            error:function(){
+                console.log("error SYSTEM ajax data");
+                context.led("error");
+            }
+        });
+        $.ajax({
+            url:"getsystem.php?defferreload=1",
+            dataType:"json",
+            method:'GET',
+            success:function(data){
+                let tbl = "defferreload";
+                check(data,tbl);
+            },
+            error:function(){
+                console.log("error SYSTEM ajax data");
+                context.led("error");
+            }
+        });
+        $.ajax({
+            url:"getsystem.php?status=1",
+            dataType:"json",
+            method:'GET',
+            success:function(data){
+                let tbl = "status";
+                check(data,tbl);
+            },
+            error:function(){
+                console.log("error SYSTEM ajax data");
+                context.led("error");
+            }
+        });
 
-        function check(data) {
+        function check(data,tbl) {
             if(data){
-                if(context.showed)render(data);
+                if(context.showed)render(data,tbl);
             }
         }
 
-        function render(data){
-            this.led("ok");//сетим в ок
-            if(data){
-
+        function render(data,tbl){
+            context.led("ok");//сетим в ок
+            if(data && tbl){
+                if(tbl == "visits"){
+                    if(context.visitLog)context.visitLog.clearLog();
+                    data.forEach(function (element) {
+                        if(context.visitLog)context.visitLog.write2log(element);
+                    });
+                }
+                if(tbl == "uniqueip"){
+                    if(context.uniqueLog)context.uniqueLog.clearLog();
+                    data.forEach(function (element) {
+                        if(context.uniqueLog)context.uniqueLog.write2log(element);
+                    });
+                }
+                if(tbl == "defferreload"){
+                    if(context.defferLog)context.defferLog.clearLog();
+                    data.forEach(function (element) {
+                        if(context.defferLog)context.defferLog.write2log(element);
+                    });
+                }
+                if(tbl == "status"){
+                    $(".system-about .status span.status").text(data[0].state);
+                    $(".system-about .status span.sector").text(data[0].sector);
+                }
             }
         }
     }

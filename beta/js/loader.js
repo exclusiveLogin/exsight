@@ -5,8 +5,8 @@ import reloadProgPort from "./port_progresslogic.js";
 import UtilClass from "./logic.js";
 import Renderer from "./renderer";
 import Loading from "./loading_pg";
+import tbl2log from "./tbl2log";
 
-//import Blink from "./blink.js";
 window.ProgressBar = require("progressbar.js");
 
 require("../style/dark.css");
@@ -36,6 +36,7 @@ window.showSysMsg = window.Utility.showSysMsg;
 window.stateRefresher = window.Utility.stateRefresher;
 
 window.LoadingPGClass = Loading;
+window.Tbl2log = tbl2log;
 //-----------------------------------
 window.Global = gl;
 window.reloadProgressBar = reloadProg;

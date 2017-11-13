@@ -2,14 +2,83 @@
     <div class="row system-about">
         <div class="col-sm-4 system-rightbar">
             <h3>Разработка:</h3>
-            <h2 class="val">Савин Сергей Владимирович</h2>
+            <h2 class="val">Савин Сергей Владимирович<img src="style/ssv.jpg" class="img-respositive img-circle author_img"></h2>
             <div class="devider"></div>
             <h3>Контакты:</h3>
             <h4>Электронная почта:</h4>
             <h2 class="val">alter4444@gmail.com</h2>
             <h4>Телефон:</h4>
             <h2 class="val">8 917 121 5000</h2>
+            <div class="devider"></div>
+            <h3>Что нового:</h3>
+            <div class="whatnews">
+                <ul>
+                    <li>Добавлен модуль АСН</li>
+                    <li>Добавлен модуль СКЗ парка</li>
+                    <li>Добавлен модуль СКЗ ЖД эстакады</li>
+                    <li>Добавлен модуль Суммарного баланса парка</li>
+                    <li>Добавлен модуль Расчета протечек</li>
+                    <li>Добавлен модуль Причала</li>
+                    <li>Добавлен модуль Трендов парка</li>
+                    <li>Добавлен модуль Трендов причала</li>
+                    <li>Добавлен модуль SmartRenderer</li>
+                    <li>Добавлена поддержка GPU</li>
+                </ul>
+            </div>
+            <h3>Сторонние продукты:</h3>
+            <a href="http://10.210.30.211/sku/" target="_blank">
+                <h4 class="val label label-default label-lg">Система контроля протечек</h4>
+            </a>
         </div>
-        <div class="col-sm-8 system-logs"></div>
+        <div class="col-sm-8 system-logs">
+            <div class="status">
+                <span>Статус системы:</span>
+                <span class="label label-primary status"></span>
+
+                <span>Сектор:</span>
+                <span class="label label-primary sector"></span>
+            </div>
+
+            <div class="header">Последние посещения</div>
+            <div class="visitContainer">
+                <table class="tbl_visits" width="100%">
+                    <tr style="border-bottom: 1px solid;">
+                        <td>ID</td>
+                        <td>IP</td>
+                        <td>Real IP</td>
+                        <td>Дата и время</td>
+                        <td>Версия</td>
+                        <td>Build</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="header">Уникальные посетители</div>
+            <div class="uniqContainer">
+                <table class="tbl_uniq" width="100%">
+                    <tr style="border-bottom: 1px solid;">
+                        <td>ID</td>
+                        <td>IP</td>
+                        <td>Дата и время</td>
+                        <td>Версия</td>
+                        <td>Build</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="header">Ждут обновления</div>
+            <div class="defferContainer">
+                <table class="tbl_deffered" width="100%">
+                    <tr style="border-bottom: 1px solid;">
+                        <td>ID</td>
+                        <td>IP</td>
+                        <td>Real IP</td>
+                        <td>Дата и время</td>
+                        <td>Версия</td>
+                        <td>Build</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
