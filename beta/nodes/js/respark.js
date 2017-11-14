@@ -364,7 +364,9 @@ class respark{
             if(Global.nodes[getNode(respark)].nodeObj.showed){
                 //console.log("рендерим парк");
                 wrapperRenderpark(data);
-                wrapperCalcArrows(data);
+                if(context.tendsLoaded){
+                    wrapperCalcArrows(data);
+                }
                 wrapperSummaryBalance(data);
                 wrapperAsnBalance();
             }else {
@@ -504,10 +506,10 @@ class respark{
                 for(var el in data){//перебор резервуаров
                     var res = false;
                     var tmpnum = Number(data[el].num);
-                    if(eval('Global.IntegratorForArrows'+data[el].num)){//тестируем первый резервуар
-                        if(data[el].level && data[el].mass){//если есть уровень у выбранного резервуара
+                    if(Global['IntegratorForArrows'+data[el].num]){//тестируем первый резервуар
+                        if(data[el].level && data[el].mass && !data[el].service){//если есть уровень у выбранного резервуара
                             var tmpmass = Number(data[el].mass);
-                            var result = eval('Global.IntegratorForArrows'+data[el].num+'.Integrity('+tmpmass+')');
+                            var result = Global['IntegratorForArrows'+data[el].num].Integrity(tmpmass);
                             // console.log("CALC ARROWS Data:",data,"Result:",result);
                             if(Math.abs(result)>filter){//значение выходит на рамки
                                 if(result>0){
@@ -562,12 +564,12 @@ class respark{
         }
         if(res_val){
             if(Math.abs(res_val*60) > 3){
-                TankObj.find(".tends .val").text((res_val*60).toFixed(1));
+                TankObj.find(".tends").text((res_val*60).toFixed(1)+" т/ч");
             }else {
-                TankObj.find(".tends .val").text("~ "+(res_val*60).toFixed(1));
+                TankObj.find(".tends").text("~ "+(res_val*60).toFixed(1)+" т/ч");
             }
         }else {
-            TankObj.find(".tends .val").text("---");
+            TankObj.find(".tends").text("без динамики");
         }
         //refreshTooltips();
     }
@@ -672,7 +674,7 @@ class respark{
             });
             //Установка шаблона тенденций
             $(".tank").each(function () {
-                $(this).find(".tends").html("<span class=\"val\">--</span> т/ч");
+                $(this).find(".tends").html("<i class='fa fa-spinner fa-spin'></i>");
             });
             $('#resparkview').on('click','.tank',function(){//обработчик клика на резервуаре
                 var num = $(this).data("num");
@@ -730,7 +732,7 @@ class respark{
         if (this.OPCTimer)clearInterval(this.OPCTimer);
     }
     showNode(){
-        this.led("select");
+
         console.log("Show node REZPARK");
         Global.nodes.map(function (elem) {
             if(elem.nodeObj){
@@ -741,14 +743,14 @@ class respark{
         });
         $("#resparkview").show();
 
-        /*$(".tank").addClass("initScroll");//Плавный старт
+        $(".tank").addClass("initScroll");//Плавный старт
         $(".tank").each(function (index, elem) {
             setTimeout(function () {
                 $(elem).removeClass("initScroll");
             },index*70);
-        });*/
+        });
 
-
+        this.led("select");
         //принудительно запускаем обновление данных парка
         this.refreshPark();
         this.showed = true;
@@ -836,52 +838,70 @@ class respark{
         }
     }
     tendsStart(data){
-        var wrapperRenderArrows = this.renderArrows.bind(this);
+        let wrapperRenderArrows = this.renderArrows.bind(this);
+        let context = this;
+        //$("#resparkview .tends").addClass("blinkClass");
         if(typeof data === "object"){
             data.map(function (elem,idx) {
                 // console.log("TEnds Data:",data,"elem:",elem);
                 //тут массив из 31 резервуара и одиночные замеры для каждого
                 if(elem.level){
-                    if(Number(elem.level) > -1 && elem.num){//если резервуар не в ремонте
+                    if(Number(elem.level) > -1 && elem.num && !elem.service){//если резервуар не в ремонте
                         //готовим AJAX
-                        $.ajax({
-                            url:"trendengine.php",
-                            dataType:"json",
-                            method:'GET',
-                            data:{tends:true,coldstart:true,tanktends:elem.num},
-                            success:function(data){
-                                //сюда получаем 31 независимый запрос. из (60) элементов часового замера
-                                let i = Number(elem.num);
-                                data.map(function (el,elidx) {
-                                    if(eval('Global.IntegratorForArrows'+i)){
-                                        let filter = 3/60;
-                                        //если есть объект интегратора для данного резервуара
-                                        if(el.mass){//если есть уровень у выбранного резервуара
-                                            var tmpmass = Number(el.mass);
-                                            var result = eval('Global.IntegratorForArrows'+i+'.Integrity('+tmpmass+')');
+                        setTimeout(function(){
+                            $.ajax({
+                                url:"trendengine.php",
+                                dataType:"json",
+                                method:'GET',
+                                data:{tends:true,coldstart:true,tanktends:elem.num},
+                                success:function(tends){
+                                    //сюда получаем 31 независимый запрос. из (60) элементов часового замера
+                                    let i = Number(elem.num);
+                                    //Убираем мигание
+                                    //$(".tank[data-num="+i+"]").find(".tends").removeClass("blinkClass");
+                                    tends.map(function (el,elidx) {
+                                        if(eval('Global.IntegratorForArrows'+i)){
+                                            let filter = 3/60;
+                                            //если есть объект интегратора для данного резервуара
+                                            if(el.mass){//если есть масса у выбранного резервуара
+                                                var tmpmass = Number(el.mass);
+                                                var result = eval('Global.IntegratorForArrows'+i+'.Integrity('+tmpmass+')');
 
-                                            var res = false;
-                                            if(Math.abs(result)>filter){//значение выходит на рамки
-                                                if(result>0){
-                                                    res = "up";
+                                                var res = false;
+                                                if(Math.abs(result)>filter){//значение выходит на рамки
+                                                    if(result>0){
+                                                        res = "up";
+                                                    }else {
+                                                        res = "down";
+                                                    }
                                                 }else {
-                                                    res = "down";
+                                                    //console.log("Значение без изменений:"+result);
                                                 }
-                                            }else {
-                                                //console.log("Значение без изменений:"+result);
-                                            }
-                                            if(data.length-1 == elidx){
-                                                wrapperRenderArrows(i,res,result);
+                                                if(tends.length-1 == elidx){
+                                                    //рендер после прогона последнего значения
+                                                    wrapperRenderArrows(i,res,result);
+                                                }
                                             }
                                         }
+                                    });
+                                    if (idx == data.length-1){
+                                        //$("#resparkview .tends").removeClass("blinkClass");
+                                        context.tendsLoaded = true;
                                     }
-                                });
-                            },
-                            error:function(){
-                                console.log("error to load Tendentional ajax data from",elem.num);
-                            }
-                        });
+                                },
+                                error:function(){
+                                    console.log("error to load Tendentional ajax data from",elem.num);
+                                }
+                            });
+                        },idx*1000);
+
+                    }else {
+                        $(".tank[data-num="+elem.num+"]").find(".tends").text("простаивает");
+                        console.log("простой на :",$(".tank[data-num="+elem.num+"]"));
                     }
+                }else {
+                    $(".tank[data-num="+elem.num+"]").find(".tends").text("ошибка");
+                    console.log("ошибка на :",$(".tank[data-num="+elem.num+"]"));
                 }
             });
         }

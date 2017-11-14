@@ -120,11 +120,11 @@ export default class Utility{
 		}
 	}
 	refreshTooltips() {
-		$('.glyphicon-warning-sign').attr("data-tooltip", "давно не обновлялся");
-        $('.fa-wrench').attr("data-tooltip", "на ремонте");
-		$('.glyphicon-arrow-down').attr("data-tooltip", "Идет слив НП");
-		$('.glyphicon-arrow-up').attr("data-tooltip", "Идет налив НП");
-		$('.glyphicon-remove-circle').attr("data-tooltip", "Ошибка уровнемера");
+		$('#panels .glyphicon-warning-sign').attr("data-tooltip", "давно не обновлялся");
+        $('#panels .fa-wrench').attr("data-tooltip", "на ремонте");
+		$('#panels .glyphicon-arrow-down').attr("data-tooltip", "Идет слив НП");
+		$('#panels .glyphicon-arrow-up').attr("data-tooltip", "Идет налив НП");
+		$('#panels .glyphicon-remove-circle').attr("data-tooltip", "Ошибка уровнемера");
 
 		$("[data-tooltip]").off();
 		tooltipHandler();
