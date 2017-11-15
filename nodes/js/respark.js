@@ -676,6 +676,10 @@ class respark{
             $(".tank").each(function () {
                 $(this).find(".tends").html("<i class='fa fa-spinner fa-spin'></i>");
             });
+            //установка fancy по дефолту
+            $('.tank').addClass("fancyemiter");//переводим на fancy
+            Global.fancy = true;
+
             $('#resparkview').on('click','.tank',function(){//обработчик клика на резервуаре
                 var num = $(this).data("num");
                 if(num){

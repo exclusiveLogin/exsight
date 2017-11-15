@@ -41,4 +41,15 @@ if($_GET["ipdel"]){
     $mysql->query($q);
 }
 
+if($_GET["iddel"]){
+    $id = $_GET["iddel"];
+    $q = "DELETE FROM `defferreload` WHERE `id`=\"$id\" ";
+    $mysql->query($q);
+}
+if($_GET["idset"]){
+    $id = $_GET["idset"];
+    $q = "INSERT IGNORE INTO `defferreload` (`ip`,`ua`,`ver`,`build`) SELECT `ip`,`ua`,`ver`,`build` FROM `uniqueip` WHERE `id`=\"$id\"";
+    echo $q;
+    $mysql->query($q);
+}
 

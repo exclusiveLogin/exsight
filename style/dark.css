@@ -32,9 +32,6 @@ html{
 }
 body{
     margin: 0;
-    /*height: 100%;*/
-    /*background-color: #777;*/
-    margin-bottom: 30px;
     background: #4c4c4c; /* Old browsers */
     background: linear-gradient(to bottom, #888 0%,#333 30%,#444 70%,#888 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#6d6d6d',GradientType=0 ); /* IE6-9 */

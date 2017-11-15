@@ -1,5 +1,5 @@
 class Tbl2Log{
-    constructor(el,structure){
+    constructor(el,structure,key){
         if(el){
             this.Log = $(el);
             if(!this.Log[0])throw new Error("DOM элемент Log не найден");
@@ -14,6 +14,7 @@ class Tbl2Log{
         }
 
         this.showed = false;
+        this.uniqID = key;
     }
     openLog(){
         this.Log.show();
@@ -32,9 +33,11 @@ class Tbl2Log{
         }
 
         //console.log("structure log:",tableBody);
+        let dataID = ``;
+        if(this.uniqID)dataID = `data-key="${data[this.uniqID]}"`;
 
         //заполняем таблицу
-        this.Log.append(`<tr class="logdata">
+        this.Log.append(`<tr class="logdata" ${dataID}>
                                             ${tableBody}
                                         </tr>`);
     }

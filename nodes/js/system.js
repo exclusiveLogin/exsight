@@ -18,8 +18,8 @@ class system{
 
             //создаем логеры
             context.visitLog = new Tbl2log("table.tbl_visits",["id","ip","rip","datetime","ver","build"]);
-            context.uniqueLog = new Tbl2log("table.tbl_uniq",["id","ip","datetime","ver","build"]);
-            context.defferLog = new Tbl2log("table.tbl_deffered",["id","ip","datetime","ver","build"]);
+            context.uniqueLog = new Tbl2log("table.tbl_uniq",["id","ip","datetime","ver","build","btn"],"id");
+            context.defferLog = new Tbl2log("table.tbl_deffered",["id","ip","datetime","ver","build","btn"],"id");
 
             context.fancyLog = new Tbl2log("table.tbl_fancy",["cnt","ip","rip"]);
 
@@ -51,6 +51,39 @@ class system{
                     );
                 }
                 $(".system-about .fancy").click();
+            });
+
+            $(".system-logs").on("click",".btn-refresh-ip",function () {
+                let id = $(this).closest(".logdata").data("key");
+                //console.log("id for refresh:",id);
+                $.ajax({
+                    url:"defferreloader.php?idset="+id,
+                    method:'GET',
+                    success:function(text){
+                        //console.log("text:",text);
+                        context.refresh();
+                    },
+                    error:function(err){
+                        console.log("error set reload ip error:",err);
+                        context.led("error");
+                    }
+                });
+            });
+            $(".system-logs").on("click",".btn-trash-ip",function () {
+                let id = $(this).closest(".logdata").data("key");
+                //console.log("id for trash:",id);
+                $.ajax({
+                    url:"defferreloader.php?iddel="+id,
+                    method:'GET',
+                    success:function(text){
+                        //console.log("text:",text);
+                        context.refresh();
+                    },
+                    error:function(err){
+                        console.log("error set reload ip error:",err);
+                        context.led("error");
+                    }
+                });
             });
             //старт обновления
             wrapperStartOPC();
@@ -225,13 +258,13 @@ class system{
         });
 
         function check(data,tbl) {
+            context.led("ok");//сетим в ок
             if(data){
                 if(context.showed)render(data,tbl);
             }
         }
 
         function render(data,tbl){
-            context.led("ok");//сетим в ок
             if(data && tbl){
                 if(tbl == "visits"){
                     if(context.visitLog)context.visitLog.clearLog();
@@ -243,6 +276,7 @@ class system{
                 if(tbl == "uniqueip"){
                     if(context.uniqueLog)context.uniqueLog.clearLog();
                     data.forEach(function (element) {
+                        element.btn = `<i class="fa fa-refresh btn-refresh-ip" aria-hidden="true"></i>`;
                         if(context.uniqueLog)context.uniqueLog.write2log(element);
                     });
                     $(".system-about .header .uniqueips").text(data.length);
@@ -250,6 +284,7 @@ class system{
                 if(tbl == "defferreload"){
                     if(context.defferLog)context.defferLog.clearLog();
                     data.forEach(function (element) {
+                        element.btn = `<i class="fa fa-trash btn-trash-ip" aria-hidden="true"></i>`;
                         if(context.defferLog)context.defferLog.write2log(element);
                     });
                     $(".system-about .header .deffered").text(data.length);

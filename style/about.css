@@ -48,6 +48,11 @@
 .system-about td:nth-child(1){
     width: 50px;
 }
+.system-about td:nth-last-child(1) {
+    min-width: 50px;
+    text-overflow: ellipsis;
+    text-align: center;
+}
 .system-about li{
     color: #eeeeee;
 }
@@ -61,15 +66,18 @@
     margin-right: 5px;
 }
 .system-about .visitContainer{
-    max-height: 30vh;
+    height: 10vh;
+    min-height: 100px;
     overflow-y: auto;
 }
 .system-about .uniqContainer{
-    max-height: 30vh;
+    height: 25vh;
+    min-height: 100px;
     overflow-y: auto;
 }
 .system-about .defferContainer{
-    max-height: 20vh;
+    height: 25vh;
+    min-height: 100px;
     overflow-y: auto;
 }
 .system-about .logdata{
@@ -82,4 +90,9 @@
 .system-about .vendor_img{
     height: 35px;
     margin-left: 5px;
+}
+
+.system-about .system-logs table .btn-trash-ip,
+.system-about .system-logs table .btn-refresh-ip{
+    cursor: pointer;
 }
