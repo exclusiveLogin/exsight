@@ -1,4 +1,6 @@
-export default function reloadProgressBar() {
+export default function() {
+    //console.log("reloadPB rezpark");
+    $('#resparkview .progress_tank').find("svg").remove();
     Global.parmTank = new ProgressBar.Line('#progress', {
         color: '#FCB03C',
         duration: 1000,
@@ -23,7 +25,6 @@ export default function reloadProgressBar() {
             shape.path.setAttribute("stroke",state.color);
         }
     });
-    $('.progress_tank').find("svg").remove();
     Global.pr_tank[1] = new ProgressBar.Line('#progress_tank1', {
         color: '#FCB03C',
         duration: 3000,

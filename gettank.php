@@ -1,5 +1,6 @@
 <?php
-require_once "settings/db.php";
+require_once "path.php";
+require_once $path_settings."db.php";
 
 
 if($_GET['tank']){

@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#444">
 
 
-    <title>EXSIGHT - WEB SCADA CLIENT</title>
+    <title>АСТРИД-СНБ - Автоматическая система технического расчета и диспетчеризации (Сызранская НБ)</title>
 
     <link rel="icon" sizes="192x192" href="public/style/rn_logo.png">
     <!--Система сборки-->
@@ -34,10 +34,22 @@
         <div id="sysmsg" class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-center myhide">Системное сообщение: <span id="sysmsg_val"></span></div>
         <div id="emer_code" class="col-xs-12 col-md-12 col-sm-12 col-lg-12 text-center myhide">ВНИМАНИЕ!!! <span id="emer_code_msg"></span></div>
 
-        <div class="logo col-lg-4 col-md-4 col-sm-4 hidden-xs hidden-sm"><p class="logo_title">EXSIGHT</p><span>Сызранская нефтебаза</span></div>
+        <div class="logo col-lg-3 col-md-3 col-sm-3 hidden-xs hidden-sm"><p class="logo_title">АСТРИД</p><span>Сызранская нефтебаза</span></div>
 		<div class="logo_m col-xs-12 visible-xs visible-sm text-center"></div>
-        <div class="col-xs-12 visible-xs visible-sm text-center">EXSIGHT - WEB SCADA CLIENT</div>
-        <div class="col-lg-4 col-md-4 col-sm-4 hidden-xs hidden-sm demo">Ограниченная демоверсия</div>
+        <div class="col-xs-12 visible-xs visible-sm text-center">АСТРИД - Сызранская нефтебаза</div>
+        <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs hidden-sm">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="demo">{version}</div>
+                </div>
+            </div>
+            <div class="row text-center meteo">
+                <span class="wind_nb col-lg-3 col-md-3 col-sm-3">Ветер <i class="fa fa-building"></i> <span class="meteovalue rn_color">---</span> м/с </span>
+                <span class="wind_p col-lg-3 col-md-3 col-sm-3">Ветер <i class="fa fa-anchor"></i> <span class="meteovalue rn_color">---</span> м/с </span>
+                <span class="temperature_air col-lg-3 col-md-3 col-sm-3"><i class="fa fa-thermometer-full"></i> <span class="meteovalue rn_color">---</span> &deg; C. </span>
+                <span class="meteoupdate col-lg-3 col-md-3 col-sm-3"><i class="fa fa-refresh"></i> <span class="meteovalue rn_color">---</span></span>
+            </div>
+        </div>
         <div id="menu" class="col-lg-3 col-md-3 col-sm-3 text-right hidden-xs">
             <button class="btn btn-success btnlogin"><i class="fa fa-user-circle"></i> Войти в систему</button>
             <button class="btn btn-danger btnlogout"><i class="fa fa-sign-out"></i> Выйти из системы</button>
@@ -62,7 +74,7 @@
         </div>
     </div>
     <div class="danger_field"></div>
-    <div id="wrapper" class="">
+    <div id="wrapper" class="transparentStatic">
         <div class="tank_panel transparent" id="parm_panel">
             <div class="row">
                 <button class="btn_close btn btn-danger" id="btn_close_parm"><i class="fa fa-close"></i></button>
@@ -142,11 +154,9 @@
         </div>
 		<div class="clearfix"></div>
 		<div class="row">
-			<div id="panelstate" class="cont_panel hidden-xs hidden-sm col-md-12"></div>
+            <div id="panels"></div>
 		</div>
-        <div id="container" class="container-fluid">
-            <div id="minview"></div>
-        </div>
+        <div id="container" class="container-fluid"></div>
     </div>
     <div id="footer">
         <div id="panelnodes"></div>
@@ -229,12 +239,12 @@
     </div>
     <div id="fancydemo" style="display: none">
         <div class="row fb text-center">
-            <h1>Сообщение системы EXSIGHT <span class="version">Generic version</span></h1>
-            <h1 class="fa fa-lock fa-4x"></h1>
-            <h3 class="rn_color">Вы будете перенаправлены на версию BETA</h3>
-            <h3 class="rn_color">до перехода <i class="redirectTime">-</i> секунд</h3>
-            <!--<h4 class="rn_color">Последние изменения:</h4>-->
-            <!--<ul class="verdescription"></ul>-->
+            <h1>Загрузка системы EXSIGHT <span class="version">Generic version</span></h1>
+            <h1 class="fa fa-spin fa-spinner fa-4x"></h1>
+            <h3 class="rn_color">пожалуйста подождите...</h3>
+            <div class="col-md-12" id="loading_pb"></div>
+            <!--<h4 class="rn_color">Что нового:</h4>-->
+            <ul class="verdescription"></ul>
         </div>
     </div>
 </body>

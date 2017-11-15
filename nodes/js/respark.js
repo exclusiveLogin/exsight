@@ -1,14 +1,24 @@
 class respark{
     constructor(){
         this.coldstart = true;
+        this.lastAjaxData = {};
+    }
+    rendermeteo(data){
+        if (data){
+            $(".wind_p .meteovalue").text(data.wind_p);
+            $(".wind_nb .meteovalue").text(data.wind_nb);
+            $(".temperature_air .meteovalue").text(data.temperature_air);
+            $(".meteoupdate .meteovalue").text(data.fixtime);
+            Global.meteo = data;
+        }
     }
     tankparmToggle(state){
         if(state){
             $('#parm_panel').show(0,function () {
                 $(this).removeClass("transparent");
+                Global.TrendTankParm.reflow();
             });
-        }
-        else{
+        }else{
             $('#parm_panel').hide(0,function () {
                 $(this).addClass("transparent");
                 Global.tankselect = false;
@@ -85,18 +95,28 @@ class respark{
     refreshTank(tank) {
         var wrapperRenderTank = renderTank.bind(this);
         var wrapperTrend = this.renderTrendTankParm.bind(this);
-        $.ajax({
-            url:"gettank.php",
-            dataType:"json",
-            method:'GET',
-            data:{"tank":tank},
-            success:function(data){
-                wrapperRenderTank(data);
-            },
-            error:function(){
-                console.log("error to load refresh tank ajax data");
-            }
-        });
+        //запрос резервуара
+        if(this.lastAjaxData) {
+            this.lastAjaxData.map(function (tankObj) {//выбираем и последнего респонса нужный резервуар
+                if(tankObj.num == tank){
+                    //отправляем его на рендер без доп запроса к серверу
+                    wrapperRenderTank(tankObj);
+                }
+            }, this);
+        }
+
+        /*$.ajax({
+         url:"gettank.php",
+         dataType:"json",
+         method:'GET',
+         data:{"tank":tank},
+         success:function(data){
+         wrapperRenderTank(data);
+         },
+         error:function(){
+         console.log("error to load refresh tank ajax data");
+         }
+         });*/
         //запрос на HD
         Global.TrendTankParm.showLoading("Загрузка данных");
         $.ajax({
@@ -113,7 +133,7 @@ class respark{
         });
 
         function renderTank(data) {
-            $('.prog_val').removeClass("transparentStatic").removeClass("blink");
+            $('.prog_val').removeClass("transparentStatic").removeClass("blinkClass");
 
             if(data.mass){
                 $(".tank_parm_mass").text(data.mass);
@@ -179,7 +199,7 @@ class respark{
                     //$('.prog_val').text(tmpperc+"%");
                     $('.prog_val').text(data.level);
                     if(tmpperc>95){
-                        $('.prog_val').addClass("blink");
+                        $('.prog_val').addClass("blinkClass");
                     }
                     let pr_opt = {};
                     let pr_optfancy ={};
@@ -244,178 +264,239 @@ class respark{
         }
     }
     refreshPark(){
+        this.led("load");//сетим в норму изначально
         var wrapperRenderpark = renderPark.bind(this);
+        var wrapperCheckPark = checkPark.bind(this);
         var wrapperCalcArrows = this.calcArrows.bind(this);
         var wrapperSummaryBalance = this.summaryBalance.bind(this);
         var wrapperAsnBalance = this.asnLoading.bind(this);
+        var wrapperMeteo = this.rendermeteo.bind(this);
+
+        let context = this;
+
+        //запрос метео
+        $.ajax({
+            url:"getmeteo.php",
+            dataType:"json",
+            method:'GET',
+            data:{meteo:true},
+            success:function(data){
+                wrapperMeteo(data);
+            },
+            error:function(){
+                console.log("error to load refresh tank ajax data");
+            }
+        });
+        //запрос парка
         $.ajax({
             url:"gettank.php",
             dataType:"json",
             method:'GET',
             data:{park:true},
             success:function(data){
+                context.lastAjaxData = data;
                 connectionState(1);
-                wrapperRenderpark(data);
-                wrapperCalcArrows(data);
-                wrapperSummaryBalance(data);
-                wrapperAsnBalance();
+                wrapperCheckPark(data);
             },
             error:function(){
                 console.log("error to load refresh park ajax data");
                 connectionState(0);
+                context.led("error");
             }
         });
-        function renderPark(data) {
+        function checkPark(data) {
+            context.led("ok");
+            //console.log("checkpark this:",this);
             if(data){
                 /*Если это холодный старт то
-                надо список имеющихся активных резервуаров
-                передать на вычисление Тенденций*/
+                 надо список имеющихся активных резервуаров
+                 передать на вычисление Тенденций*/
                 if(Global.nodes[getNode(respark)].nodeObj.coldstart){
                     Global.nodes[getNode(respark)].nodeObj.coldstart = false; //Выставляем флаг горячего старта
                     this.tendsStart(data);
                 }
 
-                $("#btnrespark .led").removeClass("error warn");
+                for(var elem in data) { //основной цикл анализа
+                    //в рез парке кнотролируем
+                    //-переливы
+                    //-ошибки уровнемеров
+                    //console.log("tank#"+data[elem].num+" level is:"+data[elem].level);
+                    elem = Number(elem);//преобразование в Number
 
-                for(var elem in data){
-                    elem = Number(elem);
-                    if(data[elem].level && data[elem].max_level){
-                        if(data[elem].level == "-1000"){//если уровнемер не возвращает данных уровня
-                            if(!data[elem].service){// и нет "в ремонте"
-                                $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
-                                $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-remove-circle'></i>");
+                    //-----WARNING SECTION------
+                    if(Number(data[elem].pereliv)){
+                        this.led("warning");
 
-                                $("#btnrespark .led").addClass("error");
-                            }
-
-                            $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.6);
-                            $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
-
-                        }else if(!data[elem].service){
-                            //статус резервуаров
-                            $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-ok-circle'></i>");
-
-                            $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
-                            $(".tank[data-num="+(data[elem].num)+"]").css("opacity",1);
-                            $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").removeClass("transparentStatic");
-
-                            var tmpperc = this.lvl2perc(Number(data[elem].level),Number(data[elem].max_level)).toFixed(0);
-                            var tmpReal = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val_real");
-                            var tmpPerc = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val");
-                            var tmpProd = $(".tank[data-num="+(data[elem].num)+"]").find(".tank_prod");
-                            /*
-                             if(tmpperc>95){
-                             tmpPerc.addClass("blink");
-                             tmpReal.addClass("blink");
-                             }else {
-                             tmpPerc.removeClass("blink");
-                             tmpReal.removeClass("blink");
-                             }
-                             */
-                            tmpPerc.text(tmpperc+"%");
-                            tmpReal.text(Number(data[elem].level).toFixed(0));
-                            if(Number(data[elem].product)){
-                                var product = this.getProduct(Number(data[elem].product));
-                                tmpProd.text(product.text);
-                                tmpProd.removeClass("disel diseleuro a76 a80 a92 a95 a98 smt");//подготовка
-                                tmpProd.removeClass("label-danger label-warning").addClass("label-success");
-                                tmpProd.addClass(product.class);
-                            }else {
-                                tmpProd.text(this.getProduct(Number(data[elem].product)).text);
-                                tmpProd.removeClass("label-success label-warning").addClass("label-danger");
-                            }
-
-                            //console.log("pereliv:"+Number(data[elem].pereliv));
-                            if(Number(data[elem].pereliv)){
-                                $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").removeClass("transparent");
-                                $("#btnrespark .led").addClass("warn");
-                            }else {
-                                $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").addClass("transparent");
-                            }
-
-
-                            let pr_opt = {};
-                            if(tmpperc<10){
-                                tmpPerc.css("color","#08f");
-                                tmpReal.css("color","#333");
-                                pr_opt={
-                                    from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                                    to:{color:"#08f"}
-                                };
-                            }else if(tmpperc>70 && tmpperc<90){
-                                tmpPerc.css("color","rgb(200, 100, 0)");
-                                //tmpReal.css("color","rgb(200, 100, 0)");
-                                tmpReal.css("color","#333");
-                                pr_opt={
-                                    from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                                    to:{color:"rgb(200, 100, 0)"}
-                                };
-                            }else if(tmpperc>90){
-                                tmpPerc.css("color","#a00");
-                                tmpReal.css("color","#a00");
-                                pr_opt={
-                                    from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                                    to:{color:"#a00"}
-                                };
-                            }else{
-                                tmpPerc.css("color","#090");
-                                //tmpReal.css("color","#090");
-                                tmpReal.css("color","#333");
-                                pr_opt={
-                                    from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
-                                    to:{color:"#090"}
-                                };
-                            }
-
-                            Global.pr_tank[data[elem].num].animate(tmpperc/100,pr_opt);
-                            //проверка на устаревание данных
-                            {
-                                var xtime = new Date(Date.parse(data[elem].datetime));
-                                var t_year = xtime.getFullYear();
-                                var t_month = xtime.getMonth();
-                                var t_day = xtime.getDate();
-                                var t_hour = xtime.getHours();
-                                var t_minute = xtime.getMinutes();
-                                var t_second = xtime.getSeconds();
-                                var offset = new Date().getTimezoneOffset()*60000;
-                                var utctime = Date.UTC(t_year,t_month,t_day,t_hour,t_minute,t_second);
-                                var nowt = Date.now();
-                                var now = nowt - offset;
-                                //var now = nowt;
-                                var compare_t = now-utctime;
-                                //console.log("elem:"+elem+"tank:"+data[elem].num+"now:"+now+" utc:"+utctime+" compare:"+compare_t);
-                                if(compare_t > 2*60*1000){
-                                    $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-transfer'></i>");
-                                }
-                                if(compare_t > 3*60*1000){
-                                    $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-warning-sign'></i>");
-                                    $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.2);
-                                    $("#btnrespark .led").addClass("error");
-                                }
-                            }
+                    }
+                    //-----ERROR SECTION--------
+                    if(data[elem].level == "-1000"){//если уровнемер не возвращает данных уровня
+                        if(!data[elem].service){// и нет "в ремонте"
+                            this.led("error");
                         }
-                    }else {
-                        Global.pr_tank[data[elem].num].animate(0,pr_opt);
-                        $("#btnrespark .led").addClass("error");
                     }
-                    //Если резервуар в ремонте
-                    if(data[elem].service){//если в ремонте то ВСЕГДА
-                        $(".tank[data-num="+(data[elem].num)+"]").find(".tank_service").removeClass("transparent");
-                        $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class=\"fa fa-wrench\" aria-hidden=\"true\"></i>");
-                        $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
-                        $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
-
-
-                    }else {
-                        $(".tank[data-num="+(data[elem].num)+"]").find(".tank_service").addClass("transparent");
-
+                    {
+                        var xtime = new Date(Date.parse(data[elem].datetime));
+                        var t_year = xtime.getFullYear();
+                        var t_month = xtime.getMonth();
+                        var t_day = xtime.getDate();
+                        var t_hour = xtime.getHours();
+                        var t_minute = xtime.getMinutes();
+                        var t_second = xtime.getSeconds();
+                        var offset = new Date().getTimezoneOffset()*60000;
+                        var utctime = Date.UTC(t_year,t_month,t_day,t_hour,t_minute,t_second);
+                        var nowt = Date.now();
+                        var now = nowt - offset;
+                        //var now = nowt;
+                        var compare_t = now-utctime;
+                        //console.log("elem:"+elem+"tank:"+data[elem].num+"now:"+now+" utc:"+utctime+" compare:"+compare_t);
+                        if(compare_t > 2*60*1000){
+                            $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-transfer'></i>");
+                        }
+                        if(compare_t > 3*60*1000){
+                            $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-warning-sign'></i>");
+                            this.led("error");
+                        }
                     }
+                }
+
+
+            }
+            if(Global.nodes[getNode(respark)].nodeObj.showed){
+                //console.log("рендерим парк");
+                wrapperRenderpark(data);
+                if(context.tendsLoaded){
+                    wrapperCalcArrows(data);
+                }
+                wrapperSummaryBalance(data);
+                wrapperAsnBalance();
+            }else {
+                //console.log("пропускаем рендер");
+            }
+            this.startedAndRefreshed.resolve();
+            //console.log("Refreshed:",this.startedAndRefreshed);
+            data = null;
+        }
+        function renderPark(data) {
+            if(data && context.smartRender){
+                for(var elem in data){ //основной цикл рендера
+                    if(context.smartRender.needRender(elem)){
+                        elem = Number(elem);
+                        if(data[elem].level && data[elem].max_level){
+                            if(data[elem].level == "-1000"){//если уровнемер не возвращает данных уровня
+                                if(!data[elem].service){// и нет "в ремонте"
+                                    $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").removeClass("transparent");
+                                    $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-remove-circle'></i>");
+
+                                    //this.led("error");
+                                }
+
+                                $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.6);
+                                $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
+
+                            }else if(!data[elem].service){
+                                //статус резервуаров
+                                $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class='glyphicon glyphicon-ok-circle'></i>");
+
+                                $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
+                                $(".tank[data-num="+(data[elem].num)+"]").css("opacity",1);
+                                $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").removeClass("transparentStatic");
+
+                                var tmpperc = this.lvl2perc(Number(data[elem].level),Number(data[elem].max_level)).toFixed(0);
+                                var tmpReal = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val_real");
+                                var tmpPerc = $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank_val");
+                                var tmpProd = $(".tank[data-num="+(data[elem].num)+"]").find(".tank_prod");
+                                /*
+                                 if(tmpperc>95){
+                                 tmpPerc.addClass("blink");
+                                 tmpReal.addClass("blink");
+                                 }else {
+                                 tmpPerc.removeClass("blink");
+                                 tmpReal.removeClass("blink");
+                                 }
+                                 */
+                                tmpPerc.text(tmpperc+"%");
+                                tmpReal.text(Number(data[elem].level).toFixed(0));
+                                if(Number(data[elem].product)){
+                                    var product = this.getProduct(Number(data[elem].product));
+                                    tmpProd.text(product.text);
+                                    tmpProd.removeClass("disel diseleuro a76 a80 a92 a95 a98 smt");//подготовка
+                                    tmpProd.removeClass("label-danger label-warning").addClass("label-success");
+                                    tmpProd.addClass(product.class);
+                                }else {
+                                    tmpProd.text(this.getProduct(Number(data[elem].product)).text);
+                                    tmpProd.removeClass("label-success label-warning").addClass("label-danger");
+                                }
+
+                                //console.log("pereliv:"+Number(data[elem].pereliv));
+                                if(Number(data[elem].pereliv)){
+                                    $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").removeClass("transparent");
+                                    //this.led("warning");
+                                }else {
+                                    $(".tank[data-num="+(data[elem].num)+"]").find(".tank_pereliv").addClass("transparent");
+                                }
+
+
+                                let pr_opt = {};
+                                if(tmpperc<10){
+                                    tmpPerc.css("color","#08f");
+                                    tmpReal.css("color","#333");
+                                    pr_opt={
+                                        from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                        to:{color:"#08f"}
+                                    };
+                                }else if(tmpperc>70 && tmpperc<90){
+                                    tmpPerc.css("color","rgb(200, 100, 0)");
+                                    //tmpReal.css("color","rgb(200, 100, 0)");
+                                    tmpReal.css("color","#333");
+                                    pr_opt={
+                                        from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                        to:{color:"rgb(200, 100, 0)"}
+                                    };
+                                }else if(tmpperc>90){
+                                    tmpPerc.css("color","#a00");
+                                    tmpReal.css("color","#a00");
+                                    pr_opt={
+                                        from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                        to:{color:"#a00"}
+                                    };
+                                }else{
+                                    tmpPerc.css("color","#090");
+                                    //tmpReal.css("color","#090");
+                                    tmpReal.css("color","#333");
+                                    pr_opt={
+                                        from:{color:Global.pr_tank[Number(data[elem].num)].path.getAttribute("stroke")},
+                                        to:{color:"#090"}
+                                    };
+                                }
+
+                                Global.pr_tank[data[elem].num].animate(tmpperc/100,pr_opt);
+
+                                //проверка на устаревание данных
+                                if(Utility.checkExpired(data[elem].datetime)){
+                                    $(".tank[data-num="+(data[elem].num)+"]").css("opacity",0.2);
+                                }
+                            }
+                        }else {
+                            Global.pr_tank[data[elem].num].animate(0,pr_opt);
+                            //this.led("error");
+                        }
+                        //Если резервуар в ремонте
+                        if(data[elem].service){//если в ремонте то ВСЕГДА
+                            $(".tank[data-num="+(data[elem].num)+"]").find(".tank_service").removeClass("transparent");
+                            $("[data-ts="+(data[elem].num)+"]").html(data[elem].num+" <i class=\"fa fa-wrench\" aria-hidden=\"true\"></i>");
+                            $(".tank[data-num="+(data[elem].num)+"]").find(".tank_error").addClass("transparent");
+                            $(".tank[data-num="+(data[elem].num)+"]").find(".progress_tank").addClass("transparentStatic");
+                        }else {
+                            $(".tank[data-num="+(data[elem].num)+"]").find(".tank_service").addClass("transparent");
+                        }
+                    }
+
                 }
             }
             if(Global.tankselect){
                 this.refreshTank(Global.tankselect);
             }
-
+            data = null;
         }
     }
     calcArrows(data) {
@@ -425,10 +506,10 @@ class respark{
                 for(var el in data){//перебор резервуаров
                     var res = false;
                     var tmpnum = Number(data[el].num);
-                    if(eval('Global.IntegratorForArrows'+data[el].num)){//тестируем первый резервуар
-                        if(data[el].level && data[el].mass){//если есть уровень у выбранного резервуара
+                    if(Global['IntegratorForArrows'+data[el].num]){//тестируем первый резервуар
+                        if(data[el].level && data[el].mass && !data[el].service){//если есть уровень у выбранного резервуара
                             var tmpmass = Number(data[el].mass);
-                            var result = eval('Global.IntegratorForArrows'+data[el].num+'.Integrity('+tmpmass+')');
+                            var result = Global['IntegratorForArrows'+data[el].num].Integrity(tmpmass);
                             // console.log("CALC ARROWS Data:",data,"Result:",result);
                             if(Math.abs(result)>filter){//значение выходит на рамки
                                 if(result>0){
@@ -483,14 +564,14 @@ class respark{
         }
         if(res_val){
             if(Math.abs(res_val*60) > 3){
-                TankObj.find(".tends .val").text((res_val*60).toFixed(1));
+                TankObj.find(".tends").text((res_val*60).toFixed(1)+" т/ч");
             }else {
-                TankObj.find(".tends .val").text("~ "+(res_val*60).toFixed(1));
+                TankObj.find(".tends").text("~ "+(res_val*60).toFixed(1)+" т/ч");
             }
         }else {
-            TankObj.find(".tends .val").text("---");
+            TankObj.find(".tends").text("без динамики");
         }
-        refreshTooltips();
+        //refreshTooltips();
     }
     lvl2perc(val,max){
         var desc = max/100;
@@ -568,28 +649,40 @@ class respark{
         }
     }
     startNode() {
-        $("#btnrespark").addClass("nodeselected");
+        var context = this;
+        let autostart = this.showNode.bind(this);
+        this.startedAndRefreshed = $.Deferred();
+
+        //console.log("start node REZPARK",this.startedAndRefreshed);
         var resparkbodyPromise = fetch("nodes/templates/respark.html").then(function (response) {
             return response.text();
         }).then(function (text) {
-            $('#minview').html(text);
+            $('#resparkview').html(text);
 
-            $(".tank").addClass("initScroll");//Плавный старт
-            $(".tank").each(function (index, elem) {
-                setTimeout(function () {
-                    $(elem).removeClass("initScroll");
-                },index*70);
-            });
-            $(".tank_pereliv").addClass("transparent");
-            $(".tank_service").addClass("transparent");
-            $(".tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
+            reloadProgressBar();
+
+
+            $("#resparkview .tank_pereliv").addClass("transparent");
+            $("#resparkview .tank_service").addClass("transparent");
+            $("#resparkview .tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
+
+            $(".pereliv,.errortank,.blink,.glyphicon-warning-sign,.glyphicon-remove-circle").addClass("blinkClass");
+
             $(".tank").each(function () {//расстановка номеров
                 var tmp = $(this).data("num");
                 $(this).find(".tank_title").text(tmp);
             });
             //Установка шаблона тенденций
             $(".tank").each(function () {
-                $(this).find(".tends").html("<span class=\"val\">--</span> т/ч");
+                $(this).find(".tends").html("<i class='fa fa-spinner fa-spin'></i>");
+            });
+            $('#resparkview').on('click','.tank',function(){//обработчик клика на резервуаре
+                var num = $(this).data("num");
+                if(num){
+                    if(getNode(respark)>(-1)){
+                        Global.nodes[getNode(respark)].nodeObj.openTank(num);
+                    }
+                }
             });
         });
 
@@ -598,36 +691,85 @@ class respark{
         });
 
         resparkpanelPromise.then(function (text) {
-            $('#panelstate').html(text);
+            $('#resparkpanel').html(text);
+            $('#resparkpanel').addClass("cont_panel");
         });
 
         var wrapperStartOPC = this.startOPC.bind(this);
 
         Promise.all([resparkbodyPromise,resparkpanelPromise]).then(function () {
-            reloadProgressBar();
+            //подключаем smartRender
+            try {
+                context.smartRender = new Utility.Renderer(context,["level","pereliv","product","service"]);
+            }catch (e){
+                console.error(e);
+            }
+
             wrapperStartOPC();
+            autostart();
         });
     }
     stopNode() {
         if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
         if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
-        $('#minview').empty();
-        $("#btnrespark").removeClass("nodeselected");
+        $('#resparkview').empty();
+        this.led("unselect");
 
     }
     startOPC(){
+        //console.log("respark startOPC this:",this);
         var wrapperRefreshPark = this.refreshPark.bind(this);
-        let start = function () {
+        function start() {
+            //console.log("respark start function this:",this);
             wrapperRefreshPark();
+            if (this.OPCTimer)clearInterval(this.OPCTimer);
+            this.OPCTimer = setInterval(wrapperRefreshPark,60000);
+        }
 
-            if (Global.refreshParkTimer)clearInterval(Global.refreshParkTimer);
-            if (Global.refreshStateTimer)clearInterval(Global.refreshStateTimer);
-            Global.refreshParkTimer=setInterval(wrapperRefreshPark,60000);
-            Global.refreshStateTimer=setInterval(stateRefresher,10000);
-        };
+        start.bind(this)();
+    }
+    stopOPC(){
+        if (this.OPCTimer)clearInterval(this.OPCTimer);
+    }
+    showNode(){
 
-        start();
-        $("#btnrespark .led").addClass("ok");
+        console.log("Show node REZPARK");
+        Global.nodes.map(function (elem) {
+            if(elem.nodeObj){
+                if(elem.nodeObj.hideNode){
+                    elem.nodeObj.hideNode();
+                }
+            }
+        });
+        $("#resparkview").show();
+
+        $(".tank").addClass("initScroll");//Плавный старт
+        $(".tank").each(function (index, elem) {
+            setTimeout(function () {
+                $(elem).removeClass("initScroll");
+            },index*70);
+        });
+
+        this.led("select");
+        //принудительно запускаем обновление данных парка
+        this.refreshPark();
+        this.showed = true;
+    }
+    hideNode(){
+        $("#resparkview").hide();
+        this.led("unselect");
+        this.showed = false;
+        //-------подчищаем тренды
+        if(Global.TrendFancy.series.length){
+            Global.TrendFancy.series.forEach(function (elem) {
+                elem.setData();
+            })
+        }
+        if(Global.TrendTankParm.series.length){
+            Global.TrendTankParm.series.forEach(function (elem) {
+                elem.setData();
+            })
+        }
     }
     summaryBalance(data){
         if(data){
@@ -644,11 +786,14 @@ class respark{
                 if(!product[prodText.text]){//создаем продукт
                     product[prodText.text] = {
                         summ:tmpProdMass,
-                        summexport:tmpProdMass - tmpProdMassHideZone,
+                        summexport:0,
                         tanks:[],
                         class:prodText.class
                     };
-                    product[prodText.text].tanks.push(tmpNum);
+                    if(tmpProdMass > tmpProdMassHideZone){
+                        product[prodText.text].tanks.push(tmpNum);
+                        product[prodText.text].summexport = tmpProdMass - tmpProdMassHideZone;
+                    }
                 }else {//добавляем к продукту
                     let tmpOldObj = {};
                     Object.assign(tmpOldObj,product[prodText.text]);
@@ -693,52 +838,70 @@ class respark{
         }
     }
     tendsStart(data){
-        var wrapperRenderArrows = this.renderArrows.bind(this);
+        let wrapperRenderArrows = this.renderArrows.bind(this);
+        let context = this;
+        //$("#resparkview .tends").addClass("blinkClass");
         if(typeof data === "object"){
             data.map(function (elem,idx) {
                 // console.log("TEnds Data:",data,"elem:",elem);
                 //тут массив из 31 резервуара и одиночные замеры для каждого
                 if(elem.level){
-                    if(Number(elem.level) > -1 && elem.num){//если резервуар не в ремонте
+                    if(Number(elem.level) > -1 && elem.num && !elem.service){//если резервуар не в ремонте
                         //готовим AJAX
-                        $.ajax({
-                            url:"trendengine.php",
-                            dataType:"json",
-                            method:'GET',
-                            data:{tends:true,coldstart:true,tanktends:elem.num},
-                            success:function(data){
-                                //сюда получаем 31 независимый запрос. из (60) элементов часового замера
-                                let i = Number(elem.num);
-                                data.map(function (el,elidx) {
-                                    if(eval('Global.IntegratorForArrows'+i)){
-                                        let filter = 3/60;
-                                        //если есть объект интегратора для данного резервуара
-                                        if(el.mass){//если есть уровень у выбранного резервуара
-                                            var tmpmass = Number(el.mass);
-                                            var result = eval('Global.IntegratorForArrows'+i+'.Integrity('+tmpmass+')');
+                        setTimeout(function(){
+                            $.ajax({
+                                url:"trendengine.php",
+                                dataType:"json",
+                                method:'GET',
+                                data:{tends:true,coldstart:true,tanktends:elem.num},
+                                success:function(tends){
+                                    //сюда получаем 31 независимый запрос. из (60) элементов часового замера
+                                    let i = Number(elem.num);
+                                    //Убираем мигание
+                                    //$(".tank[data-num="+i+"]").find(".tends").removeClass("blinkClass");
+                                    tends.map(function (el,elidx) {
+                                        if(eval('Global.IntegratorForArrows'+i)){
+                                            let filter = 3/60;
+                                            //если есть объект интегратора для данного резервуара
+                                            if(el.mass){//если есть масса у выбранного резервуара
+                                                var tmpmass = Number(el.mass);
+                                                var result = eval('Global.IntegratorForArrows'+i+'.Integrity('+tmpmass+')');
 
-                                            var res = false;
-                                            if(Math.abs(result)>filter){//значение выходит на рамки
-                                                if(result>0){
-                                                    res = "up";
+                                                var res = false;
+                                                if(Math.abs(result)>filter){//значение выходит на рамки
+                                                    if(result>0){
+                                                        res = "up";
+                                                    }else {
+                                                        res = "down";
+                                                    }
                                                 }else {
-                                                    res = "down";
+                                                    //console.log("Значение без изменений:"+result);
                                                 }
-                                            }else {
-                                                //console.log("Значение без изменений:"+result);
-                                            }
-                                            if(data.length-1 == elidx){
-                                                wrapperRenderArrows(i,res,result);
+                                                if(tends.length-1 == elidx){
+                                                    //рендер после прогона последнего значения
+                                                    wrapperRenderArrows(i,res,result);
+                                                }
                                             }
                                         }
+                                    });
+                                    if (idx == data.length-1){
+                                        //$("#resparkview .tends").removeClass("blinkClass");
+                                        context.tendsLoaded = true;
                                     }
-                                });
-                            },
-                            error:function(){
-                                console.log("error to load Tendentional ajax data from",elem.num);
-                            }
-                        });
+                                },
+                                error:function(){
+                                    console.log("error to load Tendentional ajax data from",elem.num);
+                                }
+                            });
+                        },idx*1000);
+
+                    }else {
+                        $(".tank[data-num="+elem.num+"]").find(".tends").text("простаивает");
+                        console.log("простой на :",$(".tank[data-num="+elem.num+"]"));
                     }
+                }else {
+                    $(".tank[data-num="+elem.num+"]").find(".tends").text("ошибка");
+                    console.log("ошибка на :",$(".tank[data-num="+elem.num+"]"));
                 }
             });
         }

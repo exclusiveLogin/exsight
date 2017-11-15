@@ -1,5 +1,7 @@
 <?php
-include_once "settings/db.php";
+require_once "path.php";
+
+include_once $path_settings."db.php";
 
 $ip = $_SERVER["REMOTE_ADDR"];
 $rip = $_SERVER["HTTP_X_FORWARDED_FOR"];

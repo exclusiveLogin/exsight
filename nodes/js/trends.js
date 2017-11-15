@@ -1,12 +1,15 @@
 class trends{
     startNode() {
-        $('#btntrends').on("click",function () {
-            alert("Модуль находится в разработке");
-            // let win = window.open("trends/","_blank");
-            // win.focus();
-        });
+        this.led("ok");
     }
     stopNode() {
+
+    }
+    showNode(){
+        let win = window.open("trends/#respark","_blank");
+        win.focus();
+    }
+    hideNode(){
 
     }
 }

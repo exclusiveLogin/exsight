@@ -1,5 +1,7 @@
 <?php
-require_once "settings/db.php";
+require_once "path.php";
+require_once $path_settings."db.php";
+//echo $path_settings."db.php"."<br>";
 
 
 if($_GET['setstate'] && $_GET['sector']){

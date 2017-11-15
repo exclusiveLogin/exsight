@@ -28,10 +28,10 @@ export default class Utility{
 	}
     panelStateToggle(state){
         if(state){
-			$("#panelstate").removeClass("panelstate_hide");
+			$("#panels").removeClass("panelstate_hide");
         }
         else{
-            $("#panelstate").addClass("panelstate_hide");
+            $("#panels").addClass("panelstate_hide");
         }
     }
 	resultToggle(state){
@@ -71,13 +71,13 @@ export default class Utility{
 	connectionState(state) {
 		if(state){
 			$('#panel').hide().addClass("transparent");
-			$('#minview').removeClass("transparent");
+			$('#container').removeClass("transparent");
 			Global.conerr = 0;
 		}else{
 			Global.conerr++;
 			$('#panel').show().removeClass("transparent");
 			if(Global.conerr>3){
-				$('#minview').addClass("transparent");
+				$('#container').addClass("transparent");
 				$('#panel').html('<h2 class="label label-lg label-default conerror">Связь с сервером отключена</h2>');
 			}else {
 				$('#panel').html('<h2 class="label label-lg label-default conerror">Возникли проблемы со связью</h2>');
@@ -120,22 +120,16 @@ export default class Utility{
 		}
 	}
 	refreshTooltips() {
-		$('.glyphicon-warning-sign').each(function () {
-			$(this).attr("data-tooltip", "давно не обновлялся");
-		});
-		$('.glyphicon-arrow-down').each(function () {
-			$(this).attr("data-tooltip", "Идет слив НП");
-		});
-		$('.glyphicon-arrow-up').each(function () {
-			$(this).attr("data-tooltip", "Идет налив НП");
-		});
-		$('.glyphicon-remove-circle').each(function () {
-			$(this).attr("data-tooltip", "Ошибка уровнемера");
-		});
-		$("#panelstate").off();
+		$('#panels .glyphicon-warning-sign').attr("data-tooltip", "давно не обновлялся");
+        $('#panels .fa-wrench').attr("data-tooltip", "на ремонте");
+		$('#panels .glyphicon-arrow-down').attr("data-tooltip", "Идет слив НП");
+		$('#panels .glyphicon-arrow-up').attr("data-tooltip", "Идет налив НП");
+		$('#panels .glyphicon-remove-circle').attr("data-tooltip", "Ошибка уровнемера");
+
+		$("[data-tooltip]").off();
 		tooltipHandler();
 		function tooltipHandler() {
-			$("#panelstate").on("mousemove","[data-tooltip]",function (eventObject) {
+			$("[data-tooltip]").on("mousemove",function (eventObject) {
 
 				var data_tooltip = $(this).attr("data-tooltip");
 
@@ -208,6 +202,7 @@ export default class Utility{
 				if(data){
 					for(var el in data){
 						if(data[el].sector == "main"){//отлавливаем сектор
+
 							//console.log("sector main");
 							if(data[el].state == "reset"){
 								//console.log("status = reset");
@@ -229,8 +224,19 @@ export default class Utility{
                                         }
 									});
 								},60000);
-							}	
-						}
+							}
+                            if(data[el].state == "dev"){
+								if(data[el].state != Global.application_state){
+                                    showSysMsg("Страница находится в режиме изменения, некоторые функции могут не работать",false,true);
+								}
+                            }
+                            if(data[el].state == "normal"){
+                                if(data[el].state != Global.application_state){
+                                    showSysMsg("Страница находится в рабочем режиме",true);
+                                }
+                            }
+                            Global.application_state = data[el].state;
+                        }
 					}
 				}
 			},
@@ -274,5 +280,40 @@ export default class Utility{
             }
         });
 	}
-
+    checkExpired(datetime){
+        let result = true;//по умолчанию дата старая
+        //--------------
+        var xtime = new Date(Date.parse(datetime));
+        var t_year = xtime.getFullYear();
+        var t_month = xtime.getMonth();
+        var t_day = xtime.getDate();
+        var t_hour = xtime.getHours();
+        var t_minute = xtime.getMinutes();
+        var t_second = xtime.getSeconds();
+        var offset = new Date().getTimezoneOffset()*60000;
+        var utctime = Date.UTC(t_year,t_month,t_day,t_hour,t_minute,t_second);
+        var nowt = Date.now();
+        var now = nowt - offset;
+        var compare_t = now-utctime;
+        //console.log("now:"+now+" utc:"+utctime+" compare:"+compare_t);
+        if(compare_t > 3*60*1000){
+            result = true;
+            //console.log("Expired");
+        }else {
+            result = false;
+            //console.log("Actual");
+        }
+        //--------------
+        return result;
+    }
+    scrollTo(elem,destination) {
+        let dest = $(destination)[0];
+        let el = $(elem);
+        if(dest && el){
+            let footerH = $("#footer")[0].offsetHeight;
+            el.animate({"scrollTop":dest.offsetTop},1000);
+        }else {
+            console.error("ScrollTO:ошибка в поиска в DOM");
+        }
+    }
 }
