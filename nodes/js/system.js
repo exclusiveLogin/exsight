@@ -17,9 +17,9 @@ module.exports = class system{
             context.view.html(text);
 
             //создаем логеры
-            context.visitLog = new Tbl2log("table.tbl_visits",["id","ip","rip","datetime","ver","build"]);
-            context.uniqueLog = new Tbl2log("table.tbl_uniq",["id","ip","datetime","ver","build","btn"],"id");
-            context.defferLog = new Tbl2log("table.tbl_deffered",["id","ip","datetime","ver","build","btn"],"id");
+            context.visitLog = new Tbl2log("table.tbl_visits",["id","ip","rip","datetime","ver","build","os","device"]);
+            context.uniqueLog = new Tbl2log("table.tbl_uniq",["id","ip","datetime","ver","build","os","device","btn"],"id");
+            context.defferLog = new Tbl2log("table.tbl_deffered",["id","ip","datetime","ver","build","os","device","btn"],"id");
 
             context.fancyLog = new Tbl2log("table.tbl_fancy",["cnt","ip","rip"]);
 
@@ -271,6 +271,12 @@ module.exports = class system{
                 if(tbl == "visits"){
                     if(context.visitLog)context.visitLog.clearLog();
                     data.forEach(function (element) {
+                        if(element.ua){
+                            let browser = Global.detect.parse(element.ua);
+                            element.device = browser.browser.name;
+                            element.os = browser.os.name+"("+browser.device.type+")";
+                        }
+
                         if(context.visitLog)context.visitLog.write2log(element);
                     });
                     $(".system-about .header .visits").text(data.length);
@@ -278,7 +284,14 @@ module.exports = class system{
                 if(tbl == "uniqueip"){
                     if(context.uniqueLog)context.uniqueLog.clearLog();
                     data.forEach(function (element) {
+                        if(element.ua){
+                            let browser = Global.detect.parse(element.ua);
+                            element.device = browser.browser.name;
+                            element.os = browser.os.name+"("+browser.device.type+")";
+                        }
+
                         element.btn = `<i class="fa fa-refresh btn-refresh-ip" aria-hidden="true"></i>`;
+
                         if(context.uniqueLog)context.uniqueLog.write2log(element);
                     });
                     $(".system-about .header .uniqueips").text(data.length);
@@ -286,6 +299,12 @@ module.exports = class system{
                 if(tbl == "defferreload"){
                     if(context.defferLog)context.defferLog.clearLog();
                     data.forEach(function (element) {
+                        if(element.ua){
+                            let browser = Global.detect.parse(element.ua);
+                            element.device = browser.browser.name;
+                            element.os = browser.os.name+"("+browser.device.type+")";
+                        }
+
                         element.btn = `<i class="fa fa-trash btn-trash-ip" aria-hidden="true"></i>`;
                         if(context.defferLog)context.defferLog.write2log(element);
                     });
@@ -336,4 +355,4 @@ module.exports = class system{
             }
         }
     }
-}
+};

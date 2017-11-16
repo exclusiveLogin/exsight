@@ -5,11 +5,14 @@ require("bootstrap");
 require("bootstrap/dist/css/bootstrap.min.css");
 require("bootstrap/dist/css/bootstrap-theme.min.css");
 require("font-awesome/css/font-awesome.min.css");
+const detect = require("detect.js");
 
 $(document).ready(function(){
     $.ajaxSetup({
         cache:false
     });
+
+    Global.detect = detect;
 
     //Loading Progress bar init
     if(Global.demo){
