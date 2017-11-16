@@ -316,4 +316,54 @@ export default class Utility{
             console.error("ScrollTO:ошибка в поиска в DOM");
         }
     }
+    visit() {
+        let req = {version:Global.version.v,build:Global.version.build};
+        //console.log("req:",req);
+        $.ajax({
+            url:"visitparser.php",
+            dataType:"text",
+            method:'GET',
+            data:req,
+            success:function(data){
+                console.log(data);
+            },
+            error:function(){
+                console.log("error visit");
+            }
+        });
+    }
+    adaptWin() {
+        if(window.innerWidth < 1450 && window.innerWidth > 990){
+            $("#container").addClass("adapt");
+            $("#header").addClass("adapt");
+            $(".danger_field").addClass("adapt");
+        }else {
+            $("#container").removeClass("adapt");
+            $("#header").removeClass("adapt");
+            $(".danger_field").removeClass("adapt");
+        }
+    }
+    getNode(classNode){
+        let status = -1;
+        if(typeof classNode === "function"){
+            Global.nodes.map(function (node, index) {
+                if(node.nodeObj instanceof classNode){
+                    status = index;
+                }else {
+                }
+            });
+            return status;
+        }
+        if(typeof classNode === "string"){
+            Global.nodes.map(function (node, index) {
+                if(node.nameNode === classNode){
+                    status = index;
+                }else {
+                }
+            });
+            return status;
+        }
+        return status;
+
+    }
 }

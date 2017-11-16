@@ -24,4 +24,13 @@ let Global = {
     conerr:0,
     application_state:"starting"
 };
+Global.authkey=false;
+Global.loginData={
+    "login":"",
+    "password":""
+};
+Global.version = {};
+Global.version.v = "1.0.5";
+Global.version.build = "10005";
+Global.version.desc = "";
 export default Global;

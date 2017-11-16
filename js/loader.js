@@ -31,6 +31,9 @@ window.renderFancy = window.Utility.renderFancy;
 window.toggleFancy = window.Utility.toggleFancy;
 window.refreshTooltips = window.Utility.refreshTooltips;
 window.nativeTooltipHandler = window.Utility.nativeTooltipHandler;
+window.visit = window.Utility.visit;
+window.adaptWin = window.Utility.adaptWin;
+window.getNode = window.Utility.getNode;
 
 window.userEnter = window.Utility.userEnter;
 window.showSysMsg = window.Utility.showSysMsg;
