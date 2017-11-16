@@ -6,3 +6,5 @@ opcdata/
 beta/opcdata/
 public/
 beta/public/
+trends/public/
+trends/node_modules/

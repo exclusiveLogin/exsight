@@ -1,7 +1,7 @@
 var webpack = require("webpack");
 module.exports = {
     entry:{
-        loader:"./js/loader.js",
+        loader:["whatwg-fetch","babel-polyfill","./js/loader.js"],
         vendor:"./js/vendor.js"
     },
     output:{

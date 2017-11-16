@@ -6,6 +6,7 @@ import UtilClass from "./logic.js";
 import Renderer from "./renderer";
 import Loading from "./loading_pg";
 import tbl2log from "./tbl2log";
+import AN from "./nodes";
 
 window.ProgressBar = require("progressbar.js");
 
@@ -41,7 +42,6 @@ window.Tbl2log = tbl2log;
 window.Global = gl;
 window.reloadProgressBar = reloadProg;
 window.reloadProgressBarPort = reloadProgPort;
-//window.Blink = Blink;
 
 if(Integrator && gl){
     window.Integrator = Integrator;
@@ -116,3 +116,4 @@ if(Integrator && gl){
 
     window.Global.IntegratorCon = true;
 }
+window.AstridNode = AN;

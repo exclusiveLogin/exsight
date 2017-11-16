@@ -1,4 +1,4 @@
-class trends{
+module.exports = class trends{
     startNode() {
         this.led("ok");
     }

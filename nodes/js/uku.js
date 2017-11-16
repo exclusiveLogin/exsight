@@ -1,7 +1,4 @@
-/**
- * Created by KotovVM on 28.03.2017.
- */
-class uku{
+module.exports = class uku{
     startNode() {
         $('#btnuku').on("click",function () {
             alert("Модуль находится в разработке");

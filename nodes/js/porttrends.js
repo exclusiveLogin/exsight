@@ -1,4 +1,4 @@
-class porttrends{
+module.exports = class porttrends{
     startNode() {
         this.led("ok");
     }
@@ -12,4 +12,4 @@ class porttrends{
     hideNode(){
 
     }
-}
+};

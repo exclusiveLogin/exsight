@@ -1,4 +1,4 @@
-class port{
+module.exports = class port{
     startNode() {
         var wrapperStartOPC = this.startOPC.bind(this);
         this.led("error");
@@ -42,9 +42,11 @@ class port{
         this.refreshPort();
     }
     hideNode(){
-        $("#portview").hide();
-        this.led("unselect");
-        this.showed = false;
+        if(this.showed){
+            $("#portview").hide();
+            this.led("unselect");
+            this.showed = false;
+        }
     }
     startOPC(){
         let wrapperRefreshPort = this.refreshPort.bind(this);
@@ -186,9 +188,9 @@ class port{
                         let renderSelectedTanks = function () {
                             let lastData = {};
                             //берем последние данные с парка
-                            if(getNode(respark)>(-1)){
-                                lastData = Global.nodes[getNode(respark)].nodeObj.lastAjaxData;
-                                let rezpark  = Global.nodes[getNode(respark)].nodeObj;
+                            if(getNode("respark")>(-1)){
+                                lastData = Global.nodes[getNode("respark")].nodeObj.lastAjaxData;
+                                let rezpark  = Global.nodes[getNode("respark")].nodeObj;
                                 //рендерим резервуары в порту
                                 //хранит объект с данными для выбранного резервуара
                                 let tmpOil = {};

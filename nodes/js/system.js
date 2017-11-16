@@ -1,4 +1,4 @@
-class system{
+module.exports = class system{
     constructor(){
         this.showed = false;
         this.view = {};
@@ -128,9 +128,11 @@ class system{
 
     }
     hideNode(){
-        this.view.hide();
-        this.led("unselect");
-        this.showed = false;
+        if(this.showed){
+            this.view.hide();
+            this.led("unselect");
+            this.showed = false;
+        }
     }
     startOPC(){
         let wrapperRefresh = this.refresh.bind(this);

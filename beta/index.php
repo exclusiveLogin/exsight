@@ -1,2 +1,2 @@
 <?php
-header("Location:/exsight/",true,301);
+header("Location:/exsight/",false,307);

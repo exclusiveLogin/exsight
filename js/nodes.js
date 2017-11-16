@@ -1,13 +1,13 @@
 'use strict';
 class NodeCtrl{
     static createNode(name,container,alias){
-        return new Node(name,container,alias);
+        return new AstridNode(name,container,alias);
     }
     static deleteNode(){}
     static replaceNode(){}
     static replaceAll(){}
 }
-class Node extends NodeCtrl{
+class AstridNode extends NodeCtrl{
     constructor(name,container,alias){
         super();
         //проверка аргументов
@@ -42,66 +42,71 @@ class Node extends NodeCtrl{
 
             //создаем загрузку скриптов
             let pr_node = new Promise(function (resolve,reject) {
-                let script = document.createElement("script");
-                document.body.appendChild(script);
-                script.src = "nodes/js/"+name+".js?v=beta";
-
-                script.onerror = ()=>{
-                    console.log("error load module");
-                    reject();
-                };
-
-                script.onload = ()=>{
-                    resolve();
-                };
+                // let script = document.createElement("script");
+                // document.body.appendChild(script);
+                // script.src = "nodes/js/"+name+".js?v=beta";
+                //
+                // script.onerror = ()=>{
+                //     console.log("error load module");
+                //     reject();
+                // };
+                //
+                // script.onload = ()=>{
+                //     resolve();
+                // };
+                resolve();
             });
             pr_node.then(function () {
-                //console.log("Promise ok");
                 Global.nodes.map(function (node,index) {
                     if(node.nameNode==name){
-                        //console.log("Есть такой узел - "+node.nameNode+"index - "+index);
-                        //создает экземпляр объекта Ноды
-                        Global.nodes[index].nodeObj = eval("new "+name+"();");
+                        require.ensure([],function () {
+                            //создает экземпляр объекта Ноды
+                            let module = require("../nodes/js/"+name+".js");
+                            Global.nodes[index].nodeObj = new module();
 
-                        //Создаем метод led у ноды
-                        Global.nodes[index].nodeObj.led = function (state) {
-                            if(state == "ok"){
-                                $("#btn"+name+" .led").removeClass("warn error loading");
-                                $("#btn"+name+" .led").addClass("ok");
-                            }
-                            if(state == "error"){
-                                $("#btn"+name+" .led").addClass("error");
-                            }
-                            if(state == "warning"){
-                                $("#btn"+name+" .led").addClass("warn");
-                            }
-                            if(state == "off"){
-                                $("#btn"+name+" .led").removeClass("warn ok error loading");
-                            }
-                            if(state == "select"){
-                                $("#btn"+name).addClass("nodeselected");
-                            }
-                            if(state == "unselect"){
-                                $("#btn"+name).removeClass("nodeselected");
-                            }
-                            if(state == "load"){
-                                $("#btn"+name+" .led").addClass("loading");
-                            }
-                        };
-                        //создаем свойство showed у ноды
-                        Global.nodes[index].nodeObj.showed = false;
+                            //Создаем метод led у ноды
+                            Global.nodes[index].nodeObj.led = function (state) {
+                                if(state == "ok"){
+                                    $("#btn"+name+" .led").removeClass("warn error loading");
+                                    $("#btn"+name+" .led").addClass("ok");
+                                }
+                                if(state == "error"){
+                                    $("#btn"+name+" .led").addClass("error");
+                                }
+                                if(state == "warning"){
+                                    $("#btn"+name+" .led").addClass("warn");
+                                }
+                                if(state == "off"){
+                                    $("#btn"+name+" .led").removeClass("warn ok error loading");
+                                }
+                                if(state == "select"){
+                                    $("#btn"+name).addClass("nodeselected");
+                                }
+                                if(state == "unselect"){
+                                    $("#btn"+name).removeClass("nodeselected");
+                                }
+                                if(state == "load"){
+                                    $("#btn"+name+" .led").addClass("loading");
+                                }
+                            };
+                            //создаем свойство showed у ноды
+                            Global.nodes[index].nodeObj.showed = false;
 
-                        //создаем panel для ноды
-                        $("#panels").append("<div id='"+name+"panel' class='hidden-xs hidden-sm'></div>");
-                        //создаем view для ноды
-                        $("#container").append("<div id='"+name+"view' class='viewer'></div>");
+                            //создаем свойство loaded у ноды
+                            Global.nodes[index].nodeObj.loaded = false;
 
-                        Global.nodes[index].nodeObj.startNode();//temp
+                            //создаем panel для ноды
+                            $("#panels").append("<div id='"+name+"panel' class='hidden-xs hidden-sm'></div>");
+                            //создаем view для ноды
+                            $("#container").append("<div id='"+name+"view' class='viewer'></div>");
 
-                        $(document).off("click","#btn"+name);
-                        $(document).on("click","#btn"+name,function () {
-                            console.log("click on btn "+name);
-                            node.nodeObj.showNode();
+                            Global.nodes[index].nodeObj.startNode();//temp
+
+                            $(document).off("click","#btn"+name);
+                            $(document).on("click","#btn"+name,function () {
+                                console.log("click on btn "+name);
+                                node.nodeObj.showNode();
+                            });
                         });
                     }
                 });
@@ -113,11 +118,6 @@ class Node extends NodeCtrl{
             console.log("Node has dublicates");
             return new Error("Node has dublicates");
         }
-
-
-
-
-
-
     }
 }
+export default NodeCtrl;

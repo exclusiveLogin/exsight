@@ -1,4 +1,4 @@
-class railgas{
+module.exports = class railgas{
     constructor(){
         this.showed = false;
     }
@@ -424,14 +424,16 @@ class railgas{
 
     }
     hideNode(){
-        $("#railgasview").hide();
-        this.led("unselect");
-        this.showed = false;
-        while(this.Trend.series[0]){
-            this.Trend.series[0].remove(false);
+        if(this.showed){
+            $("#railgasview").hide();
+            this.led("unselect");
+            this.showed = false;
+            while(this.Trend.series[0]){
+                this.Trend.series[0].remove(false);
+            }
+            this.Trend.redraw();
+            this.Trend.showLoading("Нет данных для отображения");
         }
-        this.Trend.redraw();
-        this.Trend.showLoading("Нет данных для отображения");
     }
     startOPC(){
         let wrapperRefreshUPES = this.refreshUPES.bind(this);

@@ -1,4 +1,4 @@
-class respark{
+module.exports = class respark{
     constructor(){
         this.coldstart = true;
         this.lastAjaxData = {};
@@ -708,7 +708,7 @@ class respark{
             }catch (e){
                 console.error(e);
             }
-
+            context.loaded = true;
             wrapperStartOPC();
             autostart();
         });
@@ -760,20 +760,23 @@ class respark{
         this.showed = true;
     }
     hideNode(){
-        $("#resparkview").hide();
-        this.led("unselect");
-        this.showed = false;
-        //-------подчищаем тренды
-        if(Global.TrendFancy.series.length){
-            Global.TrendFancy.series.forEach(function (elem) {
-                elem.setData();
-            })
+        if(this.showed){
+            $("#resparkview").hide();
+            this.led("unselect");
+            this.showed = false;
+            //-------подчищаем тренды
+            if(Global.TrendFancy.series.length){
+                Global.TrendFancy.series.forEach(function (elem) {
+                    elem.setData();
+                })
+            }
+            if(Global.TrendTankParm.series.length){
+                Global.TrendTankParm.series.forEach(function (elem) {
+                    elem.setData();
+                })
+            }
         }
-        if(Global.TrendTankParm.series.length){
-            Global.TrendTankParm.series.forEach(function (elem) {
-                elem.setData();
-            })
-        }
+
     }
     summaryBalance(data){
         if(data){
@@ -942,4 +945,4 @@ class respark{
             }
         });
     }
-}
+};

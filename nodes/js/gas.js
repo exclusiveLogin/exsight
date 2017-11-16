@@ -1,4 +1,4 @@
-class gas{
+module.exports = class gas{
     constructor(){
         this.showed = false;
     }
@@ -450,14 +450,17 @@ class gas{
         this.refreshUPES();
     }
     hideNode(){
-        $("#gasview").hide();
-        this.led("unselect");
-        this.showed = false;
-        while(this.Trend.series[0]){
-            this.Trend.series[0].remove(false);
+        if(this.showed){
+            $("#gasview").hide();
+            this.led("unselect");
+            this.showed = false;
+            while(this.Trend.series[0]){
+                this.Trend.series[0].remove(false);
+            }
+            this.Trend.redraw();
+            this.Trend.showLoading("Нет данных для отображения, выберите парк");
         }
-        this.Trend.redraw();
-        this.Trend.showLoading("Нет данных для отображения, выберите парк");
+
     }
     startOPC(){
         let wrapperRefreshUPES = this.refreshUPES.bind(this);

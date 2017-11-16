@@ -4,8 +4,8 @@ Global.loginData={
     "password":""
 };
 Global.version = {};
-Global.version.v = "1.0.4";
-Global.version.build = "10004";
+Global.version.v = "1.0.5";
+Global.version.build = "10005";
 Global.version.desc = "";
 
 function visit() {
@@ -79,22 +79,13 @@ $(document).ready(function(){
         panelStateToggle(false);
     });
 
-    $(".btn_whatnew").on("click",function () {
-        $("#fancydemo").fancybox({
-            modal:true
-        }).click();
-        setTimeout(function(){
-            $.fancybox.close();
-        },20000);
-    });
-
     let nodeName = ["respark","trends","port","porttrends","gas","railgas","system"];
 	let nodePanel = "panelnodes";
 	let nodeAlias = ["Парк","Тренды парка","Причал","Тренды причала","СКЗ парка","СКЗ ЖД","О системе"];
 
 	nodeName.map(function (node,idx) {
         setTimeout(function () {
-            Global.nodes.push(Node.createNode(node,nodePanel,nodeAlias[idx]));
+            Global.nodes.push(AstridNode.createNode(node,nodePanel,nodeAlias[idx]));
             let full = nodeName.length;
             let curent = idx+1;
             let curPercent = 100/full*curent;
@@ -158,7 +149,7 @@ $(document).ready(function(){
         toggleFancy();
     });
     $('.fancyemiter').fancybox({
-        'scrolling':'yes',
+        'scrolling':'no',
         'padding':10,
         'margin':20,
         'hideOnOverlayClick':true,
