@@ -95,6 +95,8 @@ module.exports = class system{
 
     }
     showNode(){
+        $("#systemview .system-rightbar").addClass("initScrollTable");//Плавный старт
+        $("#systemview .system-logs").addClass("initScrollTable");//Плавный старт
         //убираем все
         Global.nodes.map(function (elem) {
             if(elem.nodeObj){
@@ -112,6 +114,10 @@ module.exports = class system{
 
         //принудительно рефрешим порт при открытии вкладки
         this.refresh();
+        setTimeout(function () {
+            $("#systemview .system-rightbar").removeClass("initScrollTable");
+            $("#systemview .system-logs").removeClass("initScrollTable");
+        },500);
 
         //rescale();
 

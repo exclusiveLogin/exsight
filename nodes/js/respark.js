@@ -661,7 +661,6 @@ module.exports = class respark{
 
             reloadProgressBar();
 
-
             $("#resparkview .tank_pereliv").addClass("transparent");
             $("#resparkview .tank_service").addClass("transparent");
             $("#resparkview .tank_error").addClass("transparent").removeClass("label-danger").addClass("label-default");
@@ -692,11 +691,12 @@ module.exports = class respark{
 
         var resparkpanelPromise = fetch("nodes/templates/resparkpanel.html").then(function (response) {
             return response.text();
-        });
-
-        resparkpanelPromise.then(function (text) {
+        }).then(function (text) {
             $('#resparkpanel').html(text);
             $('#resparkpanel').addClass("cont_panel");
+            setTimeout(function () {
+                Utility.panelStateToggle(false);
+            },5000);
         });
 
         var wrapperStartOPC = this.startOPC.bind(this);

@@ -56,18 +56,42 @@ $(document).ready(function(){
     let nodePanel = "panelnodes";
     let nodeAlias = ["Парк","Тренды парка","Причал","Тренды причала","СКЗ парка","СКЗ ЖД","О системе"];
 
-    nodeName.map(function (node,idx) {
-        setTimeout(function () {
-            Global.nodes.push(AstridNode.createNode(node,nodePanel,nodeAlias[idx]));
-            let full = nodeName.length;
-            let curent = idx+1;
-            let curPercent = 100/full*curent;
-            Global.LoadingPG.setStep(curPercent);
-            if(curent == nodeName.length){
-                Global.LoadingPG.hideLoading();
-            }
-        },250*idx);
-    });
+    function CreateNodesAstrid() {
+        let creater = function (id) {
+            let _pr = new Promise(function (resolve, reject) {
+
+                let cb = function () {
+                    setTimeout(function () {
+                        resolve();
+                    },1000);
+                };
+                setTimeout(function () {
+                    reject();
+                },10000);
+
+                Global.nodes.push(AstridNode.createNode(nodeName[id],nodePanel,nodeAlias[id],cb));
+
+            }).then(function () {
+                let full = nodeName.length;
+                let curent = Number(id)+1;
+                let curPercent = 100/full*curent;
+                Global.LoadingPG.setStep(curPercent);
+                if(curent == nodeName.length){
+                    Global.LoadingPG.hideLoading();
+                }
+                console.log("id/curent:"+id+"/"+curent+" from:"+full+" precent:",curPercent);
+            }).catch(function () {
+                console.log("Node creater failed by timeout");
+            });
+            return _pr;
+        };
+
+
+        for(let idx in nodeName){
+            creater(idx);
+        }
+    }
+    CreateNodesAstrid();
 
     Global.jqready = true;
     Global.authkey = true;

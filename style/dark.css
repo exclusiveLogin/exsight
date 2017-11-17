@@ -335,7 +335,7 @@ a:hover{
     z-index: 0;
     position: relative;
     transition: all 0.5s ease;
-    /*background-image: url("park_bg.jpg");*/
+    perspective: 500px;
 }
 #tubecard{
     padding-top: 15px;
@@ -674,7 +674,12 @@ a:hover{
     color: yellow;
 }
 .initScroll{
-    transform: rotateY(90deg);
+    transform: rotateX(45deg) scale(0.1) translateY(20px) !important;
+    transform-style: preserve-3d;
+    opacity: 0 !important;
+}
+.initScrollTable{
+    transform: rotateY(45deg) scale(0.5) !important;
     transform-style: preserve-3d;
     opacity: 0 !important;
 }
@@ -754,9 +759,9 @@ a:hover{
 	}
 }
 .panelstate_hide{
-    opacity:0;
-    margin-top:-70px;
-    height: 0;
+    opacity: 0;
+    margin-top: -70px;
+    transform: rotate3d(1,0,0,45deg);
 }
 .tends{
     position: relative;
