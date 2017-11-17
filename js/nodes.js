@@ -88,7 +88,7 @@ class AstridNode{
 
                 $(document).off("click","#btn"+name);
                 $(document).on("click","#btn"+name,function () {
-                    console.log("click on btn "+name);
+                    //console.log("click on btn "+name);
                     context.nodeObj.showNode();
                 });
 

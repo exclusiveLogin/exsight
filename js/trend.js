@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    console.log("Модуль трендов загружен");
+    //console.log("Модуль трендов загружен");
 
     Highcharts.theme = {
         colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",

@@ -747,13 +747,15 @@ module.exports = class respark{
         });
         $("#resparkview").show();
 
-        $(".tank").addClass("initScroll");//Плавный старт
-        $(".tank").each(function (index, elem) {
-            setTimeout(function () {
-                $(elem).removeClass("initScroll");
-            },index*70);
-        });
-
+        if(!this.showed){
+            $(".tank").addClass("initScroll");//Плавный старт
+            $(".tank").each(function (index, elem) {
+                setTimeout(function () {
+                    $(elem).removeClass("initScroll");
+                },index*70);
+            });
+        }
+        
         this.led("select");
         //принудительно запускаем обновление данных парка
         this.refreshPark();
@@ -904,11 +906,11 @@ module.exports = class respark{
 
                     }else {
                         $(".tank[data-num="+elem.num+"]").find(".tends").text("простаивает");
-                        console.log("простой на :",$(".tank[data-num="+elem.num+"]"));
+                        //console.log("простой на :",$(".tank[data-num="+elem.num+"]"));
                     }
                 }else {
                     $(".tank[data-num="+elem.num+"]").find(".tends").text("ошибка");
-                    console.log("ошибка на :",$(".tank[data-num="+elem.num+"]"));
+                    //console.log("ошибка на :",$(".tank[data-num="+elem.num+"]"));
                 }
             });
         }

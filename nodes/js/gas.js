@@ -418,12 +418,15 @@ module.exports = class gas{
 
     }
     showNode(){
-        $("#gasview .gassensor").addClass("initScroll");//Плавный старт
-        $("#gasview .gassensor").each(function (index, elem) {
-            setTimeout(function () {
-                $(elem).removeClass("initScroll");
-            },index*70);
-        });
+        if(!this.showed){
+            $("#gasview .gassensor").addClass("initScroll");//Плавный старт
+            $("#gasview .gassensor").each(function (index, elem) {
+                setTimeout(function () {
+                    $(elem).removeClass("initScroll");
+                },index*70);
+            });
+        }
+        
         //console.log("show node GAS");
         Global.nodes.map(function (elem) {
             if(elem.nodeObj){

@@ -95,8 +95,10 @@ module.exports = class system{
 
     }
     showNode(){
-        $("#systemview .system-rightbar").addClass("initScrollTable");//Плавный старт
-        $("#systemview .system-logs").addClass("initScrollTable");//Плавный старт
+        if(!this.showed){
+            $("#systemview .system-rightbar").addClass("initScrollTable");//Плавный старт
+            $("#systemview .system-logs").addClass("initScrollTable");//Плавный старт
+        }
         //убираем все
         Global.nodes.map(function (elem) {
             if(elem.nodeObj){

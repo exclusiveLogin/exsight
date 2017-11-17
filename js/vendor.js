@@ -79,7 +79,7 @@ $(document).ready(function(){
                 if(curent == nodeName.length){
                     Global.LoadingPG.hideLoading();
                 }
-                console.log("id/curent:"+id+"/"+curent+" from:"+full+" precent:",curPercent);
+                //console.log("id/curent:"+id+"/"+curent+" from:"+full+" precent:",curPercent);
             }).catch(function () {
                 console.log("Node creater failed by timeout");
             });

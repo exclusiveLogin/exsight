@@ -16,11 +16,13 @@ $build  = $_GET["build"];
 
 
 
-echo "Remote IP:".$ip." real_IP:".$rip." remote port:".$remote_port." ua:".$ua." path:".$path." document root:".$doc_root." version:".$ver."build:".$build;
+echo "Remote IP:".$ip." real_IP:".$rip." remote port:".$remote_port." ua:".$ua." path:".$path." document root:".$doc_root." version:".$ver."build:".$build."<br><br>";
 $q = "INSERT INTO `visits` (`ip`,`rip`,`remote_port`,`ua`,`path`,`doc_root`,`ver`,`build`) VALUES (\"$ip\",\"$rip\",\"$remote_port\",\"$ua\",\"$path\",\"$doc_root\",\"$ver\",\"$build\")";
 $mysql->query($q);
+
+//echo $q."<br><br>";
 
 if(!$rip)$rip = $ip;
 $q = "INSERT INTO `uniqueip` (`ip`,`ua`,`ver`,`build`) VALUES (\"$rip\",\"$ua\",\"$ver\",\"$build\") ON DUPLICATE KEY UPDATE `ua`=\"$ua\",`ver`=\"$ver\",`build`=\"$build\"";
 $mysql->query($q);
-//echo $q;
+//echo $q."<br>-----------<br>";
