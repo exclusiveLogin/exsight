@@ -1,4 +1,7 @@
 module.exports = class port{
+    constructor(){
+        this.startedAndRefreshed = $.Deferred();
+    }
     startNode() {
         var wrapperStartOPC = this.startOPC.bind(this);
         this.led("error");
@@ -18,8 +21,9 @@ module.exports = class port{
 
             //autostart();
             //console.log("this:",this);
-
-            wrapperStartOPC();
+            setTimeout(function(){
+                wrapperStartOPC();
+            },1000);
         });
     }
     stopNode() {
@@ -175,6 +179,7 @@ module.exports = class port{
                 }
                 if(context.showed)renderPort(data,label);
             }
+            context.startedAndRefreshed.resolve();
             data = null;
         }
 

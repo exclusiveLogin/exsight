@@ -17,15 +17,14 @@ export default class Loading{
             }
         });
     }
-    setStep(percent){
+    setStep(percent,msg){
         if(Number(percent)){
             this.ProgressElem.animate(Number(percent)/100);
         }
+        if(msg)this.fancyElement.find(".loadingMsg").text(msg);
     }
     hideLoading(){
-        setTimeout(function () {
-            $.fancybox.close();
-        },2000);
+        $.fancybox.close();
     }
     showLoading(){
         if(this.fancyElement){

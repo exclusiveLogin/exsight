@@ -1,6 +1,10 @@
 module.exports = class trends{
+    constructor(){
+        this.startedAndRefreshed = $.Deferred();
+    }
     startNode() {
         this.led("ok");
+        this.startedAndRefreshed.resolve();
     }
     stopNode() {
 

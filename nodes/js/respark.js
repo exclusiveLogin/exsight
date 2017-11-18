@@ -2,6 +2,7 @@ module.exports = class respark{
     constructor(){
         this.coldstart = true;
         this.lastAjaxData = {};
+        this.startedAndRefreshed = $.Deferred();
     }
     rendermeteo(data){
         if (data){
@@ -651,7 +652,7 @@ module.exports = class respark{
     startNode() {
         var context = this;
         let autostart = this.showNode.bind(this);
-        this.startedAndRefreshed = $.Deferred();
+        
 
         //console.log("start node REZPARK",this.startedAndRefreshed);
         var resparkbodyPromise = fetch("nodes/templates/respark.html").then(function (response) {
@@ -709,8 +710,11 @@ module.exports = class respark{
                 console.error(e);
             }
             context.loaded = true;
-            wrapperStartOPC();
-            autostart();
+            
+            setTimeout(function(){
+                wrapperStartOPC();
+                autostart();
+            },1000);
         });
     }
     stopNode() {
@@ -736,8 +740,15 @@ module.exports = class respark{
         if (this.OPCTimer)clearInterval(this.OPCTimer);
     }
     showNode(){
-
-        console.log("Show node REZPARK");
+        if(!this.showed){
+            $(".tank").addClass("initScroll");//Плавный старт
+            $(".tank").each(function (index, elem) {
+                setTimeout(function () {
+                    $(elem).removeClass("initScroll");
+                },index*70);
+            });
+        }
+        //console.log("Show node REZPARK");
         Global.nodes.map(function (elem) {
             if(elem.nodeObj){
                 if(elem.nodeObj.hideNode){
@@ -747,14 +758,7 @@ module.exports = class respark{
         });
         $("#resparkview").show();
 
-        if(!this.showed){
-            $(".tank").addClass("initScroll");//Плавный старт
-            $(".tank").each(function (index, elem) {
-                setTimeout(function () {
-                    $(elem).removeClass("initScroll");
-                },index*70);
-            });
-        }
+        
         
         this.led("select");
         //принудительно запускаем обновление данных парка

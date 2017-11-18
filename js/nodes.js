@@ -30,15 +30,18 @@ class AstridNode{
         //проверка дубликатов
         if(getNode(name)==(-1)){
             //создаем паттерн кнопки
-            this.pattern = `<div class="node" id="btn${name}">
+            this.pattern = `<div class="node mainPanelItemInit" id="btn${name}">
                                 <span>${localName}</span>
                                 <div class="led"></div>
                             </div>`;
             this.elem = document.getElementById(this.containerNode);
             this.elem.innerHTML += this.pattern;
-
+//            let btnNode = document.getElementById("btn"+name);
+//            btnNode.classList.remove("mainPanelItemInit");
 
             let context = this;
+            
+            context.loading = $.Deferred();
 
             //создаем загрузку скриптов
 
@@ -47,6 +50,7 @@ class AstridNode{
 
             bundle(function (module) {
                 context.nodeObj = new module();
+                context.loading.resolve();
 
                 //Создаем метод led у ноды
                 context.nodeObj.led = function (state) {
@@ -84,7 +88,7 @@ class AstridNode{
                 //создаем view для ноды
                 $("#container").append("<div id='"+name+"view' class='viewer'></div>");
 
-                context.nodeObj.startNode();//temp
+                //context.nodeObj.startNode();//temp
 
                 $(document).off("click","#btn"+name);
                 $(document).on("click","#btn"+name,function () {

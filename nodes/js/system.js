@@ -2,6 +2,7 @@ module.exports = class system{
     constructor(){
         this.showed = false;
         this.view = {};
+        this.startedAndRefreshed = $.Deferred();
     }
     startNode() {
         let wrapperStartOPC = this.startOPC.bind(this);
@@ -86,7 +87,11 @@ module.exports = class system{
                 });
             });
             //старт обновления
-            wrapperStartOPC();
+            
+            setTimeout(function(){
+                wrapperStartOPC();
+            },1000);
+            
             //autostart();
         });
 
@@ -272,6 +277,7 @@ module.exports = class system{
             if(data){
                 if(context.showed)render(data,tbl);
             }
+            context.startedAndRefreshed.resolve();
         }
 
         function render(data,tbl){

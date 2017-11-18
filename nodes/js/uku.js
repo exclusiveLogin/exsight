@@ -1,10 +1,10 @@
 module.exports = class uku{
+    constructor(){
+        this.startedAndRefreshed = $.Deferred();
+    }
     startNode() {
-        $('#btnuku').on("click",function () {
-            alert("Модуль находится в разработке");
-            // let win = window.open("trends/","_blank");
-            // win.focus();
-        });
+        this.led("ok");
+        this.startedAndRefreshed.resolve();
     }
     stopNode() {
 

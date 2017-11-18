@@ -1,6 +1,7 @@
 module.exports = class gas{
     constructor(){
         this.showed = false;
+        this.startedAndRefreshed = $.Deferred();
     }
     startNode() {
         let wrapperStartOPC = this.startOPC.bind(this);
@@ -409,7 +410,10 @@ module.exports = class gas{
             //подключаем loading PB
             context.loading_trends_pb = new LoadingPGClass("loading_gastrends");
 
-            wrapperStartOPC();
+            setTimeout(function(){
+                wrapperStartOPC();
+            },1000);
+            
             //autostart();
         });
 
@@ -530,6 +534,7 @@ module.exports = class gas{
                 }
 
                 if(context.showed)renderUPES(data);
+                context.startedAndRefreshed.resolve();
                 data = null;
             }
         }

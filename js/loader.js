@@ -9,14 +9,19 @@ import tbl2log from "./tbl2log";
 import AN from "./nodes";
 
 window.ProgressBar = require("progressbar.js");
-
-require("../style/dark.css");
+//CSS loader section
+require("../style/main.css");
+require("../style/port.css");
+require("../style/nodes.css");
+require("../style/respark.css");
+require("../style/animation.css");
 require("../style/progress.css");
 require("../style/gas.css");
 require("../style/railgas.css");
 require("../style/about.css");
-window.Highcharts = require("highcharts");
+//--------------------------
 
+window.Highcharts = require("highcharts");
 window.Utility = new UtilClass();
 window.Utility.Renderer = Renderer;
 

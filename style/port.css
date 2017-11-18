@@ -1,0 +1,196 @@
+
+.tank_port{
+    background-position: center center;
+    background-image: url("tank.png");
+    background-size: contain;
+    height: 100%;
+    background-repeat: no-repeat;
+}
+.tank_title_port{
+    font-size: 100%;
+    line-height: 30px;
+    font-weight: bold;
+    top: 50px;
+    left: 10px;
+    position: relative;
+    text-shadow: 2px 2px 5px grey;
+}
+.ship{
+    height: 130px;
+    background-position-x: 100px;
+    background-position-y: 6px;
+    background-size: 65% 98%;
+    background-repeat: no-repeat;
+    background-image: url("../nodes/templates/scheme/tanker_2.png");
+}
+#tankoil{
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    left: 430px;
+    top: 300px;
+}
+#tankdt{
+    width: 150px;
+    height: 150px;
+    display: inline-block;
+    position: absolute;
+    left: 150px;
+    top: 450px;
+}
+#tanksmt{
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    left: 370px;
+    top: 450px;
+}
+.tank_port_ecu{
+    width: 150px;
+    height: 150px;
+}
+.table_port{
+    color: ghostwhite;
+    font-size: 150%;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid grey;
+    margin-top: 20px;
+}
+.table_port tr{
+    border-bottom: 1px solid grey;
+}
+.table_port_header{
+    color: ghostwhite;
+    font-size: 120%;
+    font-weight: bold;
+    text-align: center;
+    background: orange; /* Old browsers */
+    background: -moz-linear-gradient(top, #f5a640 0%, #ff710a 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #f5a640 0%, #ff710a 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #f5a640 0%, #ff710a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */
+    border: 1px outset #919191;
+}
+.portstatus{
+    width: 100%;
+    padding-bottom: 10%;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 10%;
+    font-size: 120%;
+    color: white;
+    border-radius: 20px;
+    margin-top: 20px;
+    text-shadow: 0 0 5px rgba(255,255,255,0.7);
+}
+.portstatus.standby{
+    background: darkgreen; /* Old browsers */
+    background: -moz-linear-gradient(top, #6db563 0%, #21680d 45%, #0f7516 64%, #3f663c 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #6db563 0%,#21680d 45%,#0f7516 64%,#3f663c 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #6db563 0%,#21680d 45%,#0f7516 64%,#3f663c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db563', endColorstr='#3f663c',GradientType=0 ); /* IE6-9 */
+    border: 1px outset darkgreen;
+    box-shadow: 0 0 10px 0px rgba(0,255,0,0.7);
+    text-shadow: 0 0 10px rgba(255,255,255,0.7);
+}
+.portstatus.naliv{
+    background: orangered; /* Old browsers */
+    background: -moz-linear-gradient(top, #9b5858 0%, #540101 45%, #a30000 75%, #4c0000 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #9b5858 0%,#540101 45%,#a30000 75%,#4c0000 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #9b5858 0%,#540101 45%,#a30000 75%,#4c0000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b5858', endColorstr='#4c0000',GradientType=0 ); /* IE6-9 */
+    border: 1px outset #91151b;
+    box-shadow: 0 0 10px 0px rgba(255,0,0,0.7);
+    text-shadow: 0 0 10px rgba(255,255,255,0.7);
+}
+.portstatus.reconstruction{
+    background: darkorange; /* Old browsers */
+    background: -moz-linear-gradient(top, #a93627 0%, orange 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #a93627 0%, orange 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #a93627 0%, orange 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */
+    border: 1px outset #919191;
+    box-shadow: 0 0 10px 0px rgba(255,255,255,0.7);
+}
+.portstatus.off{
+    background: darkblue; /* Old browsers */
+    background: -moz-linear-gradient(top, #1054a1 0%, #23538a 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #1054a1 0%, #23538a 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #1054a1 0%, #23538a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */
+    border: 1px outset #919191;
+    box-shadow: 0 0 10px 0px rgba(0,255,255,0.7);
+    text-shadow: 0 0 10px rgba(255,255,255,0.7);
+}
+.meteo{
+    line-height: 32px;
+}
+.timestamp_port_valve{
+    position: absolute;
+    margin-left: 100px;
+    margin-top: -100px;
+}
+.timestamp_port_ecu1{
+    position: absolute;
+}
+.timestamp_port_ecu2{
+    position: absolute;
+}
+.table_port .plotOne{
+    background-color: rgba(0, 12, 28, 0.5);
+    text-shadow: 0 0 10px rgba(0,200,255,0.7);
+}
+.table_port .plotTwo{
+    background-color: rgba(0, 28, 12, 0.5);
+    text-shadow: 0 0 10px rgba(0,255,200,0.7);
+}
+#progress_tank_port_ecu1 .progress_tank_val_real{
+    opacity: 0;
+}
+#progress_tank_port_ecu2 .progress_tank_val_real{
+    opacity: 0;
+}
+.port_wind_arrow{
+    background-image: url("wind_arrow_w.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 150px;
+    height: 150px;
+    transform: rotateZ(0deg);
+    transition: transform 1s ease;
+}
+.port_winddirection_val{
+    color: #FFF;
+    font-size: 3.5rem;
+    text-align: center;
+    margin-top: -79%;
+    width: 150px;
+}
+#portSvgScheme{
+    max-width: 600px;
+}
+
+.scheme{
+    width: 90%;
+    margin: 5%;
+    color: white;
+    top: -20px;
+    position: relative;
+}
+.scheme span{
+    font-size: 200%;
+    transform: rotateZ(10deg);
+    transform-style: flat;
+    display: block;
+    position: relative;
+    top: 66px;
+    left: 63px;
+}
+.scheme table tr{
+    border-bottom: 1px dotted grey;
+}
+.scheme table{
+    font-size: 80%;
+}

@@ -1,0 +1,18 @@
+.initScroll{
+    transform: rotateX(45deg) scale(0.1) translateY(20px) !important;
+    transform-style: preserve-3d;
+    opacity: 0 !important;
+}
+.initScrollTable{
+    transform: rotateY(45deg) scale(0.5) !important;
+    transform-style: preserve-3d;
+    opacity: 0 !important;
+}
+.mainPanelInit{
+    transform: translateY(100px) rotateX(-90deg);
+    opacity: 0;
+}
+.mainPanelItemInit{
+    transform: rotateX(-90deg) scale(0.5) translateY(-10px);
+    opacity: 0;
+}

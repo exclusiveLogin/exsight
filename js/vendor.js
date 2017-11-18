@@ -56,43 +56,11 @@ $(document).ready(function(){
     let nodePanel = "panelnodes";
     let nodeAlias = ["Парк","Тренды парка","Причал","Тренды причала","СКЗ парка","СКЗ ЖД","О системе"];
 
-    function CreateNodesAstrid() {
-        let creater = function (id) {
-            let _pr = new Promise(function (resolve, reject) {
-
-                let cb = function () {
-                    setTimeout(function () {
-                        resolve();
-                    },1000);
-                };
-                setTimeout(function () {
-                    reject();
-                },10000);
-
-                Global.nodes.push(AstridNode.createNode(nodeName[id],nodePanel,nodeAlias[id],cb));
-
-            }).then(function () {
-                let full = nodeName.length;
-                let curent = Number(id)+1;
-                let curPercent = 100/full*curent;
-                Global.LoadingPG.setStep(curPercent);
-                if(curent == nodeName.length){
-                    Global.LoadingPG.hideLoading();
-                }
-                //console.log("id/curent:"+id+"/"+curent+" from:"+full+" precent:",curPercent);
-            }).catch(function () {
-                console.log("Node creater failed by timeout");
-            });
-            return _pr;
-        };
-
-
-        for(let idx in nodeName){
-            creater(idx);
-        }
-    }
-    CreateNodesAstrid();
-
+    setTimeout(function(){
+        $("#footer").removeClass("mainPanelInit");
+        LoadNodes(nodeName,nodePanel,nodeAlias);
+    },3000);
+    
     Global.jqready = true;
     Global.authkey = true;
     Global.loggedAs = "ssv";
@@ -157,3 +125,145 @@ $(document).ready(function(){
         }
     });
 });
+/*function CreateNodesAstrid(nodeName,nodePanel,nodeAlias,cb) {
+    let creater = function (id) {
+        let _pr = new Promise(function (resolve, reject) {
+
+            let _cb = function () {
+                resolve();
+            };
+            setTimeout(function () {
+                reject();
+            },20000);
+
+            Global.nodes.push(AstridNode.createNode(nodeName[id],nodePanel,nodeAlias[id],_cb));
+
+        }).then(function () {
+            let full = nodeName.length;
+            let curent = Number(id)+1;
+            let curPercent = 100/full*curent;
+            setTimeout(function(){
+                Global.LoadingPG.setStep(curPercent,"загрузка ядра");
+            },125);
+        }).catch(function () {
+            console.log("Node creater failed by timeout");
+        });
+        return _pr;
+    };
+
+    let prall = [];
+    for(let idx in nodeName){
+        prall.push(creater(idx));
+    }
+    Promise.all(prall).then(function(){
+        console.log("All Node is loaded");
+        $(".node").each(function(index,elem){
+            setTimeout(function(){
+                $(elem).removeClass("mainPanelItemInit");
+            },index*500);
+        });
+        setTimeout(()=>StartNodes(),5000);
+        
+        if(cb && typeof cb == "function")cb();
+    });
+}*/
+function LoadNodes(nodeName,nodePanel,nodeAlias){
+    let GStarter = function *(){
+        for(let nodeG in nodeName){
+            yield {
+                node:nodeName[nodeG],
+                alias:nodeAlias[nodeG],
+                panel:nodePanel,
+                idx:Number(nodeG)
+            };
+        }
+        return true;
+    };
+    Global._gen = GStarter();
+    Global._GenFunc = function(){
+        let _result = Global._gen.next();
+        
+    
+        if(_result.done){
+            console.log("All Node is loaded");
+            $(".node").each(function(index,elem){
+                setTimeout(function(){
+                    $(elem).removeClass("mainPanelItemInit");
+                },index*120);
+            });
+            setTimeout(()=>StartNodes(),3000);
+            
+            Global._GenFunc = null;
+            Global._gen = null;
+        }else{
+            //Сдвигаем прогресс и подписываемся на сл итерацию и запуск модуля
+            let full = nodeName.length;
+            let curent = _result.value.idx+1;
+            let curPercent = 100/full*curent;
+            Global.LoadingPG.setStep(curPercent,"загрузка модулей ядра: "+curent+" из "+full);
+            
+            let _node = AstridNode.createNode(_result.value.node,_result.value.panel,_result.value.alias);
+            debugger;
+            _node.loading.done(function(){
+                console.log("Module "+curent+" is loaded");
+                Global._GenFunc();
+            });
+            Global.nodes.push(_node);
+            
+        }
+    };
+    Global._GenFunc();
+}
+function StartNodes(){
+    let GStarter = function *(){
+        for(let nodeG in Global.nodes){
+            //console.log("NodeG:",nodeG," node:",Global.nodes[nodeG]);
+            yield {
+                node:Global.nodes[nodeG].nodeObj,
+                idx:Number(nodeG),
+                nodeParent:Global.nodes[nodeG]
+            };
+        }
+        return true;
+    };
+    Global._gen = GStarter();
+    Global._GenFunc = function(){
+        let _result = Global._gen.next();
+        
+    
+        if(_result.done){
+            //Закрываем progress
+            Global.LoadingPG.hideLoading();
+            Global._GenFunc = null;
+            Global._gen = null;
+        }else{
+            //Сдвигаем прогресс и подписываемся на сл итерацию и запуск модуля
+            let full = Global.nodes.length;
+            let curent = _result.value.idx+1;
+            let curPercent = 100/full*curent;
+            Global.LoadingPG.setStep(curPercent,"загрузка модулей АСТРИД: "+curent+" из "+full);
+            
+            let _subscribe = function(){
+                _result.value.node.startedAndRefreshed.always(function(){
+                    Global._GenFunc();
+                });
+                _result.value.node.startNode();
+            }
+            
+            if(_result.value.node){
+                _subscribe();
+            }else{
+                //надо проверить промис для загрузки бандла
+                //если есть, подписаться
+                //после загрузки сделать то что выше.
+                _result.value.nodeParent.loading.done(function(){
+                    subscribe();
+                });
+                
+            }
+            
+            
+        }
+    };
+    Global._GenFunc();
+}

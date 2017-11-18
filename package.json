@@ -1,6 +1,6 @@
 {
   "name": "exsight",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Extended Sight (Scada &amp; OPC system)",
   "main": "index.html",
   "scripts": {

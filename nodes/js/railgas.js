@@ -1,6 +1,7 @@
 module.exports = class railgas{
     constructor(){
         this.showed = false;
+        this.startedAndRefreshed = $.Deferred();
     }
     startNode() {
         let wrapperStartOPC = this.startOPC.bind(this);
@@ -391,8 +392,10 @@ module.exports = class railgas{
 
             //подключаем progressbar
             context.loading_trends_pb = new LoadingPGClass("loading_railtrends");
-
-            wrapperStartOPC();
+            setTimeout(function(){
+                wrapperStartOPC();
+            },1000);
+            
             //autostart();
         });
 
@@ -492,6 +495,7 @@ module.exports = class railgas{
                 }
 
                 if(context.showed)renderUPES(data);
+                context.startedAndRefreshed.resolve();
                 data = null;
             }
         }

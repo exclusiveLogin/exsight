@@ -1,0 +1,172 @@
+.res_val{
+    font-size: 200%;
+}
+.res_title{
+    font-size: 90%;
+}
+.tank {
+    background-position: center center;
+    background-image: url("tank.png");
+    background-size: contain;
+    height: 120px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background-repeat: no-repeat;
+    transition: all 0.5s ease;
+    border-radius: 20px;
+    border: 2px transparent solid;
+    cursor: pointer;
+    transform: scale(0.95);
+}
+.tank_pic {
+    background-position: center center;
+    background-image: url("tank.png");
+    background-size: contain;
+    height: 230px;
+    background-repeat: no-repeat;
+    transition: all 0.5s ease;
+    border-radius: 20px;
+    border: 2px transparent solid;
+}
+.tank:hover{
+    border-left: 2px #FFD100 solid;
+    border-right: 2px #FFD100 solid;
+    transform: scale(1.1);
+}
+.tank_num{
+    font-size: 150%;
+    font-weight: bold;
+    margin-top: 10px;
+    text-shadow: 0 0 10px grey;
+}
+.tank_title{
+    font-size: 100%;
+    line-height: 30px;
+    font-weight: bold;
+    top: 30px;
+    left: -8px;
+    position: relative;
+    text-shadow: 2px 2px 5px grey;
+}
+.park_name{
+    font-size: 120%;
+    font-weight: bold;
+    color: #FFD100;
+    border-bottom: 4px #FFD100 solid;
+    text-shadow: 2px 2px 10px rgba(255,200,0,0.6);
+    line-height: 18px;
+}
+
+.tank_panel{
+    color: #FFD100;
+    padding: 5px;
+    background-color: #222;
+    background-image: url("bg2.png");
+    border-top:3px solid #FFD100;
+    border-bottom:3px solid #FFD100;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    overflow: auto;
+    transition: all 1s ease;
+    text-align: center;
+    position: relative;
+    z-index: 1000;
+}
+.tank_panel_parm{
+    font-size: 9px !important;
+    font-weight: normal;
+    text-align: right;
+}
+.tank_val{
+    font-size: 120%;
+    font-weight: bold;
+}
+.prod_cont{
+    bottom: -15px;
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    text-align: center;
+}
+.tank_cont{
+    width: 90%;
+    display: block;
+}
+
+/* products*/
+.a76{
+    background-color: #1b630c;
+}
+.a80{
+    background-color: #70360a;
+}
+.a92{
+    background-color: #3c9cca;
+}
+.a95{
+    background-color: #9e0b08;
+}
+.a98{
+    background-color: #8b0f9b;
+}
+.disel{
+    background-color: darkorange;
+    color: black;
+}
+.diseleuro{
+    background-color: #464646;
+    color: darkorange;
+ }
+.smt{
+    background-color: #f4c039;
+    color: #464646;
+}
+.tends{
+    position: relative;
+    line-height: 0px;
+    top: -30%;
+    left: -10%;
+    font-size: 90%;
+    text-align: center;
+    color: darkgrey;
+    font-weight: 600;
+}
+
+.tab_prod{
+    min-width: 100px;
+    text-align: center;
+}
+.tab_mass{
+    text-align: center;
+}
+.tab_res{
+    max-width: 40%;
+    text-align: justify;
+}
+.tab_export{
+    min-width: 100px;
+    text-align: center;
+}
+.tank_service{
+    z-index: 1000;
+    position: relative;
+}
+.tab_asnValue{
+    text-align: right;
+    font-weight: bold;
+    color: ghostwhite;
+    width: 40%;
+    border-left: 1px solid grey;
+    padding: 5px;
+}
+.tab_asnProduct{
+    color: lightyellow;
+}
+.tab_asnHead{
+    color: white;
+    font-weight: bold;
+    border-bottom: 2px dotted wheat;
+}
+.tab_asnValue .asnlabel{
+    font-size: 1.5rem;
+}
