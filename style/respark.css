@@ -77,8 +77,8 @@
     font-weight: normal;
     text-align: right;
 }
-.tank_val{
-    font-size: 120%;
+.tank_num .tank_val{
+    font-size: 100%;
     font-weight: bold;
 }
 .prod_cont{

@@ -32,7 +32,6 @@
     "font-awesome": "^4.7.0",
     "highcharts": "^6.0.3",
     "jquery": "^3.2.1",
-    "jquery2": "",
     "progressbar.js": "^1.0.1",
     "style-loader": "",
     "uglify-loader": "^2.0.0",

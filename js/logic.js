@@ -90,7 +90,7 @@ export default class Utility{
 			Global.nodes[index].nodeObj.tankparmToggle(false);//закрываем окно
 			Global.tankselect = tmpnum;
 			Global.nodes[index].nodeObj.openTank(tmpnum);
-			$.fancybox.open("#fancycontainer");
+			$.fancybox.open(fancycontainer);
 		}else {
 			$('.tank').removeClass("fancyemiter");//delete fancy
 			$.fancybox.close();

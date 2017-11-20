@@ -23,6 +23,7 @@ class TrendEngine{
             ms2:true
         };
         Highcharts.theme = {
+
             colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
                 "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
             chart: {
@@ -113,14 +114,15 @@ class TrendEngine{
                 }
             },
 
-            drilldown: {
-                activeAxisLabelStyle: {
-                    color: '#F0F0F3'
-                },
-                activeDataLabelStyle: {
-                    color: '#F0F0F3'
-                }
-            },
+
+            // drilldown: {
+            //     activeAxisLabelStyle: {
+            //         color: '#F0F0F3'
+            //     },
+            //     activeDataLabelStyle: {
+            //         color: '#F0F0F3'
+            //     }
+            // },
 
             navigation: {
                 buttonOptions: {
@@ -211,8 +213,12 @@ class TrendEngine{
         };
         Highcharts.setOptions(G_Setting);
         var MainTrend_setting = {
+            boost: {
+                useGPUTranslations: false
+            },
             credits:{enabled:false},
             chart: {
+                animation:false,
                 height:500,
                 renderTo:document.getElementById(domid),
                 zoomType: 'x'
@@ -226,7 +232,6 @@ class TrendEngine{
                 }
             },
             scrollbar:{
-                liveRedraw:true,
                 enabled:true
             },
             xAxis: {
@@ -241,7 +246,6 @@ class TrendEngine{
                 }
             },
             navigator:{
-                adaptToUpdateData:false,
                 enabled:false
             },
             yAxis: [{
@@ -250,8 +254,6 @@ class TrendEngine{
                     text: 'Уровень'
                 },
                 visible:false,
-                //softMax:10000,
-                //softMin:10000
                 minRange:1000
             },{
                 id:"temper",
@@ -350,7 +352,9 @@ class TrendEngine{
                     },
                 },
             },
-            series:[]
+            tooltip:{
+                animation:false
+            }
         };
         this.Trend = new Highcharts.stockChart(MainTrend_setting);
         this.Trend.context = this;
@@ -626,44 +630,7 @@ class TrendEngine{
             //logic upload requests
             if(Global.MainTrend.selectedNode == "respark"){
                 if(e){
-                    if(tank){//now ver no uses
-                        // console.log("with tanks");
-                        // data = {"trend":true,"coldtrend":true,"tank":tank};
-                        // if(e.rangeSelectorButton){
-                        //     if(e.rangeSelectorButton._range){
-                        //         if(e.rangeSelectorButton._range<10*24*3600*1000){
-                        //             data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
-                        //         }else {
-                        //             data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
-                        //         }
-                        //     }else {
-                        //         data = {"trend":true,"tank":tank,"trendall":true};
-                        //     }
-                        // }
-                        // if(e.trigger == "zoom"){
-                        //     var tmpInterval = e.max - e.min;
-                        //     if(tmpInterval < 10*24*3600*1000){
-                        //         data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
-                        //     }else {
-                        //         data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
-                        //     }
-                        // }
-                        // if(e.triggerOp){
-                        //     if(e.triggerOp == "navigator-drag"){
-                        //         if(e.DOMEvent){
-                        //             if(e.DOMEvent.type == "mouseup"){
-                        //                 var tmpInterval = e.max - e.min;
-                        //                 if(tmpInterval < 10*24*3600*1000){
-                        //                     data = {"trend":true,"tank":tank,"interval":1,"trendmin":e.min,"trendmax":e.max};
-                        //                 }else {
-                        //                     data = {"trend":true,"tank":tank,"interval":0,"trendmin":e.min,"trendmax":e.max};
-                        //                 }
-                        //             }
-                        //         }
-                        //     }
-                        // }
-                        // upload.apply(this);
-                    }else {
+                    if(!tank){
                         this.selectedTanks.map(function (element,idx,tanks) {
                             let minmaxflag = false;
                             if(idx == tanks.length-1)minmaxflag = true;

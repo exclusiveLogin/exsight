@@ -1,6 +1,4 @@
-require("jquery2");
-require("fancybox")($);
-require("./fancybox/jquery.fancybox.css");
+require("jquery");
 require("bootstrap");
 require("bootstrap/dist/css/bootstrap.min.css");
 require("bootstrap/dist/css/bootstrap-theme.min.css");

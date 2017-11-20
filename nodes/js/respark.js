@@ -689,7 +689,7 @@ module.exports = class respark{
                 }
             });
             $('.fancyemiter').fancybox({
-                animationEffect : "zoom-in-out",
+                animationEffect : "zoom",
                 animationDuration : 300,
                 afterClose:function () {
                     Global.tankselect = false;
