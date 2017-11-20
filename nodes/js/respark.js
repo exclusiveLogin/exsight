@@ -688,6 +688,14 @@ module.exports = class respark{
                     }
                 }
             });
+            $('.fancyemiter').fancybox({
+                animationEffect : "zoom-in-out",
+                animationDuration : 300,
+                afterClose:function () {
+                    Global.tankselect = false;
+                },
+                //parentEl:"#wrapper"
+            });
         });
 
         var resparkpanelPromise = fetch("nodes/templates/resparkpanel.html").then(function (response) {
@@ -697,7 +705,7 @@ module.exports = class respark{
             $('#resparkpanel').addClass("cont_panel");
             setTimeout(function () {
                 Utility.panelStateToggle(false);
-            },5000);
+            },2000);
         });
 
         var wrapperStartOPC = this.startOPC.bind(this);

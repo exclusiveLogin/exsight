@@ -2,6 +2,17 @@ export default class Loading{
     constructor(DOMel,fancyElement){
         if(fancyElement){
             this.fancyElement = $("#"+fancyElement);
+            this.link = document.createElement("a");
+            //this.link.href = "#"+fancyElement;
+            this.link.id = "loadLink";
+            this.link.dataset.src = "#"+fancyElement;
+            this.link.dataset.fancybox;
+            document.body.appendChild(this.link);
+            $(this.link).fancybox({
+                animationEffect : "zoom",
+                modal:true,
+                defaultType : 'inline',
+            });
         }
 
         this.ProgressElem = new ProgressBar.Line('#'+DOMel, {
@@ -17,7 +28,7 @@ export default class Loading{
             }
         });
     }
-    setStep(percent,msg){
+    setStep(percent,msg,DOMmsg){
         if(Number(percent)){
             this.ProgressElem.animate(Number(percent)/100);
         }
@@ -27,10 +38,6 @@ export default class Loading{
         $.fancybox.close();
     }
     showLoading(){
-        if(this.fancyElement){
-            this.fancyElement.fancybox({
-                modal:true
-            }).click();
-        }
+        this.link.click();
     }
 }

@@ -18,7 +18,7 @@ module.exports = {
 				loader: 'babel-loader?presets[]=es2015'
 			},
             {
-                test: require.resolve("jquery2"),
+                test: require.resolve("jquery"),
                 loader: "expose-loader?$!expose-loader?jQuery"
             },
             {

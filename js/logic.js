@@ -3,12 +3,6 @@ export default class Utility{
 		if(state){
 			$("#tubecard").removeClass("transparent",function () {
 				$("#arj_tube_num").text(tube);
-				//Global.trend.reflow();
-				//Global.trend.series[0].setData([]);
-				//Global.trend.series[1].setData([]);
-
-				//Global.trend.series[0].setData(Global[user].trend);
-				//Global.trend.series[1].setData(Global[user].flags);
 			});
 		}else {
 			$("#tubecard").addClass("transparent",function () {
@@ -83,22 +77,6 @@ export default class Utility{
 				$('#panel').html('<h2 class="label label-lg label-default conerror">Возникли проблемы со связью</h2>');
 			}
 		}
-	}
-	renderFancy() {
-		$('#fancycontainer').fancybox({
-			'scrolling':'no',
-			'padding':10,
-			'margin':20,
-			'hideOnOverlayClick':true,
-			'hideOnContentClick':true,
-			'type':'inline'
-		});
-        $.fancybox.open("#fancycontainer");
-		$('#fancycontainer').click(function (event) {
-			if(!Global.fancy) {
-				event.preventBubble();
-			}
-		});
 	}
 	toggleFancy(num,dep) {
 		let index = 0;

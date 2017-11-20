@@ -1,6 +1,8 @@
-require("jquery2");
-require("fancybox")($);
-require("./fancybox/jquery.fancybox.css");
+require("jquery");
+require("@fancyapps/fancybox/dist/jquery.fancybox.css");
+require("@fancyapps/fancybox");
+//require("fancybox")($);
+//require("./fancybox/jquery.fancybox.css");
 require("bootstrap");
 require("bootstrap/dist/css/bootstrap.min.css");
 require("bootstrap/dist/css/bootstrap-theme.min.css");
@@ -16,7 +18,7 @@ $(document).ready(function(){
 
     //Loading Progress bar init
     if(Global.demo){
-        Global.LoadingPG = new LoadingPGClass("loading_pb","fancydemo");
+        Global.LoadingPG = new LoadingPGClass("loading_pb","fancyload");
         Global.LoadingPG.showLoading();
     }
 
@@ -29,9 +31,9 @@ $(document).ready(function(){
     if (Global.StateTimer)clearInterval(Global.StateTimer);
     Global.StateTimer=setInterval(stateRefresher,10000);
 
-    $("#fancydemo .version").html(Global.version.v);
-    $("#fancydemo .verdescription").html(Global.version.desc);
-    $("#header .demo").html("Бета версия с ранним доступом "+Global.version.v);
+    $("#fancyload .version").html(Global.version.v);
+    $("#fancyload .verdescription").html(Global.version.desc);
+    $("#header .demo").html("Версия с ранним доступом "+Global.version.v);
 
     visit();
     adaptWin();
@@ -59,7 +61,7 @@ $(document).ready(function(){
     setTimeout(function(){
         $("#footer").removeClass("mainPanelInit");
         LoadNodes(nodeName,nodePanel,nodeAlias);
-    },3000);
+    },1000);
     
     Global.jqready = true;
     Global.authkey = true;
@@ -113,60 +115,7 @@ $(document).ready(function(){
     $('.btn-fb').on('click',function(){
         toggleFancy();
     });
-    $('.fancyemiter').fancybox({
-        'scrolling':'no',
-        'padding':10,
-        'margin':20,
-        'hideOnOverlayClick':true,
-        'hideOnContentClick':true,
-        'type':'inline',
-        afterClose:function () {
-            Global.tankselect = false;
-        }
-    });
 });
-/*function CreateNodesAstrid(nodeName,nodePanel,nodeAlias,cb) {
-    let creater = function (id) {
-        let _pr = new Promise(function (resolve, reject) {
-
-            let _cb = function () {
-                resolve();
-            };
-            setTimeout(function () {
-                reject();
-            },20000);
-
-            Global.nodes.push(AstridNode.createNode(nodeName[id],nodePanel,nodeAlias[id],_cb));
-
-        }).then(function () {
-            let full = nodeName.length;
-            let curent = Number(id)+1;
-            let curPercent = 100/full*curent;
-            setTimeout(function(){
-                Global.LoadingPG.setStep(curPercent,"загрузка ядра");
-            },125);
-        }).catch(function () {
-            console.log("Node creater failed by timeout");
-        });
-        return _pr;
-    };
-
-    let prall = [];
-    for(let idx in nodeName){
-        prall.push(creater(idx));
-    }
-    Promise.all(prall).then(function(){
-        console.log("All Node is loaded");
-        $(".node").each(function(index,elem){
-            setTimeout(function(){
-                $(elem).removeClass("mainPanelItemInit");
-            },index*500);
-        });
-        setTimeout(()=>StartNodes(),5000);
-        
-        if(cb && typeof cb == "function")cb();
-    });
-}*/
 function LoadNodes(nodeName,nodePanel,nodeAlias){
     let GStarter = function *(){
         for(let nodeG in nodeName){

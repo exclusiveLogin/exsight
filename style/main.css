@@ -32,7 +32,7 @@ html{
 }
 body{
     height: 100%;
-    perspective: 500px;
+/*    perspective: 500px;*/
     margin: 0;
     background: #4c4c4c; /* Old browsers */
     background: linear-gradient(to bottom, #888 0%,#333 30%,#444 70%,#888 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
@@ -235,11 +235,24 @@ a:hover{
     color: #FFD100;
     font-weight: bold;
 }
-.fancycontainer{
-    margin:20px;
-    padding: 10px;
-    width: 1300px;
-
+#fancycontainer{
+    padding: 20px;
+    border-radius: 10px;
+	border: 2px outset #ff7;
+    background: #444;
+	background-image: url("bg2.png");
+	color: #ffe;
+    display: none;
+    overflow: hidden;
+}
+.fancyloadClass{
+    border: 1px solid #ff7;
+    background: #444;
+	background-image: url("bg2.png");
+	color: #ffe;
+    display: none;
+    border-radius: 10px;
+    overflow: hidden;
 }
 .fb{
     /*width:1200px;*/
