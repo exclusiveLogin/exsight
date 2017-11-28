@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Окт 18 2017 г., 16:31
--- Версия сервера: 5.7.19-0ubuntu0.16.04.1
+-- Время создания: Ноя 21 2017 г., 15:13
+-- Версия сервера: 5.7.20-0ubuntu0.16.04.1
 -- Версия PHP: 7.0.22-0ubuntu0.16.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -218,6 +218,9 @@ CREATE TABLE `visits` (
   `ip` varchar(16) NOT NULL,
   `rip` varchar(16) NOT NULL,
   `ua` text NOT NULL,
+  `remote_port` varchar(10) NOT NULL,
+  `path` text NOT NULL,
+  `doc_root` text NOT NULL,
   `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `ver` varchar(10) NOT NULL,
   `build` int(11) DEFAULT NULL
@@ -311,12 +314,12 @@ ALTER TABLE `visits`
 -- AUTO_INCREMENT для таблицы `asn2load`
 --
 ALTER TABLE `asn2load`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=856349;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1010279;
 --
 -- AUTO_INCREMENT для таблицы `defferreload`
 --
 ALTER TABLE `defferreload`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
 --
 -- AUTO_INCREMENT для таблицы `status`
 --
@@ -326,7 +329,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT для таблицы `uniqueip`
 --
 ALTER TABLE `uniqueip`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1956;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2868;
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
@@ -336,7 +339,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `visits`
 --
 ALTER TABLE `visits`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3041;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4175;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
