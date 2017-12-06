@@ -2,11 +2,13 @@
     background-color: #4c4c4c;
     box-shadow: 0 0 5px grey;
     color: #FFD100;
-    min-height: 85vh;
+    min-height: 90vh;
     height: 100%;
     margin: -10px -35px;
     padding: 10px 30px;
+    padding-bottom: 90px;
     top: -20px;
+    overflow-y: auto;
 }
 .system-about .system-logs{
     height: 85vh;
@@ -99,4 +101,13 @@
 }
 #systemview .system-rightbar, #systemview .system-logs{
     transition: all .5s ease;
+}
+#fb_container{
+    border: 1px solid #ff7;
+    background: #444;
+	background-image: url("bg2.png");
+	color: #ffe;
+    display: none;
+    border-radius: 10px;
+    overflow: hidden;
 }

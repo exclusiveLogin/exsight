@@ -12,41 +12,64 @@ $f_meteo_exist = file_exists($ini_meteo_path);
 if($f_meteo_exist){
     $meteo_ini_arr =  parse_ini_file($ini_meteo_path);
 
-    $meteo_wind_nb = null;
-    $meteo_wind_p = null;
-    $meteo_temperature_air = null;
-    $meteo_wind_direction = null;
+    $meteo_wind_nb = 888;
+    $meteo_wind_p = 888;
+    $meteo_temperature_air = 888;
+    $meteo_wind_direction = 888;
     $fixtime = null;
+    
+    $q_var_str = "";
+    $q_val_str = "";
+    $q_duplicates_str = "";
 
-    if (isset($meteo_ini_arr['meteo_temperature_air'])) {
-        $meteo_temperature_air = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_temperature_air'])), 1);
-        ////echo "temp:".$meteo_temperature_air."<br>";
-    }
-    if (isset($meteo_ini_arr['meteo_windforce_nb'])) {
-        $meteo_wind_nb = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_windforce_nb'])), 1);
-        ////echo "wind_nb:".$meteo_wind_nb."<br>";
-    }
     if (isset($meteo_ini_arr['meteo_windforce_p'])) {
         $meteo_wind_p = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_windforce_p'])), 1);
         ////echo "wind_p:".$meteo_wind_p."<br>";
     }
+
+    $q_var_str .="`wind_p`,";
+    $q_val_str .= "$meteo_wind_p ,";
+    $q_duplicates_str .= "`wind_p` = " . $meteo_wind_p . ",";
+    
+    if (isset($meteo_ini_arr['meteo_windforce_nb'])) {
+        $meteo_wind_nb = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_windforce_nb'])), 1);
+        ////echo "wind_nb:".$meteo_wind_nb."<br>"; 
+    }
+    
+    $q_var_str .="`wind_nb`,";
+    $q_val_str .= "$meteo_wind_nb ,";
+    $q_duplicates_str .= "`wind_nb` = " . $meteo_wind_nb . ","; 
+    
+    if (isset($meteo_ini_arr['meteo_temperature_air'])) {
+        $meteo_temperature_air = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_temperature_air'])), 1);
+        ////echo "temp:".$meteo_temperature_air."<br>";  
+    }
+    
+    $q_var_str .="`temperature_air`,";
+    $q_val_str .= "$meteo_temperature_air ,";
+    $q_duplicates_str .= "`temperature_air` = " . $meteo_temperature_air . ",";
+    
     if (isset($meteo_ini_arr['meteo_winddirection_p'])) {
         $meteo_wind_direction = round(((float)str_replace(",", ".", $meteo_ini_arr['meteo_winddirection_p'])), 1);
         ////echo "wind_p:".$meteo_wind_p."<br>";
     }
+    
+    $q_var_str .="`wind_direction`,";
+    $q_val_str .= "$meteo_wind_direction ,";
+    $q_duplicates_str .= "`wind_direction` = " . $meteo_wind_direction . ","; 
+    
     if (isset($meteo_ini_arr['fixtime'])) {
         $fixtime = $meteo_ini_arr['fixtime'];
         ////echo "wind_p:".$meteo_wind_p."<br>";
     }
-    $q = "INSERT INTO `meteo` (`wind_p`,`wind_nb`,`temperature_air`,`wind_direction`,`fixtime`) VALUES (" . $meteo_wind_p . "," . $meteo_wind_nb . ",
-        ".$meteo_temperature_air.",".$meteo_wind_direction.",\"".$fixtime."\") ON DUPLICATE KEY UPDATE 
-        `wind_p` = " . $meteo_wind_p . ",
-        `wind_nb`=".$meteo_wind_nb.",
-        `wind_direction`=".$meteo_wind_direction.",
-        `temperature_air`=".$meteo_temperature_air.",
-        `fixtime`=\"".$fixtime."\";";
+    
+    $q_var_str .="`fixtime`";
+    $q_val_str .= "\"$fixtime\"";
+    $q_duplicates_str .= "`fixtime` = \"" . $fixtime . "\""; 
+    
+    $q = "INSERT INTO `meteo` ($q_var_str) VALUES ($q_val_str) ON DUPLICATE KEY UPDATE $q_duplicates_str";
     $mysql->query($q);
-    ////echo "q:".$q."<br>";
+    echo "q:".$q."<br>";
 }
 
 

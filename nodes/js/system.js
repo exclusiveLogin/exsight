@@ -24,8 +24,8 @@ module.exports = class system{
 
             context.fancyLog = new Tbl2log("table.tbl_fancy",["cnt","ip","rip"]);
 
-            $(".system-about .fancy").fancybox();
-
+            $(".system-about .header .fa-table").fancybox();
+            
             $(".system-about .header .fa-table").on("click", function () {
                 if($(this).hasClass("table_btn_vd")){
                     context.fancyLog.clearLog();
@@ -51,7 +51,6 @@ module.exports = class system{
                         (el) => context.fancyLog.write2log(el)
                     );
                 }
-                $(".system-about .fancy").click();
             });
 
             $(".system-logs").on("click",".btn-refresh-ip",function () {
